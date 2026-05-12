@@ -1,0 +1,16 @@
+test-ledger
+solana
+dist
+scripts
+skillchain-db.csv
+ccd.md
+design.md
+frontend.md
+spec.md
+fix-css.mjs
+fix-imports.mjs
+fix-next-links.mjs
+refactor.mjs
+ch.svg
+fo.svg
+n1.svg

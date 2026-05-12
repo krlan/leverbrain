@@ -1,0 +1,205 @@
+.publish-page {
+  padding: var(--space-2xl) 0 var(--space-6xl);
+}
+
+.publish-hero {
+  margin-bottom: var(--space-xl);
+}
+
+.publish-hero h1 {
+  font-size: clamp(2rem, 4.2vw, 3.2rem);
+  margin-bottom: var(--space-sm);
+}
+
+.publish-hero p {
+  max-width: 760px;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.publish-hero-flow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid rgba(255, 191, 126, 0.25);
+  border-radius: 999px;
+  background: rgba(16, 12, 9, 0.84);
+  padding: 0.3rem 0.55rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.publish-connect-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(160deg, rgba(24, 18, 13, 0.96), rgba(12, 9, 7, 0.96));
+  padding: var(--space-xl);
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: start;
+}
+
+.publish-connect-card h2 {
+  font-size: 1.35rem;
+}
+
+.publish-connect-card p {
+  max-width: 620px;
+  font-size: 0.9rem;
+}
+
+.publish-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.publish-main {
+  border: 1px solid rgba(255, 191, 126, 0.22);
+  border-radius: calc(var(--radius-xl) + 4px);
+  background:
+    radial-gradient(120% 120% at 100% 0%, rgba(255, 137, 61, 0.16), rgba(255, 137, 61, 0) 55%),
+    radial-gradient(120% 120% at 0% 100%, rgba(115, 95, 255, 0.1), rgba(115, 95, 255, 0) 60%),
+    linear-gradient(165deg, rgba(18, 13, 10, 0.98), rgba(11, 8, 7, 0.98));
+  padding: var(--space-lg);
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.publish-main-head h2 {
+  font-size: 1.35rem;
+  margin-bottom: 0.3rem;
+}
+
+.publish-main-head p {
+  font-size: 0.84rem;
+  color: var(--color-text-tertiary);
+}
+
+.publish-form {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.publish-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+.publish-readme-input {
+  min-height: 220px;
+}
+
+.publish-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-sm);
+}
+
+.publish-success {
+  border: 1px solid rgba(126, 231, 135, 0.35);
+  border-radius: var(--radius-lg);
+  background: rgba(42, 82, 49, 0.35);
+  color: #d2fcd7;
+  padding: 0.65rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.publish-success p {
+  margin: 0;
+  color: inherit;
+  font-size: 0.82rem;
+}
+
+.publish-success-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.74rem;
+  color: #effff0;
+}
+
+.publish-success-link:hover {
+  color: #d5ffd8;
+}
+
+.publish-sidebar {
+  position: sticky;
+  top: calc(72px + var(--space-lg));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(160deg, rgba(24, 18, 13, 0.96), rgba(12, 9, 7, 0.96));
+  padding: var(--space-lg);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.publish-sidebar h2 {
+  font-size: 1.2rem;
+}
+
+.publish-skill-list {
+  display: grid;
+  gap: 0.62rem;
+}
+
+.publish-skill-item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: rgba(10, 8, 6, 0.88);
+  padding: 0.62rem 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.publish-skill-name {
+  color: var(--color-text-primary);
+  font-size: 0.82rem;
+  margin-bottom: 0.15rem;
+}
+
+.publish-skill-meta {
+  font-size: 0.64rem;
+  color: var(--color-text-tertiary);
+}
+
+.publish-edit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.24rem;
+  font-size: 0.68rem;
+  color: var(--color-accent-warm-light);
+  white-space: nowrap;
+}
+
+.publish-edit-link:hover {
+  color: var(--color-accent);
+}
+
+@media (max-width: 1024px) {
+  .publish-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .publish-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .publish-grid {
+    grid-template-columns: 1fr;
+  }
+}

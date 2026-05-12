@@ -1,0 +1,187 @@
+/* ================================================
+   Docs Page — docs-*
+   ================================================ */
+
+.docs-page {
+  padding: var(--space-4xl) 0 var(--space-6xl);
+}
+
+.docs-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: var(--space-5xl);
+  align-items: start;
+}
+
+/* ─── Sidebar nav ─── */
+.docs-nav {
+  position: sticky;
+  top: calc(72px + var(--space-xl));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+.docs-nav-section {}
+.docs-nav-title {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+  padding: 0 var(--space-sm);
+}
+.docs-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.docs-nav-link {
+  font-size: 0.84rem;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  padding: 0.38rem var(--space-sm);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  font-weight: 500;
+  display: block;
+}
+.docs-nav-link:hover {
+  color: var(--color-text-primary);
+  background: rgba(255, 185, 100, 0.08);
+}
+.docs-nav-link.active {
+  color: var(--color-accent-warm-light);
+  background: rgba(255, 185, 100, 0.1);
+}
+
+/* ─── Content ─── */
+.docs-content {
+  min-width: 0;
+}
+.docs-header {
+  margin-bottom: var(--space-4xl);
+}
+.docs-header h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: var(--space-md);
+}
+.docs-header p {
+  font-size: 1.0625rem;
+  color: var(--color-text-secondary);
+  max-width: 560px;
+  line-height: 1.65;
+}
+
+.docs-section {
+  margin-bottom: var(--space-5xl);
+  padding-bottom: var(--space-5xl);
+  border-bottom: 1px solid var(--color-border);
+  scroll-margin-top: calc(72px + var(--space-xl));
+}
+.docs-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+.docs-section h2 {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  margin-bottom: var(--space-lg);
+}
+.docs-section h3 {
+  font-size: 1rem;
+  margin-bottom: var(--space-sm);
+  margin-top: var(--space-xl);
+  color: var(--color-text-primary);
+}
+.docs-section p {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+  margin-bottom: var(--space-md);
+}
+.docs-section ul, .docs-section ol {
+  padding-left: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.docs-section li {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+}
+
+/* Code blocks */
+.docs-code {
+  background: rgba(10, 7, 5, 0.9);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  overflow-x: auto;
+  margin: var(--space-lg) 0;
+}
+.docs-code pre {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  white-space: pre;
+  margin: 0;
+}
+.docs-code-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+}
+
+/* Endpoint cards */
+.docs-endpoint {
+  background: rgba(20, 15, 11, 0.8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+.docs-endpoint-method {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-md);
+}
+.docs-method-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.22rem 0.55rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+}
+.docs-method-badge--get {
+  background: rgba(100, 200, 120, 0.12);
+  color: #7ee787;
+  border: 1px solid rgba(100, 200, 120, 0.2);
+}
+.docs-method-badge--post {
+  background: rgba(100, 150, 255, 0.12);
+  color: #79b8ff;
+  border: 1px solid rgba(100, 150, 255, 0.2);
+}
+.docs-endpoint-path {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  color: var(--color-text-primary);
+}
+.docs-endpoint p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 860px) {
+  .docs-layout { grid-template-columns: 1fr; }
+  .docs-nav { position: static; }
+}

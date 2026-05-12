@@ -1,0 +1,54 @@
+{
+  "name": "leverbrain",
+  "version": "0.2.0",
+  "description": "Client SDK and CLI for the Leverbrain Solana skill marketplace",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "leverbrain": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "leverbrain",
+    "ai",
+    "agents",
+    "skills",
+    "marketplace",
+    "solana"
+  ],
+  "author": "Leverbrain",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leverbrain/leverbrain.git",
+    "directory": "packages/leverbrain"
+  },
+  "homepage": "https://leverbrain.com",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "yaml": "^2.3.4",
+    "chalk": "^4.1.2",
+    "axios": "^1.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "typescript": "^5.3.3"
+  }
+}

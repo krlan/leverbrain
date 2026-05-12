@@ -1,0 +1,458 @@
+/* ================================================
+   Lab Page — Saved Skills
+   ================================================ */
+
+.config-page {
+  padding: var(--space-2xl) 0 var(--space-6xl);
+}
+
+.config-connect-card {
+  border: none;
+  border-bottom: 1px solid rgba(255, 190, 124, 0.16);
+  background: transparent;
+  padding: var(--space-xl) 0;
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: start;
+}
+
+.config-connect-card h2 {
+  font-size: 1.35rem;
+}
+
+.config-connect-card p {
+  max-width: 640px;
+  font-size: 0.86rem;
+}
+
+.config-surface {
+  border-bottom: 1px solid rgba(255, 190, 124, 0.16);
+}
+
+/* ─── Header ─── */
+.config-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  padding: var(--space-xl) 0 var(--space-lg);
+  border-bottom: 1px solid rgba(255, 190, 124, 0.12);
+  flex-wrap: wrap;
+}
+
+.config-kicker {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-bottom: 0.35rem;
+}
+
+.config-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.1;
+}
+
+.config-header-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.config-count {
+  font-size: 0.72rem;
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ─── Loading / Empty ─── */
+.config-loading {
+  font-size: 0.63rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-tertiary);
+  padding: var(--space-xl) 0;
+  display: block;
+}
+
+.config-empty {
+  text-align: center;
+  padding: var(--space-4xl) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  color: var(--color-text-secondary);
+}
+
+.config-empty p {
+  font-size: 0.94rem;
+}
+
+.config-empty-sub {
+  font-size: 0.82rem !important;
+  color: var(--color-text-tertiary) !important;
+  max-width: 380px;
+}
+
+/* ─── Grid ─── */
+.config-grid {
+  display: grid;
+  gap: 0;
+}
+
+.config-grid-head {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 160px 150px 120px;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 0.2rem;
+  border-bottom: 1px solid rgba(255, 185, 118, 0.18);
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+.config-grid-head span:first-child {
+  text-align: left;
+}
+
+.config-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 160px 150px 120px;
+  align-items: center;
+  gap: var(--space-sm);
+  min-height: 72px;
+  padding: 0.65rem 0.2rem;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 185, 118, 0.14);
+  transition: border-color 180ms ease-out;
+  position: relative;
+  isolation: isolate;
+}
+
+.config-row:last-child {
+  border-bottom: none;
+}
+
+.config-row:hover {
+  border-color: rgba(255, 206, 152, 0.28);
+}
+
+.config-row > * {
+  position: relative;
+  z-index: 1;
+}
+
+.config-row::before {
+  content: '';
+  position: absolute;
+  inset: -2px -0.6rem;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(140% 100% at 0% 50%, rgba(255, 172, 98, 0.12), rgba(255, 172, 98, 0) 72%),
+    linear-gradient(90deg, rgba(255, 164, 86, 0.07), rgba(255, 164, 86, 0) 66%);
+  mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, transparent 100%);
+  transition: opacity 200ms ease-out;
+}
+
+.config-row:hover::before {
+  opacity: 1;
+}
+
+.config-row-main {
+  min-width: 0;
+}
+
+.config-row-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  text-decoration: none;
+}
+
+.config-row-link:focus-visible {
+  outline: 2px solid rgba(255, 205, 148, 0.65);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.config-row-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+  margin-bottom: 0;
+}
+
+.config-row-author {
+  font-size: 0.74rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  justify-self: center;
+  font-weight: 500;
+}
+
+.config-row-date {
+  font-size: 0.68rem;
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+  justify-self: center;
+  white-space: nowrap;
+}
+
+.config-grid-check-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.config-grid-check-cell input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 190, 124, 0.26);
+  background:
+    linear-gradient(165deg, rgba(255, 190, 124, 0.08), rgba(255, 190, 124, 0.02)),
+    rgba(8, 16, 24, 0.92);
+  box-shadow: inset 0 1px 0 rgba(255, 219, 176, 0.08);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.config-grid-check-cell input[type='checkbox']:hover {
+  border-color: rgba(255, 207, 148, 0.38);
+  background:
+    linear-gradient(165deg, rgba(255, 190, 124, 0.12), rgba(255, 190, 124, 0.04)),
+    rgba(8, 16, 24, 0.98);
+}
+
+.config-grid-check-cell input[type='checkbox']:focus-visible {
+  outline: 2px solid rgba(255, 205, 148, 0.62);
+  outline-offset: 2px;
+}
+
+.config-grid-check-cell input[type='checkbox']:checked {
+  border-color: rgba(255, 194, 132, 0.72);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 6.2 4.5 8.7 10 3.3' stroke='%23081218' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px 12px no-repeat,
+    linear-gradient(165deg, rgba(255, 200, 140, 0.9), rgba(255, 164, 88, 0.84));
+  box-shadow: 0 0 0 1px rgba(255, 200, 140, 0.16);
+}
+
+/* ─── Pack Tool ─── */
+.config-pack-tool {
+  border-bottom: 1px solid rgba(255, 190, 124, 0.16);
+  padding: var(--space-2xl) 0;
+  display: grid;
+  gap: var(--space-md);
+}
+
+.config-pack-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.config-pack-head h2 {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+}
+
+.config-pack-controls {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) auto;
+  gap: var(--space-md);
+  align-items: end;
+}
+
+.config-pack-name {
+  min-width: 0;
+}
+
+.config-pack-name-field {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.45rem;
+}
+
+.config-pack-name-input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid rgba(255, 190, 124, 0.24);
+  background: rgba(255, 190, 124, 0.04);
+  color: var(--color-text-primary);
+  border-radius: 8px;
+  padding: 0 0.75rem;
+  font-size: 0.85rem;
+}
+
+.config-pack-name-input:focus-visible {
+  outline: 2px solid rgba(255, 205, 148, 0.65);
+  outline-offset: 2px;
+}
+
+.config-pack-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.config-pack-help {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.config-pack-preview,
+.config-pack-command {
+  margin: 0;
+  border: 1px solid rgba(255, 190, 124, 0.2);
+  border-radius: 10px;
+  background: rgba(6, 12, 18, 0.82);
+  padding: 0.85rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.config-pack-export-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.config-pack-export-head p {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-tertiary);
+}
+
+.config-pack-export-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.config-pack-export-actions .btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.config-showcase {
+  padding-top: var(--space-3xl);
+}
+
+/* ─── Category pill overrides for extended categories ─── */
+.sk-cat-pill--security {
+  background: rgba(255, 130, 100, 0.12);
+  color: #ffb8a0;
+  border: 1px solid rgba(255, 130, 100, 0.24);
+}
+.sk-cat-pill--automation {
+  background: rgba(140, 200, 255, 0.1);
+  color: #a8d8f8;
+  border: 1px solid rgba(140, 200, 255, 0.2);
+}
+.sk-cat-pill--data {
+  background: rgba(140, 230, 180, 0.1);
+  color: #9ae8c0;
+  border: 1px solid rgba(140, 230, 180, 0.2);
+}
+.sk-cat-pill--ai-ml {
+  background: rgba(200, 140, 255, 0.1);
+  color: #d0a8f8;
+  border: 1px solid rgba(200, 140, 255, 0.2);
+}
+.sk-cat-pill--platform {
+  background: rgba(255, 210, 100, 0.1);
+  color: #f8d878;
+  border: 1px solid rgba(255, 210, 100, 0.2);
+}
+.sk-cat-pill--development {
+  background: rgba(100, 220, 200, 0.1);
+  color: #80e8d4;
+  border: 1px solid rgba(100, 220, 200, 0.2);
+}
+.sk-cat-pill--cloud {
+  background: rgba(160, 180, 255, 0.1);
+  color: #b0c0f8;
+  border: 1px solid rgba(160, 180, 255, 0.2);
+}
+.sk-cat-pill--testing {
+  background: rgba(142, 166, 255, 0.12);
+  color: #bfd0ff;
+  border: 1px solid rgba(142, 166, 255, 0.24);
+}
+.sk-cat-pill--documents {
+  background: rgba(230, 175, 120, 0.12);
+  color: #ffd8b0;
+  border: 1px solid rgba(230, 175, 120, 0.26);
+}
+.sk-cat-pill--cloud-infra {
+  background: rgba(120, 216, 220, 0.1);
+  color: #a9edf0;
+  border: 1px solid rgba(120, 216, 220, 0.23);
+}
+.sk-cat-pill--productivity {
+  background: rgba(180, 210, 140, 0.12);
+  color: #d3efad;
+  border: 1px solid rgba(180, 210, 140, 0.25);
+}
+.sk-cat-pill--design {
+  background: rgba(225, 155, 196, 0.12);
+  color: #f3c9e2;
+  border: 1px solid rgba(225, 155, 196, 0.24);
+}
+.sk-cat-pill--media {
+  background: rgba(137, 187, 255, 0.12);
+  color: #bdd8ff;
+  border: 1px solid rgba(137, 187, 255, 0.24);
+}
+.sk-cat-pill--library {
+  background: rgba(255, 190, 120, 0.12);
+  color: #ffd7ab;
+  border: 1px solid rgba(255, 190, 120, 0.24);
+}
+
+@media (max-width: 720px) {
+  .config-grid-head {
+    display: none;
+  }
+  .config-row {
+    grid-template-columns: 1fr;
+    min-height: unset;
+    gap: var(--space-xs);
+  }
+  .config-grid-check-cell {
+    justify-content: flex-start;
+  }
+  .config-row-author,
+  .config-row-date {
+    justify-self: flex-start;
+  }
+
+  .config-pack-controls {
+    grid-template-columns: 1fr;
+  }
+}

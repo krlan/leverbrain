@@ -118,7 +118,7 @@
 /* ─── Layout: content + sidebar ─── */
 .sd-layout {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: minmax(0, 1fr) 320px;
   gap: var(--space-3xl);
   align-items: start;
 }
@@ -431,4 +431,475 @@
   .sd-overview-rich > div {
     grid-template-columns: 1fr !important;
   }
+}
+
+/* ─── CLI Install Command Bar ─── */
+.sd-install-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: var(--space-lg);
+  font-family: var(--font-mono);
+  box-shadow: none;
+  position: relative;
+  overflow: visible;
+}
+
+.sd-install-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.12em;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  white-space: nowrap;
+  opacity: 0.6;
+}
+
+.sd-install-code-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sd-install-code-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.sd-install-prompt {
+  color: var(--color-accent-warm-light);
+  user-select: none;
+  font-weight: 600;
+}
+
+.sd-install-code {
+  font-size: 0.8125rem;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.sd-install-copy-btn {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.sd-install-copy-btn:hover {
+  background: rgba(255, 195, 124, 0.05);
+  color: var(--color-accent-warm-light);
+}
+
+/* ─── Visual Specimen / Preview Frame ─── */
+.sd-visual-specimen {
+  background: rgba(14, 10, 7, 0.95);
+  border: 1px solid rgba(255, 195, 124, 0.22);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-2xl);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+}
+
+.sd-specimen-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: rgba(24, 18, 14, 0.98);
+  border-bottom: 1px solid rgba(255, 195, 124, 0.12);
+}
+
+.sd-specimen-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.sd-specimen-dot.red { background: #ff5f56; }
+.sd-specimen-dot.orange { background: #ffbd2e; }
+.sd-specimen-dot.green { background: #27c93f; }
+
+.sd-specimen-title {
+  margin-left: 8px;
+  font-size: 0.62rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+.sd-specimen-body {
+  padding: var(--space-xl);
+  background: radial-gradient(circle at top, rgba(255, 190, 120, 0.02) 0%, transparent 80%), rgba(10, 8, 7, 0.98);
+  overflow-x: auto;
+}
+
+.sd-specimen-img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sd-specimen-html {
+  min-height: 200px;
+  color: var(--color-text-primary);
+}
+
+/* ─── Source Code Inspector ─── */
+.sd-code-inspector {
+  background: rgba(14, 10, 7, 0.98);
+  border: 1px solid rgba(255, 195, 124, 0.22);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: var(--space-3xl);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.sd-inspector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(24, 18, 14, 0.98);
+  border-bottom: 1px solid rgba(255, 195, 124, 0.12);
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.sd-inspector-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sd-inspector-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.sd-inspector-dot.red { background: #ff5f56; }
+.sd-inspector-dot.orange { background: #ffbd2e; }
+.sd-inspector-dot.green { background: #27c93f; }
+
+.sd-inspector-filename {
+  margin-left: 8px;
+  font-size: 0.77rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-secondary);
+}
+
+.sd-inspector-tabs {
+  display: flex;
+  gap: 4px;
+  margin-left: 12px;
+}
+
+.sd-inspector-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.77rem;
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sd-inspector-tab:hover {
+  opacity: 0.9;
+  background: rgba(255, 195, 124, 0.04);
+}
+
+.sd-inspector-tab.active {
+  opacity: 1;
+  color: var(--color-accent);
+  background: rgba(255, 195, 124, 0.08);
+  border-color: rgba(255, 195, 124, 0.22);
+}
+
+.sd-inspector-actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.sd-inspector-btn {
+  font-size: 0.72rem;
+  padding: 0.32rem 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sd-inspector-code-viewport {
+  display: flex;
+  max-height: 480px;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+.sd-inspector-line-numbers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: var(--space-md) var(--space-sm);
+  background: rgba(18, 13, 10, 0.5);
+  border-right: 1px solid rgba(255, 195, 124, 0.08);
+  user-select: none;
+  min-width: 44px;
+}
+
+.sd-inspector-ln {
+  font-family: var(--font-mono);
+  font-size: 0.77rem;
+  line-height: 1.6;
+  color: rgba(255, 195, 124, 0.25);
+}
+
+.sd-inspector-pre {
+  margin: 0;
+  padding: var(--space-md);
+  flex: 1;
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.sd-inspector-pre code {
+  font-family: var(--font-mono);
+  font-size: 0.77rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+/* ─── Details Organic Flow sections ─── */
+.sd-details-flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+}
+
+.sd-section-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-lg);
+  border-left: 2px solid var(--color-accent-warm-light);
+  padding-left: 8px;
+}
+
+.sd-when-card {
+  background: rgba(255, 188, 104, 0.04);
+  border: 1px solid rgba(255, 188, 104, 0.12);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg) var(--space-xl);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+/* ─── Custom Markdown Renderer styling ─── */
+.sd-markdown-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.sd-md-p {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+  margin: 0 0 var(--space-xs);
+}
+
+.sd-md-h1 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: var(--space-lg) 0 var(--space-sm);
+  letter-spacing: -0.01em;
+}
+
+.sd-md-h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: var(--space-md) 0 var(--space-xs);
+}
+
+.sd-md-h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: var(--space-sm) 0 var(--space-xs);
+}
+
+.sd-md-list, .sd-md-ol {
+  margin: 0 0 var(--space-md);
+  padding-left: 1.4rem;
+}
+
+.sd-md-list li {
+  list-style-type: square;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+
+.sd-md-ol li {
+  list-style-type: decimal;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+
+.sd-md-inline-code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  background: rgba(255, 188, 104, 0.08);
+  border: 1px solid rgba(255, 188, 104, 0.2);
+  color: var(--color-accent-warm-light);
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+}
+
+.sd-md-link {
+  color: var(--color-accent-warm-light);
+  text-decoration: underline;
+  transition: color var(--transition-fast);
+}
+
+.sd-md-link:hover {
+  color: var(--color-accent);
+}
+
+/* GitHub style alerts */
+.sd-alert {
+  border-left: 4px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  padding: var(--space-md) var(--space-lg);
+  margin: var(--space-md) 0;
+}
+
+.sd-alert-type {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.sd-alert-body p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.875rem;
+}
+
+.sd-alert--note {
+  border-left-color: #58a6ff;
+  background: rgba(88, 166, 255, 0.04);
+}
+.sd-alert--note .sd-alert-type { color: #58a6ff; }
+
+.sd-alert--tip {
+  border-left-color: #3fb950;
+  background: rgba(63, 185, 80, 0.04);
+}
+.sd-alert--tip .sd-alert-type { color: #3fb950; }
+
+.sd-alert--important {
+  border-left-color: #ab7df8;
+  background: rgba(171, 125, 248, 0.04);
+}
+.sd-alert--important .sd-alert-type { color: #ab7df8; }
+
+.sd-alert--warning {
+  border-left-color: #d29922;
+  background: rgba(210, 153, 34, 0.04);
+}
+.sd-alert--warning .sd-alert-type { color: #d29922; }
+
+.sd-alert--caution {
+  border-left-color: #f85149;
+  background: rgba(248, 81, 73, 0.04);
+}
+.sd-alert--caution .sd-alert-type { color: #f85149; }
+
+.sd-blockquote {
+  border-left: 4px solid rgba(255, 255, 255, 0.15);
+  padding: var(--space-sm) var(--space-lg);
+  margin: var(--space-md) 0;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+/* Beautiful code blocks inside README */
+.sd-codeblock {
+  background: rgba(14, 10, 7, 0.98);
+  border: 1px solid rgba(255, 195, 124, 0.12);
+  border-radius: var(--radius-md);
+  margin: var(--space-md) 0;
+  overflow: hidden;
+}
+
+.sd-codeblock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: rgba(24, 18, 14, 0.95);
+  border-bottom: 1px solid rgba(255, 195, 124, 0.06);
+}
+
+.sd-codeblock-lang {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-tertiary);
+}
+
+.sd-codeblock-copy {
+  background: none;
+  border: none;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition-fast);
+}
+
+.sd-codeblock-copy:hover {
+  color: var(--color-text-primary);
+}
+
+.sd-codeblock-pre {
+  margin: 0;
+  padding: 12px;
+  overflow-x: auto;
+}
+
+.sd-codeblock-pre code {
+  font-family: var(--font-mono);
+  font-size: 0.77rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
 }

@@ -1,13 +1,80 @@
 "use client";
 
-import { Suspense, useMemo, useState } from 'react'
+import { Suspense, useMemo, useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { Search, X } from 'lucide-react'
+import { Search, X, ChevronDown } from 'lucide-react'
 import { useQuery } from 'convex/react'
 import { type SkillCategory } from '@/lib/skills-data'
 import { mergeSkillPool } from '@/lib/skill-pool'
 import { api } from '../../../convex/_generated/api'
+
+interface CustomSelectOption {
+  id: string
+  label: string
+}
+
+interface CustomSelectProps {
+  value: string
+  onChange: (val: string) => void
+  options: readonly CustomSelectOption[]
+  ariaLabel?: string
+}
+
+function CustomSelect({ value, onChange, options, ariaLabel }: CustomSelectProps) {
+  const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const selectedOption = options.find((opt) => opt.id === value) || options[0]
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  return (
+    <div className="sk-custom-select" ref={containerRef}>
+      <button
+        type="button"
+        className={`sk-custom-select-trigger ${isOpen ? 'is-open' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-label={ariaLabel}
+      >
+        <span>{selectedOption?.label}</span>
+        <ChevronDown size={14} className="sk-custom-select-arrow" />
+      </button>
+
+      {isOpen && (
+        <ul className="sk-custom-select-options" role="listbox">
+          {options.map((option) => {
+            const isSelected = option.id === value
+            return (
+              <li
+                key={option.id}
+                role="option"
+                aria-selected={isSelected}
+                className={`sk-custom-select-option ${isSelected ? 'is-selected' : ''}`}
+                onClick={() => {
+                  onChange(option.id)
+                  setIsOpen(false)
+                }}
+              >
+                {option.label}
+              </li>
+            )
+          })}
+        </ul>
+      )}
+    </div>
+  )
+}
 
 const MARKET_TYPES: { id: SkillCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -115,89 +182,71 @@ function SkillsContent() {
       <div className="container">
         <section className="sk-ledger-surface animate-fade-in-up">
           <div className="sk-controls animate-fade-in-up animate-delay-1">
-            <div className="sk-search-wrap">
-              <Search size={15} className="sk-search-icon" />
-              <input
-                type="text"
-                className="sk-search-input"
-                placeholder="Search by skill, tag, or creator..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                aria-label="Search skills"
-              />
-              {search && (
-                <button
-                  type="button"
-                  className="sk-search-clear"
-                  onClick={() => setSearch('')}
-                  aria-label="Clear search"
-                >
-                  <X size={13} />
-                </button>
-              )}
+            <div className="sk-search-container">
+              <span className="sk-select-title">Search</span>
+              <div className="sk-search-wrap">
+                <Search size={15} className="sk-search-icon" />
+                <input
+                  type="text"
+                  className="sk-search-input"
+                  placeholder="Search by skill, tag, or creator..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  aria-label="Search skills"
+                />
+                {search && (
+                  <button
+                    type="button"
+                    className="sk-search-clear"
+                    onClick={() => setSearch('')}
+                    aria-label="Clear search"
+                  >
+                    <X size={13} />
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="sk-dropdowns" role="group" aria-label="Marketplace filters">
-              <label className="sk-select-wrap">
+              <div className="sk-select-wrap">
                 <span className="sk-select-title">All</span>
-                <select
-                  className="form-select sk-select"
+                <CustomSelect
                   value={marketType}
-                  onChange={(event) => setMarketType(event.target.value as MarketType)}
-                >
-                  {MARKET_TYPES.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  onChange={(val) => setMarketType(val as MarketType)}
+                  options={MARKET_TYPES}
+                  ariaLabel="Market type filter"
+                />
+              </div>
 
-              <label className="sk-select-wrap">
+              <div className="sk-select-wrap">
                 <span className="sk-select-title">Category</span>
-                <select
-                  className="form-select sk-select"
+                <CustomSelect
                   value={categoryFilter}
-                  onChange={(event) => setCategoryFilter(event.target.value)}
-                >
-                  <option value="all">All categories</option>
-                  {categoryOptions.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  onChange={(val) => setCategoryFilter(val)}
+                  options={[{ id: 'all', label: 'All categories' }, ...categoryOptions]}
+                  ariaLabel="Category filter"
+                />
+              </div>
 
-              <label className="sk-select-wrap">
+              <div className="sk-select-wrap">
                 <span className="sk-select-title">Price</span>
-                <select
-                  className="form-select sk-select"
+                <CustomSelect
                   value={priceFilter}
-                  onChange={(event) => setPriceFilter(event.target.value as PriceFilter)}
-                >
-                  {PRICE_FILTERS.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  onChange={(val) => setPriceFilter(val as PriceFilter)}
+                  options={PRICE_FILTERS}
+                  ariaLabel="Price filter"
+                />
+              </div>
 
-              <label className="sk-select-wrap">
+              <div className="sk-select-wrap">
                 <span className="sk-select-title">Sort by</span>
-                <select
-                  className="form-select sk-select"
+                <CustomSelect
                   value={sortBy}
-                  onChange={(event) => setSortBy(event.target.value as SortBy)}
-                >
-                  {SORT_OPTIONS.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  onChange={(val) => setSortBy(val as SortBy)}
+                  options={SORT_OPTIONS}
+                  ariaLabel="Sort option"
+                />
+              </div>
             </div>
           </div>
 

@@ -356,3 +356,224 @@
     border-top: 1px solid rgba(255, 190, 124, 0.14);
   }
 }
+
+/* ─── Creator Directory Profiles (.ap-*) ─── */
+.ap-page {
+  min-height: 100vh;
+  padding: var(--space-2xl) 0 var(--space-4xl);
+}
+
+.ap-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.8125rem;
+  color: var(--color-text-tertiary);
+  text-decoration: none;
+  margin-bottom: var(--space-xl);
+  transition: color var(--transition-fast);
+}
+
+.ap-back:hover {
+  color: var(--color-accent-warm-light);
+}
+
+.ap-card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 195, 124, 0.22);
+  padding: var(--space-3xl);
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  margin-bottom: var(--space-3xl);
+}
+
+.ap-mesh-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 10% 20%, rgba(255, 188, 104, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.ap-card-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3xl);
+}
+
+.ap-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ap-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-2xl);
+  border: 2px solid rgba(255, 196, 129, 0.35);
+  background: rgba(14, 10, 7, 0.95);
+  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.ap-verified-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: var(--color-accent-warm-light);
+  color: #120e0a;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #120e0a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ap-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ap-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.ap-display-name {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.ap-handle {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--color-text-tertiary);
+}
+
+.ap-bio {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--space-md);
+  max-width: 580px;
+}
+
+.ap-socials {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.ap-social-link {
+  font-size: 0.77rem;
+  color: var(--color-text-tertiary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color var(--transition-fast);
+}
+
+.ap-social-link:hover {
+  color: var(--color-accent-warm-light);
+}
+
+.ap-stats {
+  display: flex;
+  gap: var(--space-2xl);
+  flex-shrink: 0;
+  background: rgba(14, 10, 7, 0.4);
+  border: 1px solid rgba(255, 195, 124, 0.1);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+}
+
+.ap-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.ap-stat-val {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.ap-stat-lbl {
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-tertiary);
+  margin-top: 4px;
+}
+
+/* Listings list */
+.ap-listings {
+  margin-top: var(--space-4xl);
+}
+
+.ap-listings-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.ap-empty {
+  text-align: center;
+  padding: var(--space-4xl) var(--space-xl);
+  background: rgba(14, 10, 7, 0.3);
+  border: 1px dashed rgba(255, 195, 124, 0.15);
+  border-radius: var(--radius-xl);
+}
+
+.ap-empty p {
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .ap-card-body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xl);
+  }
+  
+  .ap-stats {
+    width: 100%;
+    justify-content: space-around;
+  }
+}
+
+@media (max-width: 480px) {
+  .ap-display-name {
+    font-size: 1.5rem;
+  }
+  
+  .ap-stats {
+    gap: var(--space-md);
+  }
+  
+  .ap-stat-val {
+    font-size: 1.2rem;
+  }
+}

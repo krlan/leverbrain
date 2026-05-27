@@ -363,7 +363,7 @@ export default function SkillDetailPage() {
 
   const convMeta = useMemo(() => {
     if (!skill) return null
-    return getConversationalOverview(skill.slug, skill.description)
+    return getConversationalOverview(skill.slug, skill.description, skill.readme)
   }, [skill])
 
   const canEditListing = Boolean(

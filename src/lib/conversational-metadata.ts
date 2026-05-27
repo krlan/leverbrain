@@ -304,20 +304,84 @@ export const CONVERSATIONAL_METADATA: Record<string, SkillMetadata> = {
   }
 };
 
-export function getConversationalOverview(slug: string, fallbackDesc: string) {
+export function getConversationalOverview(slug: string, fallbackDesc: string, readme?: string): SkillMetadata {
   const meta = CONVERSATIONAL_METADATA[slug];
   if (meta) {
     return meta;
   }
 
-  // Fallback for custom/unregistered skills
+  // Generate dynamic metadata for imported / custom skills
+  const description = fallbackDesc || 'A custom Leverbrain automation skill designed to integrate with your developer workspace workflows.';
+  const useCases: string[] = [];
+
+  if (readme) {
+    // 1. Try to find bulleted list items in markdown
+    const lines = readme.split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      // Look for bullet points or numbered lists
+      if (trimmed.startsWith('-') || trimmed.startsWith('*') || /^\d+\./.test(trimmed)) {
+        // Strip bullet marker and markdown symbols
+        const cleanItem = trimmed
+          .replace(/^[-*\d.]+\s+/, '') // strip bullet
+          .replace(/`([^`]+)`/g, '$1') // strip backticks
+          .replace(/\*\*([^*]+)\*\*/g, '$1') // strip bold
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // strip links
+          .trim();
+        
+        if (cleanItem && cleanItem.length > 10 && cleanItem.length < 150) {
+          // Capitalize first letter and ensure it ends with period
+          let formatted = cleanItem.charAt(0).toUpperCase() + cleanItem.slice(1);
+          if (!formatted.endsWith('.') && !formatted.endsWith('!') && !formatted.endsWith('?')) {
+            formatted += '.';
+          }
+          if (!useCases.includes(formatted)) {
+            useCases.push(formatted);
+          }
+        }
+      }
+      if (useCases.length >= 3) break;
+    }
+  }
+
+  // 2. Fallback to parsing description sentences if we don't have enough use cases
+  if (useCases.length < 3) {
+    const sentences = description.split(/[.!?]\s+/).map(s => s.trim()).filter(s => s.length > 5);
+    for (const s of sentences) {
+      let cleanSentence = s.charAt(0).toUpperCase() + s.slice(1);
+      if (!cleanSentence.endsWith('.') && !cleanSentence.endsWith('!') && !cleanSentence.endsWith('?')) {
+        cleanSentence += '.';
+      }
+      if (!useCases.includes(cleanSentence)) {
+        useCases.push(cleanSentence);
+      }
+      if (useCases.length >= 3) break;
+    }
+  }
+
+  // 3. Absolute fallbacks if still not enough items
+  const readableTitle = slug
+    .split('-')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+
+  const defaultUseCases = [
+    `Automate repetitive ${readableTitle.toLowerCase()} development routines.`,
+    `Standardize workspace output and document generation for ${readableTitle.toLowerCase()}.`,
+    `Integrate advanced ${readableTitle.toLowerCase()} model directives into your agent pipeline.`
+  ];
+
+  while (useCases.length < 3) {
+    const nextFallback = defaultUseCases[useCases.length];
+    useCases.push(nextFallback);
+  }
+
+  // Format presets tip dynamically
+  const presetsTip = `Deploy this strategy in your agent runtime. Inspect the repository details and codebase configurations in the inspector below to customize the ${readableTitle} behavior.`;
+
   return {
-    description: fallbackDesc || 'A custom Leverbrain automation skill designed to integrate with your developer workspace workflows.',
-    useCases: [
-      'Automate repetitive development and review routines.',
-      'Standardize workspace output file generation.',
-      'Integrate advanced model directives into your agent pipeline.'
-    ],
-    presetsTip: 'Configure and install this skill locally via Leverbrain CLI, then customize its behaviour in `EXTEND.md`.'
+    description,
+    useCases: useCases.slice(0, 3),
+    presetsTip
   };
 }

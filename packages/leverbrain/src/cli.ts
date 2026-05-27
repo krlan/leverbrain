@@ -52,7 +52,7 @@ function createClient() {
 program
   .name('leverbrain')
   .description('CLI to interact with the Leverbrain AI skills marketplace')
-  .version('0.2.0')
+  .version('0.2.2')
   .option('--convex-url <url>', 'Convex deployment URL (overrides LEVERBRAIN_CONVEX_URL)')
 
 program

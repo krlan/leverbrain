@@ -286,6 +286,62 @@ function extractUseCases(slug, title, desc, readme) {
   return useCases.slice(0, 3);
 }
 
+function generateExampleUsage(slug, name, description, tags) {
+  const s = slug.toLowerCase();
+  const d = (description || '').toLowerCase();
+
+  if (s.includes('audit') || (s.includes('security') && !s.includes('review'))) return `Run a security audit on my codebase using ${name}`;
+  if (s.includes('review') && (s.includes('code') || s.includes('pr'))) return `Review my latest code changes before I merge`;
+  if (s.includes('review')) return `Get a detailed review of my work with ${name}`;
+  if (s.includes('slide') || s.includes('deck') || s.includes('pptx')) return `Generate a slide deck for my project presentation`;
+  if (s.includes('image') && s.includes('gen')) return `Generate custom images for my project`;
+  if (s.includes('comic')) return `Turn my story into a visual comic`;
+  if (s.includes('diagram')) return `Generate a system architecture diagram for my project`;
+  if (s.includes('infographic')) return `Create an infographic visualising my report data`;
+  if (s.includes('translate')) return `Translate my document to another language`;
+  if (s.includes('markdown') && s.includes('html')) return `Convert my markdown docs to styled HTML pages`;
+  if (s.includes('url') && s.includes('markdown')) return `Convert a URL into clean markdown for my notes`;
+  if (s.includes('pdf')) return `Extract and process content from my PDF files`;
+  if (s.includes('compress')) return `Compress my images without losing quality`;
+  if (s.includes('post') && s.includes('wechat')) return `Publish my content to my WeChat account`;
+  if (s.includes('post') && s.includes('weibo')) return `Post my content to my Weibo account`;
+  if (s.includes('post') && (s.includes('-x') || s.includes('twitter'))) return `Draft and publish a thread to my X account`;
+  if (s.includes('crosspost')) return `Cross-post my latest content to all my social channels`;
+  if (s.includes('test') && s.includes('e2e')) return `Write end-to-end tests for my critical user flows`;
+  if (s.includes('test') || s.includes('tdd')) return `Write tests for my new feature`;
+  if (s.includes('mutation')) return `Run mutation tests to find gaps in my test suite`;
+  if (s.includes('git') && s.includes('clean')) return `Clean up my git history and remove stale branches`;
+  if (s.includes('git')) return `Streamline my git workflow for my project`;
+  if (s.includes('mcp')) return `Build an MCP server integration for my custom tool`;
+  if (s.includes('api')) return `Design and document my API with best practices`;
+  if (s.includes('database') || s.includes('db')) return `Design and query the database schema for my app`;
+  if (s.includes('debug') || s.includes('diagnose')) return `Debug the issue in my current codebase`;
+  if (s.includes('setup') || s.includes('scaffold')) return `Set up ${name} for my project`;
+  if (s.includes('marketing')) return `Create a marketing plan for my product launch`;
+  if (s.includes('investor')) return `Prepare investor materials for my fundraising round`;
+  if (s.includes('launch')) return `Plan the launch strategy for my product`;
+  if (s.includes('research')) return `Research my target market and competitive landscape`;
+  if (s.includes('pricing')) return `Design the pricing model for my product`;
+  if (s.includes('brand')) return `Define brand guidelines and voice for my company`;
+  if (s.includes('agent')) return `Set up an AI agent workflow for my task`;
+  if (s.includes('workflow')) return `Automate my manual workflow with an agent`;
+  if (s.includes('article') || s.includes('content')) return `Write a polished article for my blog`;
+  if (s.includes('design')) return `Improve the design of my project`;
+  if (s.includes('video')) return `Process and edit my video files`;
+  if (s.includes('media') || s.includes('image')) return `Process and optimise my media files`;
+
+  const verb = d.includes('generat') ? 'Generate' :
+               d.includes('analys') || d.includes('analyz') ? 'Analyse' :
+               d.includes('convert') ? 'Convert' :
+               d.includes('extract') ? 'Extract' :
+               d.includes('build') ? 'Build' :
+               d.includes('creat') ? 'Create' :
+               d.includes('improv') ? 'Improve' :
+               d.includes('automat') ? 'Automate' : 'Apply';
+  const target = name.charAt(0).toLowerCase() + name.slice(1);
+  return `${verb} ${target} for my project`;
+}
+
 function processSkillDir(author, slug, folderPath, fileUrl) {
   let mdContent = ''
   let skillFilePath = path.join(folderPath, 'SKILL.md')
@@ -350,6 +406,7 @@ function processSkillDir(author, slug, folderPath, fileUrl) {
 
   const variableName = slug.replace(/-([a-z0-9])/g, g => g[1].toUpperCase())
   const useCases = extractUseCases(slug, title, desc, readme)
+  const exampleUsage = generateExampleUsage(slug, title, desc, tags.join(' '))
   
   const tsContent = `import { SkillListing } from '../skills-data'
 
@@ -374,6 +431,7 @@ export const ${variableName}: SkillListing = {
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: '${fileUrl}',
   useCases: ${JSON.stringify(useCases)},
+  exampleUsage: ${JSON.stringify(exampleUsage)},
   overviewHtml: ${JSON.stringify(overviewHtml)},
   previewHtml: ${JSON.stringify(previewHtml)}
 }

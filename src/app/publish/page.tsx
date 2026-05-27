@@ -21,6 +21,7 @@ interface PublishFormState {
   tags: string
   fileUrl: string
   isPrivate: boolean
+  exampleUsage: string
 }
 
 function slugify(value: string) {
@@ -74,6 +75,7 @@ const INITIAL_FORM: PublishFormState = {
   tags: '',
   fileUrl: '',
   isPrivate: false,
+  exampleUsage: '',
 }
 
 export default function PublishPage() {
@@ -244,6 +246,7 @@ export default function PublishPage() {
         tags,
         fileUrl: finalFileUrl || undefined,
         isPrivate: form.isPrivate,
+        exampleUsage: form.exampleUsage || undefined,
       })
 
       const nextPath = `/skills/${result.author}/${result.slug}`
@@ -384,6 +387,24 @@ export default function PublishPage() {
                     placeholder="Explain what this skill does and what outcomes buyers can expect."
                     required
                   />
+                </label>
+
+                <label className="form-group">
+                  <span className="form-label">Example usage <span style={{ opacity: 0.5, fontWeight: 400 }}>(optional)</span></span>
+                  <input
+                    className="form-input"
+                    type="text"
+                    value={form.exampleUsage}
+                    autoComplete="off"
+                    spellCheck
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, exampleUsage: event.target.value }))
+                    }
+                    placeholder="Audit my smart contract for reentrancy bugs before mainnet"
+                  />
+                  <span style={{ fontSize: '0.74rem', color: 'var(--color-text-tertiary)', marginTop: '4px', display: 'block' }}>
+                    Write in first person ("my"). Shown as "your" on the listing — and pasted with the install command as a ready-to-run AI prompt.
+                  </span>
                 </label>
 
                 {!form.isPrivate && (

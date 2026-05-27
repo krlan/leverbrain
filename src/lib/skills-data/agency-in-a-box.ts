@@ -45,6 +45,7 @@ agency-in-a-box/
   fileUrl: 'https://github.com/leverbrain/leverbrain',
   imageUrl: '/images/skills/agency-box.png',
   useCases: ["Deploy instant onboarding questionnaires for new clients.","Draft standardized freelance service level agreements.","Organize monthly billing and reporting templates in your workspace."],
+  exampleUsage: "Launch a full AI agency workflow for my client project",
   overviewHtml: `
     <div class="skill-enrichment">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 32px; border: 1px solid var(--color-border);">

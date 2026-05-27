@@ -28,6 +28,7 @@ export default defineSchema({
     createdAt: v.optional(v.string()),
     isPrivate: v.optional(v.boolean()),
     useCases: v.optional(v.array(v.string())),
+    exampleUsage: v.optional(v.string()),
   })
     .index("by_author", ["author"])
     .index("by_author_slug", ["author", "slug"])

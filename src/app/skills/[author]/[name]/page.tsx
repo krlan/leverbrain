@@ -13,6 +13,7 @@ import { api } from '../../../../../convex/_generated/api'
 import { resolveRepoUrl } from '@/lib/github-urls'
 import { StatBox } from '@/components/skills/StatBox'
 import { InstallCommandBar } from '@/components/skills/InstallCommandBar'
+import { ExampleUsageBar } from '@/components/skills/ExampleUsageBar'
 import { VisualSpecimen } from '@/components/skills/VisualSpecimen'
 import { SourceCodeInspector } from '@/components/skills/SourceCodeInspector'
 import { renderMarkdown } from '@/components/skills/MarkdownRenderer'
@@ -49,6 +50,7 @@ interface EditableSkill {
     items: { name: string; url: string }[]
   }[]
   useCases?: string[]
+  exampleUsage?: string
 }
 
 interface EditFormState {
@@ -348,6 +350,7 @@ export default function SkillDetailPage() {
         imageUrl: convexSkill.imageUrl ?? staticSkill?.imageUrl ?? undefined,
         screenshots: staticSkill?.screenshots ?? undefined,
         useCases: convexSkill.useCases ?? staticSkill?.useCases ?? undefined,
+        exampleUsage: convexSkill.exampleUsage ?? staticSkill?.exampleUsage ?? undefined,
       }
     }
 
@@ -564,6 +567,9 @@ export default function SkillDetailPage() {
           <div className="sd-content">
             {/* Install Bar */}
             <InstallCommandBar author={skill.author} slug={skill.slug} />
+            {skill.exampleUsage && (
+              <ExampleUsageBar author={skill.author} slug={skill.slug} exampleUsage={skill.exampleUsage} />
+            )}
 
             {/* Toggle tabs for admin list editor */}
             {canEditListing && (

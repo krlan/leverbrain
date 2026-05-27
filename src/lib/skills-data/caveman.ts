@@ -25,6 +25,7 @@ export const caveman: SkillListing = {
     "Persist caveman mode for an entire session — no backsliding into verbose mode after a few turns.",
     "Auto-lift for destructive ops (DROP TABLE) so you still get proper warnings, then right back to grunts."
   ],
+  exampleUsage: "Silence the AI pleasantries during my debug session",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 196, 129, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);">
         <div style="width: 100%; aspect-ratio: 16/6; background: linear-gradient(135deg, #1a1007 0%, #0f0d08 100%); display: flex; align-items: center; justify-content: center; gap: 20px; padding: 0 24px;">

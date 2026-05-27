@@ -42,7 +42,7 @@ export default function WalletConnectButton() {
   return (
     <button
       type="button"
-      className="btn btn-primary btn-sm"
+      className="btn btn-primary nav-wallet-btn"
       onClick={handleClick}
       disabled={connecting}
       aria-label={connected ? 'Disconnect wallet' : 'Connect wallet'}

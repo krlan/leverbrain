@@ -23,7 +23,7 @@ export const listSkills = query({
     if (args.featured) {
       skills = skills.filter((s) => s.featured === true);
     }
-    return skills;
+    return skills.filter((s) => s.isPrivate !== true);
   },
 });
 
@@ -50,12 +50,13 @@ export const searchSkills = query({
     const all = await ctx.db.query("skills").collect();
     return all.filter(
       (s) =>
-        s.name.toLowerCase().includes(q) ||
+        s.isPrivate !== true &&
+        (s.name.toLowerCase().includes(q) ||
         s.tagline.toLowerCase().includes(q) ||
         s.description.toLowerCase().includes(q) ||
         s.tags.some((t) => t.toLowerCase().includes(q)) ||
         s.author.toLowerCase().includes(q) ||
-        s.category.toLowerCase().includes(q)
+        s.category.toLowerCase().includes(q))
     );
   },
 });
@@ -133,6 +134,8 @@ export const publishSkill = mutation({
     previewHtml: v.optional(v.string()),
     overviewHtml: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
+    fileUrl: v.optional(v.string()),
+    isPrivate: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const author = args.author.trim().toLowerCase();
@@ -190,12 +193,14 @@ export const publishSkill = mutation({
       previewHtml: args.previewHtml?.trim() || undefined,
       overviewHtml: args.overviewHtml?.trim() || undefined,
       imageUrl: args.imageUrl?.trim() || undefined,
+      fileUrl: args.fileUrl?.trim() || undefined,
       creatorWallet: existing?.creatorWallet ?? args.publisherWallet,
       stars: existing?.stars ?? 0,
       weeklyInstalls: existing?.weeklyInstalls ?? 0,
       totalPurchases: existing?.totalPurchases ?? 0,
       featured: existing?.featured ?? false,
       createdAt: existing?.createdAt ?? nowIso,
+      isPrivate: args.isPrivate ?? false,
     };
 
     if (existing) {
@@ -480,4 +485,119 @@ export const toggleSavedSkill = mutation({
     });
     return { saved: true };
   },
+});
+
+/* ─────────────────────────────────────────────
+   Configurations — queries & mutations
+   ───────────────────────────────────────────── */
+
+export const saveConfig = mutation({
+  args: {
+    walletAddress: v.string(),
+    name: v.string(),
+    skills: v.array(v.object({
+      id: v.string(),
+      author: v.string(),
+      slug: v.string(),
+      name: v.string(),
+    })),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("configs")
+      .withIndex("by_wallet_name", (q) =>
+        q.eq("walletAddress", args.walletAddress).eq("name", args.name)
+      )
+      .first();
+
+    if (existing) {
+      await ctx.db.patch(existing._id, {
+        skills: args.skills,
+        updatedAt: Date.now(),
+      });
+      return existing._id;
+    }
+
+    return await ctx.db.insert("configs", {
+      walletAddress: args.walletAddress,
+      name: args.name,
+      skills: args.skills,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    });
+  },
+});
+
+export const getConfigByWalletAndName = query({
+  args: { walletAddress: v.string(), name: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("configs")
+      .withIndex("by_wallet_name", (q) =>
+        q.eq("walletAddress", args.walletAddress).eq("name", args.name)
+      )
+      .first();
+  },
+});
+
+export const getConfigsByWallet = query({
+  args: { walletAddress: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("configs")
+      .withIndex("by_wallet", (q) => q.eq("walletAddress", args.walletAddress))
+      .collect();
+  },
+});
+
+export const getConfigByHandleAndName = query({
+  args: { handle: v.string(), name: v.string() },
+  handler: async (ctx, args) => {
+    const profile = await ctx.db
+      .query("profiles")
+      .withIndex("by_handle", (q) => q.eq("handle", args.handle))
+      .first();
+
+    if (!profile) return null;
+
+    return await ctx.db
+      .query("configs")
+      .withIndex("by_wallet_name", (q) =>
+        q.eq("walletAddress", profile.walletAddress).eq("name", args.name)
+      )
+      .first();
+  },
+});
+
+export const deleteConfig = mutation({
+  args: { walletAddress: v.string(), name: v.string() },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("configs")
+      .withIndex("by_wallet_name", (q) =>
+        q.eq("walletAddress", args.walletAddress).eq("name", args.name)
+      )
+      .first();
+
+    if (existing) {
+      await ctx.db.delete(existing._id);
+      return true;
+    }
+    return false;
+  },
+});
+
+export const deleteSkillByAuthorSlug = mutation({
+  args: { author: v.string(), slug: v.string() },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("skills")
+      .withIndex("by_author_slug", (q) => q.eq("author", args.author).eq("slug", args.slug))
+      .first();
+    if (existing) {
+      await ctx.db.delete(existing._id);
+      return true;
+    }
+    return false;
+  }
 });

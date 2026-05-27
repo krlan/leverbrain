@@ -8,8 +8,8 @@ import '@solana/wallet-adapter-react-ui/styles.css';
 import { getSolanaRuntimeConfig } from '@/config/solana';
 
 export const SolanaWalletProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const config = useMemo(() => getSolanaRuntimeConfig(), []);
-    
+    const config = getSolanaRuntimeConfig();
+
     const wallets = useMemo(
         () => [
             new PhantomWalletAdapter(),
@@ -20,7 +20,11 @@ export const SolanaWalletProvider: FC<{ children: ReactNode }> = ({ children }) 
 
     return (
         <ConnectionProvider endpoint={config.rpcEndpoint}>
-            <WalletProvider wallets={wallets} autoConnect>
+            <WalletProvider
+                wallets={wallets}
+                autoConnect
+                onError={(error) => console.error('[WalletProvider] error:', error)}
+            >
                 <WalletModalProvider>{children}</WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>

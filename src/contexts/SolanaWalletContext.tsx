@@ -29,12 +29,21 @@ export function useSolanaWallet() {
 }
 
 export function SolanaWalletProvider({ children }: { children: React.ReactNode }) {
-  const { connected, connecting, publicKey, wallet, disconnect } = useWallet();
+  const { connected, connecting, publicKey, wallet, connect, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
   const runtimeConfig = useMemo(() => getSolanaRuntimeConfig(), []);
 
   const connectWallet = async () => {
-    setVisible(true);
+    if (wallet) {
+      try {
+        await connect();
+      } catch (err) {
+        console.error("Manual connect failed:", err);
+        setVisible(true);
+      }
+    } else {
+      setVisible(true);
+    }
   };
 
   const disconnectWallet = async () => {

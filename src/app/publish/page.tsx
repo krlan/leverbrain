@@ -19,6 +19,8 @@ interface PublishFormState {
   priceUsdc: string
   category: SkillCategory
   tags: string
+  fileUrl: string
+  isPrivate: boolean
 }
 
 function slugify(value: string) {
@@ -33,6 +35,33 @@ function walletFallbackAuthor(walletAddress: string) {
   return `wallet-${walletAddress.slice(0, 8).toLowerCase()}`
 }
 
+function parseSimpleFrontmatter(yamlString: string) {
+  const lines = yamlString.split('\n')
+  const result: Record<string, any> = {}
+  for (const line of lines) {
+    const match = line.match(/^([^:]+):\s*(.*)$/)
+    if (match) {
+      const key = match[1].trim()
+      let val = match[2].trim()
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1)
+      }
+      if (key === 'tags') {
+        if (val.startsWith('[') && val.endsWith(']')) {
+          result[key] = val.slice(1, -1).split(',').map(t => t.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean)
+        } else {
+          result[key] = val.split(',').map(t => t.trim()).filter(Boolean)
+        }
+      } else if (key === 'price') {
+        result[key] = Number(val) || 0
+      } else {
+        result[key] = val
+      }
+    }
+  }
+  return result
+}
+
 const INITIAL_FORM: PublishFormState = {
   name: '',
   slug: '',
@@ -43,6 +72,8 @@ const INITIAL_FORM: PublishFormState = {
   priceUsdc: '0.00',
   category: 'skill',
   tags: '',
+  fileUrl: '',
+  isPrivate: false,
 }
 
 export default function PublishPage() {
@@ -67,6 +98,12 @@ export default function PublishPage() {
   const [publishError, setPublishError] = useState<string | null>(null)
   const [publishedSkillPath, setPublishedSkillPath] = useState<string | null>(null)
 
+  // Package Source states
+  const [sourceType, setSourceType] = useState<'upload' | 'github'>('upload')
+  const [githubRepoUrl, setGithubRepoUrl] = useState('')
+  const [githubFolderPath, setGithubFolderPath] = useState('')
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null)
+
   const derivedAuthor = useMemo(() => {
     if (!walletAddress) {
       return null
@@ -74,6 +111,78 @@ export default function PublishPage() {
     const handle = profile?.handle?.trim().toLowerCase()
     return handle || walletFallbackAuthor(walletAddress)
   }, [profile?.handle, walletAddress])
+
+  const combinedGithubUrl = useMemo(() => {
+    if (!githubRepoUrl) return ''
+    const cleanRepo = githubRepoUrl.trim().replace(/\/+$/, '')
+    const cleanFolder = githubFolderPath.trim().replace(/^\/+|\/+$/g, '')
+    if (!cleanFolder) return cleanRepo
+    return `${cleanRepo}/tree/main/${cleanFolder}`
+  }, [githubRepoUrl, githubFolderPath])
+
+  const handleFolderUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files
+    if (!files || files.length === 0) return
+
+    setUploadStatus('Processing files...')
+    
+    // Find SKILL.md
+    let skillMdFile: File | null = null
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+      const relativePath = file.webkitRelativePath || file.name
+      if (relativePath.endsWith('SKILL.md')) {
+        skillMdFile = file
+        break
+      }
+    }
+
+    if (!skillMdFile) {
+      setUploadStatus('SKILL.md not found in the selected folder. Please make sure the folder contains a SKILL.md file.')
+      return
+    }
+
+    try {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const text = e.target?.result as string
+        const match = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/)
+        if (!match) {
+          setUploadStatus('Invalid SKILL.md: Frontmatter is missing or improperly formatted (must be enclosed by ---).')
+          return
+        }
+
+        const yamlBlock = match[1]
+        const readmeContent = match[2].trim()
+        const metadata = parseSimpleFrontmatter(yamlBlock)
+        
+        setForm((prev) => ({
+          ...prev,
+          name: metadata.name || prev.name,
+          slug: slugify(metadata.name || prev.name) || prev.slug,
+          tagline: metadata.tagline || metadata.description?.slice(0, 120) || prev.tagline,
+          description: metadata.description || prev.description,
+          whenToUse: metadata.whenToUse || prev.whenToUse,
+          readme: readmeContent || prev.readme,
+          priceUsdc: metadata.price !== undefined ? String(metadata.price) : prev.priceUsdc,
+          category: (metadata.category === 'strategy' || metadata.category === 'blueprint' || metadata.category === 'skill') 
+            ? metadata.category 
+            : prev.category,
+          tags: Array.isArray(metadata.tags) 
+            ? metadata.tags.join(', ') 
+            : (metadata.tags ? String(metadata.tags) : prev.tags),
+          fileUrl: `uploaded://${slugify(metadata.name || 'skill')}`,
+          isPrivate: metadata.isPrivate !== undefined ? Boolean(metadata.isPrivate) : prev.isPrivate
+        }))
+        
+        setUploadStatus(`Successfully parsed SKILL.md: Loaded "${metadata.name || 'Unnamed'}"`)
+      }
+      reader.readAsText(skillMdFile)
+    } catch (err) {
+      console.error(err)
+      setUploadStatus('Error reading SKILL.md file.')
+    }
+  }
 
   const onPublish = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -84,27 +193,36 @@ export default function PublishPage() {
 
     const trimmedName = form.name.trim()
     const trimmedSlug = slugify(form.slug || form.name)
-    const parsedPrice = Number(form.priceUsdc)
 
     if (!trimmedName || !trimmedSlug) {
       setPublishError('Name and slug are required.')
       return
     }
 
-    if (!Number.isFinite(parsedPrice) || parsedPrice < 0) {
-      setPublishError('Price must be a positive number.')
-      return
+    let parsedPrice = 0
+    let tags: string[] = []
+    let category: SkillCategory = 'skill'
+
+    if (!form.isPrivate) {
+      parsedPrice = Number(form.priceUsdc)
+      if (!Number.isFinite(parsedPrice) || parsedPrice < 0) {
+        setPublishError('Price must be a positive number.')
+        return
+      }
+
+      tags = form.tags
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter(Boolean)
+
+      if (tags.length === 0) {
+        setPublishError('Add at least one tag.')
+        return
+      }
+      category = form.category
     }
 
-    const tags = form.tags
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter(Boolean)
-
-    if (tags.length === 0) {
-      setPublishError('Add at least one tag.')
-      return
-    }
+    const finalFileUrl = sourceType === 'github' ? combinedGithubUrl : form.fileUrl
 
     setPublishError(null)
     setPublishedSkillPath(null)
@@ -119,16 +237,21 @@ export default function PublishPage() {
         name: trimmedName,
         tagline: form.tagline,
         description: form.description,
-        whenToUse: form.whenToUse || undefined,
         readme: form.readme || undefined,
+        whenToUse: form.whenToUse || undefined,
         priceUsdc: parsedPrice,
-        category: form.category,
+        category: category,
         tags,
+        fileUrl: finalFileUrl || undefined,
+        isPrivate: form.isPrivate,
       })
 
       const nextPath = `/skills/${result.author}/${result.slug}`
       setPublishedSkillPath(nextPath)
       setForm(INITIAL_FORM)
+      setGithubRepoUrl('')
+      setGithubFolderPath('')
+      setUploadStatus(null)
     } catch (error: unknown) {
       setPublishError(error instanceof Error ? error.message : 'Failed to publish skill.')
     } finally {
@@ -174,6 +297,26 @@ export default function PublishPage() {
               </div>
 
               <form className="publish-form" onSubmit={onPublish}>
+                <div className="form-group">
+                  <span className="form-label">Visibility</span>
+                  <div className="sk-price-switch" style={{ width: 'fit-content', minWidth: '180px' }}>
+                    <button
+                      type="button"
+                      className={`sk-price-switch-btn ${!form.isPrivate ? 'is-active' : ''}`}
+                      onClick={() => setForm(f => ({ ...f, isPrivate: false }))}
+                    >
+                      Public
+                    </button>
+                    <button
+                      type="button"
+                      className={`sk-price-switch-btn ${form.isPrivate ? 'is-active' : ''}`}
+                      onClick={() => setForm(f => ({ ...f, isPrivate: true }))}
+                    >
+                      Private
+                    </button>
+                  </div>
+                </div>
+
                 <div className="publish-grid">
                   <label className="form-group">
                     <span className="form-label">Skill name *</span>
@@ -243,84 +386,171 @@ export default function PublishPage() {
                   />
                 </label>
 
-                <div className="publish-grid">
-                  <label className="form-group">
-                    <span className="form-label">Category *</span>
-                    <select
-                      className="form-select"
-                      value={form.category}
-                      onChange={(event) =>
-                        setForm((current) => ({
-                          ...current,
-                          category: event.target.value as SkillCategory,
-                        }))
-                      }
+                {!form.isPrivate && (
+                  <>
+                    <div className="publish-grid">
+                      <label className="form-group">
+                        <span className="form-label">Category *</span>
+                        <select
+                          className="form-select"
+                          value={form.category}
+                          onChange={(event) =>
+                            setForm((current) => ({
+                              ...current,
+                              category: event.target.value as SkillCategory,
+                            }))
+                          }
+                        >
+                          <option value="skill">Skill</option>
+                          <option value="strategy">Strategy</option>
+                          <option value="blueprint">Blueprint</option>
+                        </select>
+                      </label>
+
+                      <label className="form-group">
+                        <span className="form-label">Price (USDC) *</span>
+                        <input
+                          className="form-input mono"
+                          type="text"
+                          inputMode="decimal"
+                          value={form.priceUsdc}
+                          autoComplete="off"
+                          spellCheck={false}
+                          onChange={(event) =>
+                            setForm((current) => ({ ...current, priceUsdc: event.target.value }))
+                          }
+                          placeholder="9.99"
+                          required
+                        />
+                      </label>
+                    </div>
+
+                    <label className="form-group">
+                      <span className="form-label">Tags (comma separated) *</span>
+                      <input
+                        className="form-input"
+                        type="text"
+                        value={form.tags}
+                        autoComplete="off"
+                        spellCheck={false}
+                        onChange={(event) =>
+                          setForm((current) => ({ ...current, tags: event.target.value }))
+                        }
+                        placeholder="growth, automation, gtm"
+                        required
+                      />
+                    </label>
+                  </>
+                )}
+
+                {/* Package Source Selection */}
+                <div className="publish-source-selection" style={{
+                  border: '1px solid rgba(255, 196, 129, 0.08)',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  background: 'rgba(255, 196, 129, 0.01)',
+                  marginBottom: '20px',
+                  marginTop: '12px',
+                  display: 'grid',
+                  gap: '16px'
+                }}>
+                  <div>
+                    <span className="form-label" style={{ marginBottom: '4px', display: 'block', fontWeight: 600 }}>Skill Package Source *</span>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)', margin: 0 }}>
+                      Provide the executable code package for this skill.
+                    </p>
+                  </div>
+
+                  {/* Toggle buttons */}
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      type="button"
+                      className={`btn ${sourceType === 'upload' ? 'btn-primary' : 'btn-outline'} btn-sm`}
+                      onClick={() => setSourceType('upload')}
+                      style={{ fontSize: '0.8rem', padding: '6px 14px' }}
                     >
-                      <option value="skill">Skill</option>
-                      <option value="strategy">Strategy</option>
-                      <option value="blueprint">Blueprint</option>
-                    </select>
-                  </label>
+                      Upload Folder
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn ${sourceType === 'github' ? 'btn-primary' : 'btn-outline'} btn-sm`}
+                      onClick={() => setSourceType('github')}
+                      style={{ fontSize: '0.8rem', padding: '6px 14px' }}
+                    >
+                      Link GitHub
+                    </button>
+                  </div>
 
-                  <label className="form-group">
-                    <span className="form-label">Price (USDC) *</span>
-                    <input
-                      className="form-input mono"
-                      type="text"
-                      inputMode="decimal"
-                      value={form.priceUsdc}
-                      autoComplete="off"
-                      spellCheck={false}
-                      onChange={(event) =>
-                        setForm((current) => ({ ...current, priceUsdc: event.target.value }))
-                      }
-                      placeholder="9.99"
-                      required
-                    />
-                  </label>
+                  {/* Conditionally rendered inputs */}
+                  {sourceType === 'upload' ? (
+                    <div style={{ display: 'grid', gap: '12px' }}>
+                      <div style={{ display: 'grid', gap: '8px' }}>
+                        <span className="form-label" style={{ fontSize: '0.74rem' }}>Select Skill Folder</span>
+                        <label 
+                          className="btn btn-outline btn-sm" 
+                          style={{ 
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            width: 'fit-content',
+                            alignItems: 'center'
+                          }}
+                        >
+                          Choose Files
+                          <input
+                            type="file"
+                            // @ts-ignore
+                            webkitdirectory=""
+                            // @ts-ignore
+                            directory=""
+                            multiple
+                            onChange={handleFolderUpload}
+                            style={{ display: 'none' }}
+                          />
+                        </label>
+                      </div>
+                      {uploadStatus && (
+                        <p style={{
+                          fontSize: '0.8rem',
+                          margin: 0,
+                          color: uploadStatus.includes('Successfully') ? 'var(--color-accent-warm-light)' : '#ffe3be'
+                        }}>
+                          {uploadStatus}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <div style={{ display: 'grid', gap: '16px' }}>
+                      <div className="publish-grid">
+                        <label className="form-group" style={{ margin: 0 }}>
+                          <span className="form-label" style={{ fontSize: '0.74rem' }}>GitHub Repository URL *</span>
+                          <input
+                            className="form-input"
+                            type="url"
+                            value={githubRepoUrl}
+                            onChange={(e) => setGithubRepoUrl(e.target.value)}
+                            placeholder="https://github.com/username/repo"
+                            required={sourceType === 'github'}
+                          />
+                        </label>
+                        <label className="form-group" style={{ margin: 0 }}>
+                          <span className="form-label" style={{ fontSize: '0.74rem' }}>Folder Path in Repo</span>
+                          <input
+                            className="form-input"
+                            type="text"
+                            value={githubFolderPath}
+                            onChange={(e) => setGithubFolderPath(e.target.value)}
+                            placeholder="skills/my-skill"
+                          />
+                        </label>
+                      </div>
+                      {combinedGithubUrl && (
+                        <div style={{ fontSize: '0.74rem', color: 'var(--color-text-tertiary)' }}>
+                          Combined Target URL: <code style={{ color: 'var(--color-accent-warm-light)', fontFamily: 'var(--font-mono)' }}>{combinedGithubUrl}</code>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-
-                <label className="form-group">
-                  <span className="form-label">Tags (comma separated) *</span>
-                  <input
-                    className="form-input"
-                    type="text"
-                    value={form.tags}
-                    autoComplete="off"
-                    spellCheck={false}
-                    onChange={(event) =>
-                      setForm((current) => ({ ...current, tags: event.target.value }))
-                    }
-                    placeholder="growth, automation, gtm"
-                    required
-                  />
-                </label>
-
-                <label className="form-group">
-                  <span className="form-label">When to use</span>
-                  <textarea
-                    className="form-textarea"
-                    value={form.whenToUse}
-                    spellCheck
-                    onChange={(event) =>
-                      setForm((current) => ({ ...current, whenToUse: event.target.value }))
-                    }
-                    placeholder="Use this when your team needs a repeatable launch workflow."
-                  />
-                </label>
-
-                <label className="form-group">
-                  <span className="form-label">README content</span>
-                  <textarea
-                    className="form-textarea publish-readme-input mono"
-                    value={form.readme}
-                    spellCheck={false}
-                    onChange={(event) =>
-                      setForm((current) => ({ ...current, readme: event.target.value }))
-                    }
-                    placeholder="# Skill README&#10;&#10;Add usage instructions, outputs, and examples."
-                  />
-                </label>
 
                 <div className="publish-actions">
                   <button type="submit" className="btn btn-primary" disabled={isPublishing}>

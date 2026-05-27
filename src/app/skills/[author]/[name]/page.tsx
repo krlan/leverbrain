@@ -3,13 +3,20 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, Bookmark, BookmarkCheck, BookOpen, Check, Download, ExternalLink, ShoppingCart, TrendingUp, Zap, Copy, Loader2 } from 'lucide-react'
+import { ArrowLeft, Bookmark, BookmarkCheck, BookOpen, Check, Download, ExternalLink, ShoppingCart, TrendingUp, Zap, Copy, Loader2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useMutation, useQuery } from 'convex/react'
 import { getSkillByAuthorSlug, type SkillListing } from '@/lib/skills-data'
 import { useSolanaWallet } from '@/contexts/SolanaWalletContext'
 import { getExplorerTransactionUrl } from '@/lib/solanaRpc'
 import { usePurchaseSkill } from '@/hooks/usePurchaseSkill'
 import { api } from '../../../../../convex/_generated/api'
+import { resolveRepoUrl } from '@/lib/github-urls'
+import { StatBox } from '@/components/skills/StatBox'
+import { InstallCommandBar } from '@/components/skills/InstallCommandBar'
+import { VisualSpecimen } from '@/components/skills/VisualSpecimen'
+import { SourceCodeInspector } from '@/components/skills/SourceCodeInspector'
+import { renderMarkdown } from '@/components/skills/MarkdownRenderer'
+import { getConversationalOverview } from '@/lib/conversational-metadata'
 
 type Tab = 'details' | 'edit'
 type SkillCategory = 'skill' | 'strategy' | 'blueprint'
@@ -37,6 +44,10 @@ interface EditableSkill {
   previewHtml?: string
   overviewHtml?: string
   imageUrl?: string
+  screenshots?: {
+    title: string
+    items: { name: string; url: string }[]
+  }[]
 }
 
 interface EditFormState {
@@ -56,15 +67,6 @@ const CATEGORY_ICONS = {
   blueprint: BookOpen,
 }
 
-function StatBox({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="sd-stat">
-      <span className="sd-stat-value">{value}</span>
-      <span className="sd-stat-label">{label}</span>
-    </div>
-  )
-}
-
 function formatCompact(value: number) {
   if (value >= 1000) {
     return `${(value / 1000).toFixed(1)}K`
@@ -77,489 +79,210 @@ function getRatingOutOfHundred(stars: number) {
   return Math.max(72, Math.min(99, Math.round(bounded)))
 }
 
-function InstallCommandBar({ author, slug }: { author: string; slug: string }) {
-  const command = `npx -y leverbrain get ${author}/${slug}`
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(command)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error('Failed to copy', err)
-    }
-  }
-
-  return (
-    <div className="sd-install-bar">
-      <span className="sd-install-label">CLI INSTALL</span>
-      <div className="sd-install-code-wrap">
-        <span className="sd-install-prompt">$</span>
-        <code className="sd-install-code">{command}</code>
-      </div>
-      <button onClick={handleCopy} className="sd-install-copy-btn" aria-label="Copy install command">
-        {copied ? <Check size={14} className="text-success" style={{ color: 'var(--color-accent-warm-light)' }} /> : <Copy size={14} />}
-      </button>
-    </div>
-  )
-}
-
-function CodeBlock({ code, language }: { code: string; language?: string }) {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(code)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error('Failed to copy', err)
-    }
-  }
-
-  return (
-    <div className="sd-codeblock">
-      <div className="sd-codeblock-header">
-        <span className="sd-codeblock-lang">{language || 'code'}</span>
-        <button onClick={handleCopy} className="sd-codeblock-copy" aria-label="Copy code block">
-          {copied ? <Check size={12} style={{ color: 'var(--color-accent-warm-light)' }} /> : <Copy size={12} />}
-        </button>
-      </div>
-      <pre className="sd-codeblock-pre">
-        <code>{code}</code>
-      </pre>
-    </div>
-  )
-}
-
-function parseInlineMarkdown(text: string): React.ReactNode[] {
-  const parts: React.ReactNode[] = []
-  let currentText = text
-  let key = 0
-
-  while (currentText) {
-    const boldIdx = currentText.indexOf('**')
-    const codeIdx = currentText.indexOf('`')
-    const linkIdx = currentText.indexOf('[')
-
-    const indices = [
-      boldIdx !== -1 ? boldIdx : Infinity,
-      codeIdx !== -1 ? codeIdx : Infinity,
-      linkIdx !== -1 ? linkIdx : Infinity
-    ]
-    const minIdx = Math.min(...indices)
-
-    if (minIdx === Infinity) {
-      parts.push(currentText)
-      break
-    }
-
-    if (minIdx > 0) {
-      parts.push(currentText.substring(0, minIdx))
-      currentText = currentText.substring(minIdx)
-    }
-
-    if (minIdx === boldIdx) {
-      const endIdx = currentText.indexOf('**', 2)
-      if (endIdx !== -1) {
-        parts.push(<strong key={key++}>{currentText.substring(2, endIdx)}</strong>)
-        currentText = currentText.substring(endIdx + 2)
-      } else {
-        parts.push(currentText)
-        break
-      }
-    } else if (minIdx === codeIdx) {
-      const endIdx = currentText.indexOf('`', 1)
-      if (endIdx !== -1) {
-        parts.push(<code key={key++} className="sd-md-inline-code">{currentText.substring(1, endIdx)}</code>)
-        currentText = currentText.substring(endIdx + 1)
-      } else {
-        parts.push(currentText)
-        break
-      }
-    } else if (minIdx === linkIdx) {
-      const endBracket = currentText.indexOf(']')
-      const startParen = currentText.indexOf('(', endBracket)
-      const endParen = currentText.indexOf(')', startParen)
-
-      if (endBracket !== -1 && startParen === endBracket + 1 && endParen !== -1) {
-        const linkText = currentText.substring(1, endBracket)
-        const linkUrl = currentText.substring(startParen + 1, endParen)
-        parts.push(
-          <a key={key++} href={linkUrl} className="sd-md-link" target="_blank" rel="noreferrer">
-            {linkText}
-          </a>
-        )
-        currentText = currentText.substring(endParen + 1)
-      } else {
-        parts.push('[')
-        currentText = currentText.substring(1)
-      }
-    }
-  }
-
-  return parts
-}
-
-function renderMarkdown(md: string) {
-  if (!md) return null
-
-  const lines = md.split('\n')
-  const elements: React.ReactNode[] = []
-  let inCodeBlock = false
-  let codeLines: string[] = []
-  let codeLang = ''
-  let listItems: string[] = []
-  let listType: 'bullet' | 'ordered' | null = null
-
-  const flushList = (key: number) => {
-    if (listItems.length === 0) return
-    if (listType === 'bullet') {
-      elements.push(
-        <ul key={`ul-${key}`} className="sd-md-list">
-          {listItems.map((item, idx) => (
-            <li key={idx}>{parseInlineMarkdown(item)}</li>
-          ))}
-        </ul>
-      )
-    } else if (listType === 'ordered') {
-      elements.push(
-        <ol key={`ol-${key}`} className="sd-md-ol">
-          {listItems.map((item, idx) => (
-            <li key={idx}>{parseInlineMarkdown(item)}</li>
-          ))}
-        </ol>
-      )
-    }
-    listItems = []
-    listType = null
-  }
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i]
-
-    if (line.trim().startsWith('```')) {
-      if (inCodeBlock) {
-        const codeContent = codeLines.join('\n')
-        elements.push(
-          <CodeBlock key={`code-${elements.length}`} code={codeContent} language={codeLang} />
-        )
-        codeLines = []
-        inCodeBlock = false
-      } else {
-        flushList(elements.length)
-        codeLang = line.trim().slice(3).trim()
-        inCodeBlock = true
-      }
-      continue
-    }
-
-    if (inCodeBlock) {
-      codeLines.push(line)
-      continue
-    }
-
-    if (line.startsWith('# ')) {
-      flushList(elements.length)
-      elements.push(<h1 key={`h1-${elements.length}`} className="sd-md-h1">{parseInlineMarkdown(line.slice(2))}</h1>)
-      continue
-    }
-    if (line.startsWith('## ')) {
-      flushList(elements.length)
-      elements.push(<h2 key={`h2-${elements.length}`} className="sd-md-h2">{parseInlineMarkdown(line.slice(3))}</h2>)
-      continue
-    }
-    if (line.startsWith('### ')) {
-      flushList(elements.length)
-      elements.push(<h3 key={`h3-${elements.length}`} className="sd-md-h3">{parseInlineMarkdown(line.slice(4))}</h3>)
-      continue
-    }
-
-    if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
-      if (listType !== 'bullet') {
-        flushList(elements.length)
-        listType = 'bullet'
-      }
-      listItems.push(line.trim().slice(2))
-      continue
-    }
-
-    if (/^\d+\.\s/.test(line.trim())) {
-      if (listType !== 'ordered') {
-        flushList(elements.length)
-        listType = 'ordered'
-      }
-      const content = line.trim().replace(/^\d+\.\s/, '')
-      listItems.push(content)
-      continue
-    }
-
-    if (line.startsWith('> ')) {
-      flushList(elements.length)
-      const rawContent = line.slice(2).trim()
-      let alertType: 'note' | 'tip' | 'important' | 'warning' | 'caution' | null = null
-      let displayContent = rawContent
-
-      if (rawContent.startsWith('[!NOTE]')) {
-        alertType = 'note'
-        displayContent = rawContent.slice(7).trim()
-      } else if (rawContent.startsWith('[!TIP]')) {
-        alertType = 'tip'
-        displayContent = rawContent.slice(6).trim()
-      } else if (rawContent.startsWith('[!IMPORTANT]')) {
-        alertType = 'important'
-        displayContent = rawContent.slice(12).trim()
-      } else if (rawContent.startsWith('[!WARNING]')) {
-        alertType = 'warning'
-        displayContent = rawContent.slice(10).trim()
-      } else if (rawContent.startsWith('[!CAUTION]')) {
-        alertType = 'caution'
-        displayContent = rawContent.slice(10).trim()
-      }
-
-      let nextIdx = i + 1
-      while (nextIdx < lines.length && lines[nextIdx].startsWith('> ')) {
-        const nextRaw = lines[nextIdx].slice(2).trim()
-        displayContent += ' ' + nextRaw
-        nextIdx++
-        i++
-      }
-
-      if (alertType) {
-        elements.push(
-          <div key={`alert-${elements.length}`} className={`sd-alert sd-alert--${alertType}`}>
-            <span className="sd-alert-type">{alertType.toUpperCase()}</span>
-            <p className="sd-alert-body">{parseInlineMarkdown(displayContent)}</p>
-          </div>
-        )
-      } else {
-        elements.push(
-          <blockquote key={`quote-${elements.length}`} className="sd-blockquote">
-            {parseInlineMarkdown(displayContent)}
-          </blockquote>
-        )
-      }
-      continue
-    }
-
-    if (!line.trim()) {
-      flushList(elements.length)
-      continue
-    }
-
-    flushList(elements.length)
-    elements.push(
-      <p key={`p-${elements.length}`} className="sd-md-p">
-        {parseInlineMarkdown(line)}
-      </p>
-    )
-  }
-
-  flushList(elements.length)
-  return <div className="sd-markdown-container">{elements}</div>
-}
-
-function resolveRepoUrl(author: string, slug: string): string {
-  const normAuthor = author.toLowerCase()
-  if (normAuthor === 'anthropics') {
-    return `https://github.com/anthropics/skills/tree/main/skills/${slug}`
-  }
-  if (normAuthor === 'composiohq' || normAuthor === 'composio') {
-    return `https://github.com/composiohq/skills/tree/main/skills/${slug}`
-  }
-  if (normAuthor === '199-biotechnologies') {
-    return `https://github.com/199-biotechnologies/skills/tree/main/skills/${slug}`
-  }
-  return `https://github.com/leverbrain/leverbrain/tree/main/skills/${slug}`
-}
-
-function resolveFileRawUrl(author: string, slug: string, filename: string): string {
-  const normAuthor = author.toLowerCase()
-  if (normAuthor === 'anthropics') {
-    return `https://raw.githubusercontent.com/anthropics/skills/main/skills/${slug}/${filename}`
-  }
-  if (normAuthor === 'composiohq' || normAuthor === 'composio') {
-    return `https://raw.githubusercontent.com/composiohq/skills/main/skills/${slug}/${filename}`
-  }
-  if (normAuthor === '199-biotechnologies') {
-    return `https://raw.githubusercontent.com/199-biotechnologies/skills/main/skills/${slug}/${filename}`
-  }
-  return `https://raw.githubusercontent.com/leverbrain/leverbrain/main/skills/${slug}/${filename}`
-}
-
-function resolveFileBlobUrl(author: string, slug: string, filename: string): string {
-  const normAuthor = author.toLowerCase()
-  if (normAuthor === 'anthropics') {
-    return `https://github.com/anthropics/skills/blob/main/skills/${slug}/${filename}`
-  }
-  if (normAuthor === 'composiohq' || normAuthor === 'composio') {
-    return `https://github.com/composiohq/skills/blob/main/skills/${slug}/${filename}`
-  }
-  if (normAuthor === '199-biotechnologies') {
-    return `https://github.com/199-biotechnologies/skills/blob/main/skills/${slug}/${filename}`
-  }
-  return `https://github.com/leverbrain/leverbrain/blob/main/skills/${slug}/${filename}`
-}
-
-interface InspectorFile {
-  name: string
-  content: string
-  githubUrl: string
-}
-
-function SourceCodeInspector({ 
-  author, 
-  slug, 
-  fallbackCode, 
-  fallbackGithubUrl 
-}: { 
-  author: string
-  slug: string
-  fallbackCode: string
-  fallbackGithubUrl: string 
-}) {
-  const [files, setFiles] = useState<InspectorFile[]>([])
-  const [activeFileIdx, setActiveFileIdx] = useState<number>(0)
-  const [loading, setLoading] = useState(true)
-  const [copied, setCopied] = useState(false)
+function PresetGallery({ groups }: { groups: { title: string; items: { name: string; url: string }[] }[] }) {
+  const [activeGroupIdx, setActiveGroupIdx] = useState(0)
+  const activeGroup = groups[activeGroupIdx]
+  const [activeItemIdx, setActiveItemIdx] = useState(0)
+  const [isAutoplay, setIsAutoplay] = useState(true)
+  const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
-    let active = true
-    const fetchFiles = async () => {
-      setLoading(true)
-      const potentialNames = ['SKILL.md', 'README.md', 'evals.json', 'package.json']
-      const loaded: InspectorFile[] = []
+    setActiveItemIdx(0)
+  }, [activeGroupIdx])
 
-      await Promise.all(
-        potentialNames.map(async (name) => {
-          const rawUrl = resolveFileRawUrl(author, slug, name)
-          try {
-            const res = await fetch(rawUrl)
-            if (res.status === 200) {
-              const text = await res.text()
-              if (text && text.trim().length > 0) {
-                loaded.push({
-                  name,
-                  content: text,
-                  githubUrl: resolveFileBlobUrl(author, slug, name)
-                })
-              }
-            }
-          } catch (e) {
-            // Ignore error
-          }
-        })
-      )
+  useEffect(() => {
+    if (!isAutoplay || !activeGroup || activeGroup.items.length <= 1) return
 
-      if (!active) return
+    const interval = setInterval(() => {
+      setActiveItemIdx((prev) => (prev + 1) % activeGroup.items.length)
+    }, 4000)
 
-      // Sort files: SKILL.md first, then README.md, then others
-      loaded.sort((a, b) => {
-        const order = ['SKILL.md', 'README.md', 'evals.json', 'package.json']
-        const idxA = order.indexOf(a.name)
-        const idxB = order.indexOf(b.name)
-        if (idxA !== -1 && idxB !== -1) return idxA - idxB
-        if (idxA !== -1) return -1
-        if (idxB !== -1) return 1
-        return a.name.localeCompare(b.name)
-      })
+    return () => clearInterval(interval)
+  }, [activeGroup, isAutoplay])
 
-      if (loaded.length === 0) {
-        loaded.push({
-          name: 'SKILL.md',
-          content: fallbackCode,
-          githubUrl: fallbackGithubUrl
-        })
-      }
-
-      setFiles(loaded)
-      setActiveFileIdx(0)
-      setLoading(false)
-    }
-
-    fetchFiles()
-    return () => {
-      active = false
-    }
-  }, [author, slug, fallbackCode, fallbackGithubUrl])
-
-  const activeFile = files[activeFileIdx] || { name: 'SKILL.md', content: fallbackCode, githubUrl: fallbackGithubUrl }
-  const lines = activeFile.content.split('\n')
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(activeFile.content)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error('Failed to copy code', err)
+  const handleNext = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
+    setIsAutoplay(false)
+    if (activeGroup) {
+      setActiveItemIdx((prev) => (prev + 1) % activeGroup.items.length)
     }
   }
 
+  const handlePrev = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
+    setIsAutoplay(false)
+    if (activeGroup) {
+      setActiveItemIdx((prev) => (prev - 1 + activeGroup.items.length) % activeGroup.items.length)
+    }
+  }
+
+  const handleSelectTab = (idx: number) => {
+    setIsAutoplay(false)
+    setActiveGroupIdx(idx)
+  }
+
+  const activeItem = activeGroup?.items[activeItemIdx]
+
+  if (!activeGroup || !activeItem) return null
+
   return (
-    <section className="sd-code-inspector">
-      <div className="sd-inspector-header">
-        <div className="sd-inspector-title-wrap">
-          <span className="sd-inspector-dot red" />
-          <span className="sd-inspector-dot orange" />
-          <span className="sd-inspector-dot green" />
-          {loading ? (
-            <span className="sd-inspector-filename" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Loader2 size={12} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} /> Loading files...
-            </span>
-          ) : (
-            <div className="sd-inspector-tabs">
-              {files.map((file, idx) => (
-                <button
-                  key={file.name}
-                  onClick={() => setActiveFileIdx(idx)}
-                  className={`sd-inspector-tab ${activeFileIdx === idx ? 'active' : ''}`}
-                >
-                  {file.name}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="sd-inspector-actions">
-          <a href={activeFile.githubUrl} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline sd-inspector-btn">
-            <ExternalLink size={12} /> Inspect Repository
-          </a>
-          <button onClick={handleCopy} className="btn btn-sm btn-outline sd-inspector-btn">
-            {copied ? <Check size={12} style={{ color: 'var(--color-accent-warm-light)' }} /> : <Copy size={12} />} Copy File
-          </button>
-        </div>
-      </div>
-      <div className="sd-inspector-code-viewport">
-        <div className="sd-inspector-line-numbers">
-          {lines.map((_, idx) => (
-            <span key={idx} className="sd-inspector-ln">{idx + 1}</span>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      {groups.length > 1 && (
+        <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid rgba(255, 196, 129, 0.08)', paddingBottom: '8px' }}>
+          {groups.map((group, idx) => (
+            <button
+              key={group.title}
+              type="button"
+              onClick={() => handleSelectTab(idx)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: activeGroupIdx === idx ? 'var(--color-accent-warm-light)' : 'var(--color-text-tertiary)',
+                fontWeight: activeGroupIdx === idx ? '600' : 'normal',
+                fontSize: '0.82rem',
+                cursor: 'pointer',
+                padding: '6px 16px',
+                borderBottom: activeGroupIdx === idx ? '2px solid var(--color-accent-warm-light)' : '2px solid transparent',
+                marginBottom: '-9px',
+                transition: 'all 0.2s ease',
+                outline: 'none'
+              }}
+            >
+              {group.title}
+            </button>
           ))}
         </div>
-        <pre className="sd-inspector-pre">
-          <code>{activeFile.content}</code>
-        </pre>
-      </div>
-    </section>
-  )
-}
+      )}
 
-function VisualSpecimen({ previewHtml, imageUrl }: { previewHtml?: string; imageUrl?: string }) {
-  return (
-    <div className="sd-visual-specimen">
-      <div className="sd-specimen-header">
-        <div className="sd-specimen-dot red" />
-        <div className="sd-specimen-dot orange" />
-        <div className="sd-specimen-dot green" />
-        <span className="sd-specimen-title">VISUAL SPECIMEN // LIVE PREVIEW</span>
-      </div>
-      <div className="sd-specimen-body">
-        {previewHtml ? (
-          <div className="sd-specimen-html" dangerouslySetInnerHTML={{ __html: previewHtml }} />
-        ) : imageUrl ? (
-          <img src={imageUrl} alt="Visual Specimen Preview" className="sd-specimen-img" />
-        ) : null}
+      <div
+        onClick={() => handleNext()}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          borderRadius: '12px',
+          cursor: 'pointer',
+          background: 'rgba(5, 12, 18, 0.2)',
+          border: '1px solid rgba(255, 196, 129, 0.05)',
+          padding: '16px',
+          minHeight: '340px',
+          transition: 'all 0.3s ease'
+        }}
+      >
+        {/* Subtle Navigation Chevrons on Hover */}
+        <button
+          onClick={handlePrev}
+          type="button"
+          style={{
+            position: 'absolute',
+            left: '16px',
+            zIndex: 10,
+            background: 'rgba(5, 12, 18, 0.65)',
+            border: '1px solid rgba(255, 196, 129, 0.15)',
+            color: 'var(--color-text-secondary)',
+            width: '36px',
+            height: '36px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            opacity: isHovered ? 1 : 0,
+            transition: 'opacity 0.2s ease, background-color 0.2s ease',
+            outline: 'none'
+          }}
+        >
+          <ChevronLeft size={18} />
+        </button>
+
+        <button
+          onClick={handleNext}
+          type="button"
+          style={{
+            position: 'absolute',
+            right: '16px',
+            zIndex: 10,
+            background: 'rgba(5, 12, 18, 0.65)',
+            border: '1px solid rgba(255, 196, 129, 0.15)',
+            color: 'var(--color-text-secondary)',
+            width: '36px',
+            height: '36px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            opacity: isHovered ? 1 : 0,
+            transition: 'opacity 0.2s ease, background-color 0.2s ease',
+            outline: 'none'
+          }}
+        >
+          <ChevronRight size={18} />
+        </button>
+
+        {/* Image */}
+        <img
+          src={activeItem.url}
+          alt={`${activeGroup.title} - ${activeItem.name}`}
+          style={{
+            maxWidth: '100%',
+            maxHeight: '380px',
+            borderRadius: '8px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+            border: '1px solid rgba(255, 255, 255, 0.04)',
+            objectFit: 'contain'
+          }}
+        />
+
+        {/* Style tag on top of the image */}
+        <div style={{
+          position: 'absolute',
+          bottom: '12px',
+          right: '12px',
+          background: 'rgba(5, 12, 18, 0.8)',
+          backdropFilter: 'blur(4px)',
+          border: '1px solid rgba(255, 196, 129, 0.15)',
+          padding: '4px 10px',
+          borderRadius: '6px',
+          fontSize: '0.68rem',
+          color: 'var(--color-accent-warm-light)',
+          fontFamily: 'var(--font-mono)',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          pointerEvents: 'none'
+        }}>
+          {activeGroup.title}: {activeItem.name}
+        </div>
+
+        {/* Pagination indicator dots */}
+        {activeGroup.items.length > 1 && (
+          <div style={{
+            position: 'absolute',
+            bottom: '12px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: '6px',
+            zIndex: 10,
+            pointerEvents: 'none'
+          }}>
+            {activeGroup.items.map((_, idx) => (
+              <span
+                key={idx}
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: activeItemIdx === idx ? 'var(--color-accent-warm-light)' : 'rgba(255, 255, 255, 0.2)',
+                  transition: 'background-color 0.2s ease'
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -587,7 +310,7 @@ export default function SkillDetailPage() {
   const [editError, setEditError] = useState<string | null>(null)
   const [editSuccess, setEditSuccess] = useState<string | null>(null)
   const { connected, walletAddress, network } = useSolanaWallet()
-  const { purchaseSkill, isPurchasing } = usePurchaseSkill()
+  const { purchaseSkill, isPurchasing, purchaseStatus } = usePurchaseSkill()
   const publishSkill = useMutation(api.skills.publishSkill)
   const toggleSaved = useMutation(api.skills.toggleSavedSkill)
   const [isSavingBookmark, setIsSavingBookmark] = useState(false)
@@ -622,6 +345,7 @@ export default function SkillDetailPage() {
         previewHtml: convexSkill.previewHtml ?? staticSkill?.previewHtml ?? undefined,
         overviewHtml: convexSkill.overviewHtml ?? staticSkill?.overviewHtml ?? undefined,
         imageUrl: convexSkill.imageUrl ?? staticSkill?.imageUrl ?? undefined,
+        screenshots: staticSkill?.screenshots ?? undefined,
       }
     }
 
@@ -636,6 +360,11 @@ export default function SkillDetailPage() {
       fileUrl: staticSkill.fileUrl,
     }
   }, [convexSkill, staticSkill])
+
+  const convMeta = useMemo(() => {
+    if (!skill) return null
+    return getConversationalOverview(skill.slug, skill.description)
+  }, [skill])
 
   const canEditListing = Boolean(
     connected &&
@@ -737,7 +466,7 @@ export default function SkillDetailPage() {
   const CategoryIcon = CATEGORY_ICONS[skill.category as keyof typeof CATEGORY_ICONS] ?? Zap
   const canPurchasePaidSkill = skill.priceUsdc === 0 || Boolean(skill.creatorWallet)
   const isFreeSkill = skill.priceUsdc === 0
-  const currentVersionUrl = resolveRepoUrl(skill.author, skill.slug)
+  const currentVersionUrl = resolveRepoUrl(skill.author, skill.slug, skill.fileUrl)
 
   const handlePurchase = async () => {
     if (!connected || !skill) return
@@ -817,28 +546,13 @@ export default function SkillDetailPage() {
 
         {/* Hero header */}
         <div className="sd-hero animate-fade-in-up">
-          <div className="sd-hero-meta">
-            <span className={`sd-category-pill sd-category-pill--${skill.category}`}>
-              <CategoryIcon size={12} />
-              {skill.category}
+          <h1 className="sd-title">
+            {skill.name}{' '}
+            <span className="sd-title-by">
+              by <Link href={`/skills/${skill.author}`} className="sd-author-link">@{skill.author}</Link>
             </span>
-            <Link href={`/skills/${skill.author}`} className="sd-author-link">
-              @{skill.author}
-            </Link>
-          </div>
-          <h1 className="sd-title">{skill.name}</h1>
+          </h1>
           <p className="sd-tagline">{skill.tagline}</p>
-
-          <div className="sd-stats-row">
-            <StatBox
-              label="downloads"
-              value={formatCompact(skill.totalPurchases)}
-            />
-            <StatBox
-              label="rating"
-              value={`${getRatingOutOfHundred(skill.stars)}/100`}
-            />
-          </div>
         </div>
 
         {/* Main layout: content + sidebar */}
@@ -874,53 +588,97 @@ export default function SkillDetailPage() {
             <div className="sd-tab-body" style={{ marginTop: '24px' }}>
               {activeTab === 'details' ? (
                 <div className="sd-details-flow">
-                  {/* Visual Specimen Preview */}
-                  {(skill.previewHtml || skill.imageUrl) && (
-                    <VisualSpecimen previewHtml={skill.previewHtml} imageUrl={skill.imageUrl} />
-                  )}
+                  {/* Summary / Description */}
+                  <section className="sd-summary-section">
+                    <p className="sd-desc">{skill.description}</p>
+                    <div className="sd-tags">
+                      {skill.tags.map((tag) => (
+                        <span key={tag} className="sd-tag">{tag}</span>
+                      ))}
+                    </div>
+                  </section>
 
-                  {/* Summary / Description / Rich HTML Overview */}
-                  {skill.overviewHtml ? (
-                    <section className="sd-overview-rich-section">
-                      <div className="sd-overview-rich" dangerouslySetInnerHTML={{ __html: skill.overviewHtml }} />
+                  {/* Visual Presets Gallery */}
+                  {skill.screenshots && skill.screenshots.length > 0 && (
+                    <section className="sd-gallery-section" style={{
+                      background: 'rgba(255, 196, 129, 0.02)',
+                      border: '1px solid rgba(255, 196, 129, 0.12)',
+                      borderRadius: '12px',
+                      padding: 'var(--gallery-padding, 24px)',
+                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)'
+                    }}>
+                      <h3 style={{
+                        fontSize: '0.72rem',
+                        letterSpacing: '0.15em',
+                        textTransform: 'uppercase',
+                        color: 'var(--color-text-tertiary)',
+                        marginBottom: '16px',
+                        borderLeft: '2px solid var(--color-accent-warm-light)',
+                        paddingLeft: '8px'
+                      }}>Visual Presets &amp; Gallery</h3>
+                      
+                      <PresetGallery groups={skill.screenshots} />
                     </section>
-                  ) : (
-                    <section className="sd-summary-section">
-                      <p className="sd-desc">{skill.description}</p>
-                      <div className="sd-tags">
-                        {skill.tags.map((tag) => (
-                          <span key={tag} className="sd-tag">{tag}</span>
-                        ))}
+                  )}
+                  {/* Conversational Overview / Details */}
+                  {convMeta && (
+                    <section className="sd-conversational-section" style={{
+                      display: 'grid',
+                      gap: '28px',
+                      marginTop: '24px'
+                    }}>
+                      {/* Clean Conversational Explanation blending with background */}
+                      <p style={{
+                        fontSize: '1.0625rem',
+                        lineHeight: '1.75',
+                        color: 'var(--color-text-secondary)',
+                        maxWidth: '800px',
+                        margin: 0,
+                        fontWeight: 400
+                      }}>
+                        {convMeta.description}
+                      </p>
+
+                      <div style={{ marginTop: '12px' }}>
+                        <h3 style={{
+                          fontSize: '0.72rem',
+                          letterSpacing: '0.15em',
+                          textTransform: 'uppercase',
+                          color: 'var(--color-text-tertiary)',
+                          marginBottom: '16px',
+                          borderLeft: '2px solid var(--color-accent-warm-light)',
+                          paddingLeft: '8px'
+                        }}>What it can do</h3>
+                        
+                        <div style={{
+                          display: 'grid',
+                          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                          gap: '16px'
+                        }}>
+                          {convMeta.useCases.map((useCase, idx) => (
+                            <div key={idx} style={{
+                              background: 'rgba(255, 255, 255, 0.01)',
+                              border: '1px solid rgba(255, 255, 255, 0.03)',
+                              borderRadius: '12px',
+                              padding: '20px',
+                              transition: 'all 0.2s ease',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              justifyContent: 'center'
+                            }} className="sd-usecase-card">
+                              <p style={{
+                                fontSize: '0.86rem',
+                                lineHeight: '1.55',
+                                color: 'var(--color-text-secondary)',
+                                margin: 0
+                              }}>
+                                {useCase}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </section>
-                  )}
-
-                  {/* Markdown Readme */}
-                  {skill.readme && (
-                    <section className="sd-readme-section">
-                      <h3 className="sd-section-title">SPECIFICATION & CORE ROUTINES</h3>
-                      {renderMarkdown(skill.readme)}
-                    </section>
-                  )}
-
-                  {/* When to use */}
-                  {skill.whenToUse && (
-                    <section className="sd-when-section">
-                      <h3 className="sd-section-title">RECOMMENDED DEPLOYMENT SCENARIOS</h3>
-                      <div className="sd-when-card">
-                        <p>{skill.whenToUse}</p>
-                      </div>
-                    </section>
-                  )}
-
-                  {/* Source Code Inspector (for free ones) */}
-                  {isFreeSkill && skill.readme && (
-                    <SourceCodeInspector
-                      author={skill.author}
-                      slug={skill.slug}
-                      fallbackCode={skill.readme}
-                      fallbackGithubUrl={currentVersionUrl}
-                    />
                   )}
                 </div>
               ) : (
@@ -1098,21 +856,80 @@ export default function SkillDetailPage() {
                   Download Skill
                 </a>
               ) : connected ? (
-                <button
-                  type="button"
-                  className="btn btn-red btn-lg sd-purchase-btn"
-                  onClick={handlePurchase}
-                  disabled={isPurchasing || !canPurchasePaidSkill}
-                >
-                  {isPurchasing ? (
-                    <>Confirming…</>
-                  ) : (
-                    <>
-                      <ShoppingCart size={16} />
-                      Get Skill — {skill.price}
-                    </>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
+                  <button
+                    type="button"
+                    className="btn btn-red btn-lg sd-purchase-btn"
+                    onClick={handlePurchase}
+                    disabled={isPurchasing || !canPurchasePaidSkill}
+                    style={{ width: '100%' }}
+                  >
+                    {isPurchasing ? (
+                      <>
+                        <span className="spinner" style={{
+                          width: '14px',
+                          height: '14px',
+                          border: '2px solid currentColor',
+                          borderTopColor: 'transparent',
+                          borderRadius: '50%',
+                          display: 'inline-block',
+                          marginRight: '8px'
+                        }} />
+                        {purchaseStatus === 'simulating' && 'Simulating…'}
+                        {purchaseStatus === 'signing' && 'Signing…'}
+                        {purchaseStatus === 'confirming' && 'Confirming…'}
+                        {purchaseStatus !== 'simulating' && purchaseStatus !== 'signing' && purchaseStatus !== 'confirming' && 'Confirming…'}
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart size={16} />
+                        Get Skill — {skill.price}
+                      </>
+                    )}
+                  </button>
+                  
+                  {isPurchasing && (
+                    <div style={{
+                      padding: '12px',
+                      borderRadius: '8px',
+                      background: 'rgba(255, 196, 129, 0.04)',
+                      border: '1px solid rgba(255, 196, 129, 0.15)',
+                      fontSize: '0.78rem',
+                      lineHeight: '1.4',
+                      color: 'var(--color-text-secondary)',
+                      textAlign: 'left'
+                    }}>
+                      {purchaseStatus === 'simulating' && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span>Validating transaction and balance on Devnet...</span>
+                        </div>
+                      )}
+                      {purchaseStatus === 'signing' && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', color: 'var(--color-accent-warm-light)' }}>
+                            <span style={{
+                              width: '8px',
+                              height: '8px',
+                              borderRadius: '50%',
+                              background: 'var(--color-accent-warm-light)',
+                              boxShadow: '0 0 8px var(--color-accent-warm-light)',
+                              display: 'inline-block'
+                            }} />
+                            <span>Awaiting Wallet Approval</span>
+                          </div>
+                          <p style={{ margin: 0, color: 'var(--color-text-tertiary)', fontSize: '0.72rem', lineHeight: '1.4' }}>
+                            If Phantom or Solflare warns you about <strong>"Simulation Failed"</strong> or <strong>"Cannot predict balance changes"</strong>, it is a known mobile wallet limitation on Devnet. You can safely click <strong>Approve/Confirm</strong>.
+                          </p>
+                        </div>
+                      )}
+                      {purchaseStatus === 'confirming' && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span>Confirming purchase on Solana...</span>
+                        </div>
+                      )}
+                    </div>
                   )}
-                </button>
+                </div>
               ) : (
                 <div className="sd-connect-prompt">
                   <p>Connect your wallet to purchase</p>
@@ -1178,6 +995,19 @@ export default function SkillDetailPage() {
             </div>
           </aside>
         </div>
+
+        {/* Source Code Inspector (full width, below content/sidebar) */}
+        {activeTab === 'details' && isFreeSkill && skill.readme && (
+          <div className="animate-fade-in-up animate-delay-2" style={{ width: '100%' }}>
+            <SourceCodeInspector
+              author={skill.author}
+              slug={skill.slug}
+              fallbackCode={skill.readme}
+              fallbackGithubUrl={currentVersionUrl}
+              fileUrl={skill.fileUrl}
+            />
+          </div>
+        )}
 
       </div>
     </div>

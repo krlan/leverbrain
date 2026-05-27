@@ -1,3 +1,6 @@
+"use client";
+
+import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, BookOpen, Layers, Zap } from 'lucide-react'
 import { getFeaturedSkills } from '@/lib/skills-data'
@@ -34,6 +37,14 @@ const categories = [
 ]
 
 export default function Landing() {
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 100
+    const y = ((e.clientY - rect.top) / rect.height) * 100
+    e.currentTarget.style.setProperty('--mouse-x', `${x}%`)
+    e.currentTarget.style.setProperty('--mouse-y', `${y}%`)
+  }
+
   const featured = getFeaturedSkills()
   const trendingSkills = featured.slice(0, 10)
   const trendingLeft = trendingSkills.slice(0, 5)
@@ -61,9 +72,15 @@ export default function Landing() {
                 <Link href="/skills" className="btn btn-primary btn-lg">
                   Get skills <ArrowRight size={16} />
                 </Link>
-                <Link href="/agents.md" className="btn btn-outline btn-lg">
+                <Link href="/agents.md" className="btn btn-outline btn-lg hide-on-mobile">
                   For agents
                 </Link>
+              </div>
+
+              {/* Mobile-only command bar */}
+              <div className="mobile-hero-cli show-on-mobile animate-fade-in-up animate-delay-2">
+                <code className="mobile-hero-cli-code">npx -y leverbrain</code>
+                <CopyInlineButton value="npx -y leverbrain" />
               </div>
             </div>
 
@@ -82,14 +99,14 @@ export default function Landing() {
                   <p className="land-hero-terminal-output">
                     Leverbrain CLI to interact with the marketplace
                   </p>
-                  <p className="land-hero-terminal-output">
-                    → <span className="land-hero-terminal-hl">search &lt;query&gt;</span> searches live listings
+                  <p className="land-hero-terminal-output hide-on-mobile">
+                    →&nbsp;<span className="land-hero-terminal-hl">search&nbsp;&lt;query&gt;</span>&nbsp;searches&nbsp;live&nbsp;listings
                   </p>
-                  <p className="land-hero-terminal-output">
-                    → <span className="land-hero-terminal-hl">get &lt;author/slug&gt;</span> prints listing JSON
+                  <p className="land-hero-terminal-output hide-on-mobile">
+                    →&nbsp;<span className="land-hero-terminal-hl">get&nbsp;&lt;author/slug&gt;</span>&nbsp;downloads&nbsp;selected&nbsp;skill
                   </p>
-                  <p className="land-hero-terminal-output">
-                    → <span className="land-hero-terminal-hl">purchases --wallet &lt;pubkey&gt;</span> shows receipts
+                  <p className="land-hero-terminal-output hide-on-mobile">
+                    →&nbsp;<span className="land-hero-terminal-hl">cfg&nbsp;&lt;handle/name&gt;</span>&nbsp;downloads&nbsp;<Link href="/lab" style={{ textDecoration: 'underline', color: 'var(--color-accent-warm-light)' }}>lab</Link>&nbsp;configs
                   </p>
                 </div>
               </div>
@@ -116,6 +133,7 @@ export default function Landing() {
                     key={skill.id}
                     href={`/skills/${skill.author}/${skill.slug}`}
                     className={`land-featured-lane animate-fade-in-up animate-delay-${Math.min(i + 1, 4)}`}
+                    onMouseMove={handleMouseMove}
                   >
                     <div className="land-featured-lane-main">
                       <p className="land-featured-lane-name">
@@ -137,6 +155,7 @@ export default function Landing() {
                     key={skill.id}
                     href={`/skills/${skill.author}/${skill.slug}`}
                     className={`land-featured-lane animate-fade-in-up animate-delay-${Math.min(i + 1, 4)}`}
+                    onMouseMove={handleMouseMove}
                   >
                     <div className="land-featured-lane-main">
                       <p className="land-featured-lane-name">

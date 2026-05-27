@@ -69,14 +69,25 @@
   color: #c9a8f5;
   border: 1px solid rgba(180, 120, 255, 0.2);
 }
+.sd-title-by {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  font-weight: normal;
+  opacity: 0.8;
+  margin-left: 12px;
+}
+
 .sd-author-link {
-  font-size: 0.84rem;
-  color: var(--color-text-tertiary);
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  color: var(--color-accent-warm-light);
   font-weight: 500;
   text-decoration: none;
   transition: color var(--transition-fast);
 }
-.sd-author-link:hover { color: var(--color-accent-warm-light); }
+.sd-author-link:hover {
+  color: var(--color-accent);
+}
 
 .sd-title {
   font-size: clamp(1.875rem, 4vw, 3rem);
@@ -376,13 +387,31 @@
 }
 
 /* ─── Responsive ─── */
+.sd-gallery-section {
+  --gallery-padding: 24px;
+}
+
 @media (max-width: 960px) {
+  .sd-page {
+    padding: var(--space-xl) 0 var(--space-3xl);
+  }
   .sd-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-xl);
+  }
+  .sd-content,
+  .sd-sidebar {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   .sd-purchase-card {
     position: static;
     order: -1;
+    padding: var(--space-md) !important;
+  }
+  .sd-gallery-section {
+    --gallery-padding: 16px;
   }
   .sd-stats-row {
     flex-wrap: wrap;
@@ -564,12 +593,14 @@
 
 /* ─── Source Code Inspector ─── */
 .sd-code-inspector {
-  background: rgba(14, 10, 7, 0.98);
-  border: 1px solid rgba(255, 195, 124, 0.22);
-  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(165deg, rgba(8, 18, 24, 0.97), rgba(5, 12, 18, 0.99));
+  border: 1px solid rgba(255, 196, 129, 0.18);
+  border-radius: var(--radius-xl);
   overflow: hidden;
   margin-top: var(--space-3xl);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.44), inset 0 1px 0 rgba(255, 211, 158, 0.07);
 }
 
 .sd-inspector-header {
@@ -577,10 +608,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  background: rgba(24, 18, 14, 0.98);
-  border-bottom: 1px solid rgba(255, 195, 124, 0.12);
+  background: rgba(255, 196, 129, 0.06);
+  border-bottom: 1px solid rgba(255, 196, 129, 0.1);
   flex-wrap: wrap;
   gap: var(--space-sm);
+  flex-shrink: 0;
 }
 
 .sd-inspector-title-wrap {
@@ -605,38 +637,6 @@
   color: var(--color-text-secondary);
 }
 
-.sd-inspector-tabs {
-  display: flex;
-  gap: 4px;
-  margin-left: 12px;
-}
-
-.sd-inspector-tab {
-  background: transparent;
-  border: 1px solid transparent;
-  border-bottom: none;
-  border-radius: 4px 4px 0 0;
-  padding: 6px 12px;
-  font-family: var(--font-mono);
-  font-size: 0.77rem;
-  color: var(--color-text-secondary);
-  opacity: 0.6;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.sd-inspector-tab:hover {
-  opacity: 0.9;
-  background: rgba(255, 195, 124, 0.04);
-}
-
-.sd-inspector-tab.active {
-  opacity: 1;
-  color: var(--color-accent);
-  background: rgba(255, 195, 124, 0.08);
-  border-color: rgba(255, 195, 124, 0.22);
-}
-
 .sd-inspector-actions {
   display: flex;
   gap: var(--space-xs);
@@ -650,44 +650,171 @@
   gap: 4px;
 }
 
-.sd-inspector-code-viewport {
+.sd-inspector-workspace {
   display: flex;
-  max-height: 480px;
+  flex-grow: 1;
+  min-height: 0;
+  height: 480px;
+  background: rgba(4, 9, 13, 0.2);
+}
+
+.sd-inspector-explorer {
+  width: 220px;
+  flex-shrink: 0;
   overflow-y: auto;
+  border-right: 1px solid rgba(255, 196, 129, 0.12);
+  background: rgba(4, 9, 13, 0.4);
+  padding: 12px 6px;
+  scrollbar-width: thin;
+}
+
+.sd-inspector-explorer::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sd-inspector-explorer::-webkit-scrollbar-thumb {
+  background: rgba(255, 196, 129, 0.15);
+  border-radius: 2px;
+}
+
+.sd-explorer-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sd-explorer-node-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.sd-explorer-node {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 4px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.77rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  gap: 6px;
+  user-select: none;
+}
+
+.sd-explorer-node:hover {
+  color: var(--color-text-primary);
+  background: rgba(255, 196, 129, 0.05);
+}
+
+.sd-explorer-node.active {
+  color: var(--color-accent-warm-light);
+  background: rgba(255, 196, 129, 0.08);
+  font-weight: 600;
+}
+
+.sd-explorer-chevron {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 196, 129, 0.4);
+  width: 12px;
+}
+
+.sd-explorer-icon {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 196, 129, 0.5);
+}
+
+.sd-explorer-icon.folder {
+  color: var(--color-accent-warm-light);
+}
+
+.sd-explorer-icon.file {
+  color: var(--color-text-tertiary);
+}
+
+.sd-explorer-node-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sd-explorer-sublist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sd-inspector-code-container {
+  flex-grow: 1;
   min-width: 0;
+  position: relative;
+  height: 100%;
+}
+
+.sd-inspector-code-viewport {
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
 }
 
 .sd-inspector-line-numbers {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding: var(--space-md) var(--space-sm);
-  background: rgba(18, 13, 10, 0.5);
-  border-right: 1px solid rgba(255, 195, 124, 0.08);
+  padding: 16px 12px 16px 16px;
+  background: #050c12;
+  border-right: 1px solid rgba(255, 196, 129, 0.08);
   user-select: none;
   min-width: 44px;
+  flex-shrink: 0;
+  position: sticky;
+  left: 0;
+  z-index: 2;
 }
 
 .sd-inspector-ln {
+  display: block;
   font-family: var(--font-mono);
   font-size: 0.77rem;
   line-height: 1.6;
-  color: rgba(255, 195, 124, 0.25);
+  color: rgba(255, 196, 129, 0.3);
 }
 
 .sd-inspector-pre {
   margin: 0;
-  padding: var(--space-md);
+  padding: 16px;
   flex: 1;
-  overflow-x: auto;
+  overflow: visible;
   min-width: 0;
+  background: transparent;
 }
 
 .sd-inspector-pre code {
+  display: block;
   font-family: var(--font-mono);
   font-size: 0.77rem;
   line-height: 1.6;
+  color: #ffe8d1;
+}
+
+.sd-inspector-viewport-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 9, 13, 0.7);
+  z-index: 10;
   color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  gap: 8px;
 }
 
 /* ─── Details Organic Flow sections ─── */
@@ -903,3 +1030,72 @@
   line-height: 1.5;
   color: var(--color-text-secondary);
 }
+
+@media (max-width: 768px) {
+  .sd-gallery-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.sd-usecase-card:hover {
+  background: rgba(255, 196, 129, 0.03) !important;
+  border-color: rgba(255, 196, 129, 0.15) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* General responsive utilities */
+.hide-on-mobile {
+  display: inline-flex;
+}
+
+@media (max-width: 640px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+/* Source Code Inspector - Mobile responsiveness */
+@media (max-width: 768px) {
+  .sd-code-inspector {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .sd-inspector-workspace {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 520px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .sd-inspector-explorer {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 160px !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255, 196, 129, 0.12) !important;
+    flex-shrink: 0 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .sd-inspector-code-container {
+    height: 360px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .sd-inspector-code-viewport {
+    height: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
+  }
+}
+

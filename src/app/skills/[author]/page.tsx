@@ -86,6 +86,14 @@ export default function AuthorProfilePage() {
   const authorRaw = (params?.author as string) ?? ''
   const author = authorRaw.toLowerCase().trim()
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 100
+    const y = ((e.clientY - rect.top) / rect.height) * 100
+    e.currentTarget.style.setProperty('--mouse-x', `${x}%`)
+    e.currentTarget.style.setProperty('--mouse-y', `${y}%`)
+  }
+
   const dbProfile = useQuery(api.skills.getProfileByHandle, { handle: author })
   const dbSkills = useQuery(api.skills.getSkillsByAuthor, { author })
 
@@ -260,6 +268,7 @@ export default function AuthorProfilePage() {
                     key={skillKey}
                     href={`/skills/${skill.author}/${skill.slug}`}
                     className={`sk-row animate-fade-in-up animate-delay-${Math.min(i % 6, 4)}`}
+                    onMouseMove={handleMouseMove}
                   >
                     <div className="sk-row-main">
                       <h3 className="sk-row-name" style={{ fontSize: '0.9375rem', fontWeight: 600 }}>{skill.name}</h3>

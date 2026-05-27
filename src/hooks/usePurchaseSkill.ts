@@ -75,10 +75,14 @@ function extractSystemTransfer(
   };
 }
 
+export type PurchaseStatus = 'idle' | 'simulating' | 'signing' | 'confirming' | 'success' | 'error';
+
 export function usePurchaseSkill() {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const [isPurchasing, setIsPurchasing] = useState(false);
+  const [purchaseStatus, setPurchaseStatus] = useState<PurchaseStatus>('idle');
+  const [purchaseError, setPurchaseError] = useState<string | null>(null);
   const recordPurchase = useMutation(api.skills.recordPurchase);
 
   const program = useMemo(() => {
@@ -99,8 +103,12 @@ export function usePurchaseSkill() {
       if (!publicKey) throw new Error('Wallet not connected');
 
       setIsPurchasing(true);
+      setPurchaseStatus('simulating');
+      setPurchaseError(null);
+
       try {
         if (priceUsdc === 0) {
+          setPurchaseStatus('confirming');
           await recordPurchase({
             skillId,
             buyerWallet: publicKey.toBase58(),
@@ -108,6 +116,7 @@ export function usePurchaseSkill() {
             pdaAddress: 'free_skill_pda',
             priceLamports: 0,
           });
+          setPurchaseStatus('success');
           return {
             txSignature: 'free_skill',
             pdaAddress: 'free_skill_pda',
@@ -142,6 +151,40 @@ export function usePurchaseSkill() {
           program.programId
         );
 
+        console.log('Checking user balance and on-chain PDA state...');
+        
+        // 1. Check buyer balance on current network
+        const balance = await connection.getBalance(publicKey, 'confirmed');
+        const requiredBalance = totalLamports + 5000000; // Total lamports + 0.005 SOL buffer for fees and rent
+        if (balance < requiredBalance) {
+          const balanceSol = balance / LAMPORTS_PER_SOL;
+          const requiredSol = requiredBalance / LAMPORTS_PER_SOL;
+          throw new Error(
+            `Insufficient SOL balance on Devnet. You have ${balanceSol.toFixed(4)} SOL but need approximately ${requiredSol.toFixed(4)} SOL (including transaction fees & rent).`
+          );
+        }
+
+        // 2. Check if receipt account already exists on chain
+        const receiptAccount = await connection.getAccountInfo(receiptPda, 'confirmed');
+        if (receiptAccount !== null) {
+          console.log('Skill already purchased on-chain (PDA exists). Recording in database and skipping tx...');
+          setPurchaseStatus('confirming');
+          await recordPurchase({
+            skillId,
+            buyerWallet: publicKey.toBase58(),
+            txSignature: 'pre_purchased_on_chain',
+            pdaAddress: receiptPda.toBase58(),
+            creatorWallet: creatorPubkey.toBase58(),
+            treasuryWallet: treasuryPubkey.toBase58(),
+            priceLamports: totalLamports,
+          });
+          setPurchaseStatus('success');
+          return {
+            txSignature: 'pre_purchased_on_chain',
+            pdaAddress: receiptPda.toBase58(),
+          };
+        }
+
         console.log('Building transaction with accounts:', {
           buyer: publicKey.toBase58(),
           creator: creatorPubkey.toBase58(),
@@ -168,10 +211,35 @@ export function usePurchaseSkill() {
         tx.recentBlockhash = blockhash;
         tx.feePayer = publicKey;
 
+        // 3. Run manual simulation before calling the wallet to catch error details
+        console.log('Simulating transaction manually...');
+        try {
+          const simulation = await connection.simulateTransaction(tx);
+          if (simulation.value.err) {
+            console.error('Manual simulation failed:', simulation.value.err, simulation.value.logs);
+            const logs = simulation.value.logs ? simulation.value.logs.join('\n') : '';
+            if (logs.includes('Instruction: PurchaseSkill')) {
+              if (logs.includes('custom program error: 0x0') || logs.includes('already in use')) {
+                throw new Error('This skill has already been purchased by this wallet.');
+              }
+            }
+            if (logs.includes('insufficient funds') || logs.includes('Insufficient funds')) {
+              throw new Error('Insufficient SOL in wallet to cover the purchase price and network transaction fees.');
+            }
+            throw new Error(`Transaction simulation failed: ${JSON.stringify(simulation.value.err)}. Please make sure your wallet is on Devnet and has enough SOL.`);
+          }
+          console.log('Manual simulation succeeded!', simulation.value.unitsConsumed, 'units consumed.');
+        } catch (simErr: any) {
+          console.error('Error during manual simulation:', simErr);
+          throw simErr;
+        }
+
+        setPurchaseStatus('signing');
         console.log('Sending transaction...');
         const signature = await sendTransaction(tx, connection);
         console.log('Transaction sent, signature:', signature);
         
+        setPurchaseStatus('confirming');
         // Manual polling for confirmation to avoid flaky WebSocket signatureSubscribe errors
         let confirmed = false;
         let attempts = 0;
@@ -243,16 +311,16 @@ export function usePurchaseSkill() {
 
         const hasCreatorTransfer = transfers.some(
           (transfer) =>
-            transfer.source === publicKey.toBase58() &&
-            transfer.destination === creatorPubkey.toBase58() &&
-            transfer.lamports === creatorLamports
+              transfer.source === publicKey.toBase58() &&
+              transfer.destination === creatorPubkey.toBase58() &&
+              transfer.lamports === creatorLamports
         );
 
         const hasTreasuryTransfer = transfers.some(
           (transfer) =>
-            transfer.source === publicKey.toBase58() &&
-            transfer.destination === treasuryPubkey.toBase58() &&
-            transfer.lamports === treasuryLamports
+              transfer.source === publicKey.toBase58() &&
+              transfer.destination === treasuryPubkey.toBase58() &&
+              transfer.lamports === treasuryLamports
         );
 
         if (!hasCreatorTransfer || !hasTreasuryTransfer) {
@@ -275,6 +343,7 @@ export function usePurchaseSkill() {
           priceLamports: totalLamports,
         });
 
+        setPurchaseStatus('success');
 
         return {
           txSignature: signature,
@@ -282,10 +351,11 @@ export function usePurchaseSkill() {
         };
       } catch (err: any) {
         console.error('Failed to purchase skill:', err);
-        // If it's a simulation error, it might contain more details in err.logs
         if (err.logs) {
           console.error('Simulation logs:', err.logs);
         }
+        setPurchaseStatus('error');
+        setPurchaseError(err.message || String(err));
         throw err;
       } finally {
         setIsPurchasing(false);
@@ -294,5 +364,5 @@ export function usePurchaseSkill() {
     [publicKey, sendTransaction, connection, recordPurchase, program]
   );
 
-  return { purchaseSkill, isPurchasing };
+  return { purchaseSkill, isPurchasing, purchaseStatus, purchaseError };
 }

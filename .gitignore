@@ -21,6 +21,9 @@ dist
 .env.test.local
 .env.production.local
 *.env
+.env.vercel.*
+.env.vercel.local
+.env.vercel.prod
 
 # Vercel
 .vercel

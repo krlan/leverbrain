@@ -15,6 +15,8 @@ const nextConfig: NextConfig = {
         buffer: require.resolve('buffer/'),
       };
     }
+    // Fix missing optional deps from WalletConnect / pino that break the client bundle
+    config.externals.push('pino-pretty', 'lokijs', 'encoding');
     return config;
   },
 };

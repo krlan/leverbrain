@@ -21,6 +21,7 @@ export interface LeverbrainSkill {
   totalPurchases?: number
   featured?: boolean
   createdAt?: string
+  fileUrl?: string
 }
 
 export interface PublishSkillInput {
@@ -130,6 +131,17 @@ export class LeverbrainClient {
   async getPurchasesByBuyer(buyerWallet: string) {
     return await this.invoke<PurchaseReceipt[]>('/api/query', 'skills:getPurchasesByBuyer', {
       buyerWallet,
+    })
+  }
+
+  async getConfig(handle: string, name: string) {
+    return await this.invoke<{
+      walletAddress: string
+      name: string
+      skills: Array<{ id: string; author: string; slug: string; name: string }>
+    } | null>('/api/query', 'skills:getConfigByHandleAndName', {
+      handle,
+      name,
     })
   }
 }

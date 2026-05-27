@@ -27,10 +27,21 @@ export default function Header({ onOpenPalette }: HeaderProps) {
     setIsMobileMenuOpen(false)
   }, [pathname])
 
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isMobileMenuOpen])
+
   const currentPath = pathname || ''
 
   return (
-    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+    <header className={`header ${isScrolled ? 'is-scrolled' : ''} ${isScrolled ? 'scrolled' : ''} ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`}>
       <div className="container">
         <nav className="nav">
           <Link href="/" className="logo">
@@ -56,11 +67,12 @@ export default function Header({ onOpenPalette }: HeaderProps) {
                   type="button"
                   className="nav-link nav-search-trigger"
                   onClick={onOpenPalette}
-                  aria-label="Open command palette (Esc)"
+                  aria-label="Open command palette"
                 >
                   <Search size={13} className="nav-search-glyph" />
-                  <span className="nav-search-spacer" aria-hidden="true" />
-                  <kbd className="nav-kbd">Esc</kbd>
+                  <span className="nav-search-label show-on-mobile">Search</span>
+                  <span className="nav-search-spacer hide-on-mobile" aria-hidden="true" />
+                  <kbd className="nav-kbd hide-on-mobile">Esc</kbd>
                 </button>
               </div>
             <div className="nav-cta">

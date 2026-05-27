@@ -26,6 +26,7 @@ export default defineSchema({
     overviewHtml: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
     createdAt: v.optional(v.string()),
+    isPrivate: v.optional(v.boolean()),
   })
     .index("by_author", ["author"])
     .index("by_author_slug", ["author", "slug"])
@@ -72,4 +73,19 @@ export default defineSchema({
   })
     .index("by_wallet", ["walletAddress"])
     .index("by_handle", ["handle"]),
+
+  configs: defineTable({
+    walletAddress: v.string(),
+    name: v.string(),
+    skills: v.array(v.object({
+      id: v.string(),
+      author: v.string(),
+      slug: v.string(),
+      name: v.string(),
+    })),
+    createdAt: v.optional(v.number()),
+    updatedAt: v.optional(v.number()),
+  })
+    .index("by_wallet", ["walletAddress"])
+    .index("by_wallet_name", ["walletAddress", "name"]),
 });

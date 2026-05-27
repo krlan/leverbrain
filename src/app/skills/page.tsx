@@ -95,7 +95,7 @@ const SORT_OPTIONS = [
 ] as const
 
 type MarketType = SkillCategory | 'all'
-type PriceFilter = (typeof PRICE_FILTERS)[number]['id']
+type PriceFilter = 'free' | 'paid'
 type SortBy = (typeof SORT_OPTIONS)[number]['id']
 
 function formatCategoryLabel(category: string) {
@@ -120,6 +120,14 @@ function SkillsContent() {
   const convexSkills = useQuery(api.skills.listSkills, {})
   const [search, setSearch] = useState('')
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 100
+    const y = ((e.clientY - rect.top) / rect.height) * 100
+    e.currentTarget.style.setProperty('--mouse-x', `${x}%`)
+    e.currentTarget.style.setProperty('--mouse-y', `${y}%`)
+  }
+
   const initialMarketType = useMemo<MarketType>(() => {
     const category = searchParams?.get('category')
     if (category === 'skill' || category === 'strategy' || category === 'blueprint') {
@@ -130,7 +138,7 @@ function SkillsContent() {
 
   const [marketType, setMarketType] = useState<MarketType>(initialMarketType)
   const [categoryFilter, setCategoryFilter] = useState<string>('all')
-  const [priceFilter, setPriceFilter] = useState<PriceFilter>('all')
+  const [priceFilter, setPriceFilter] = useState<PriceFilter>('paid')
   const [sortBy, setSortBy] = useState<SortBy>('popularity')
 
   const skillPool = useMemo(() => mergeSkillPool(convexSkills), [convexSkills])
@@ -230,12 +238,22 @@ function SkillsContent() {
 
               <div className="sk-select-wrap">
                 <span className="sk-select-title">Price</span>
-                <CustomSelect
-                  value={priceFilter}
-                  onChange={(val) => setPriceFilter(val as PriceFilter)}
-                  options={PRICE_FILTERS}
-                  ariaLabel="Price filter"
-                />
+                <div className="sk-price-switch">
+                  <button
+                    type="button"
+                    className={`sk-price-switch-btn ${priceFilter === 'paid' ? 'is-active' : ''}`}
+                    onClick={() => setPriceFilter('paid')}
+                  >
+                    Paid
+                  </button>
+                  <button
+                    type="button"
+                    className={`sk-price-switch-btn ${priceFilter === 'free' ? 'is-active' : ''}`}
+                    onClick={() => setPriceFilter('free')}
+                  >
+                    Free
+                  </button>
+                </div>
               </div>
 
               <div className="sk-select-wrap">
@@ -265,7 +283,7 @@ function SkillsContent() {
                   setSearch('')
                   setMarketType('all')
                   setCategoryFilter('all')
-                  setPriceFilter('all')
+                  setPriceFilter('paid')
                   setSortBy('popularity')
                 }}
               >
@@ -286,6 +304,7 @@ function SkillsContent() {
                   key={skill.id}
                   href={`/skills/${skill.author}/${skill.slug}`}
                   className={`sk-row animate-fade-in-up animate-delay-${Math.min(i % 6, 4)}`}
+                  onMouseMove={handleMouseMove}
                 >
                   <div className="sk-row-main">
                     <h2 className="sk-row-name">{skill.name}</h2>

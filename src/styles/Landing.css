@@ -208,7 +208,7 @@
   pointer-events: none;
   opacity: 0;
   background:
-    radial-gradient(140% 100% at 0% 50%, rgba(255, 171, 96, 0.14), rgba(255, 171, 96, 0) 72%),
+    radial-gradient(140% 100% at var(--mouse-x, 0%) var(--mouse-y, 50%), rgba(255, 171, 96, 0.14), rgba(255, 171, 96, 0) 72%),
     linear-gradient(90deg, rgba(255, 164, 86, 0.09), rgba(255, 164, 86, 0) 62%);
   mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, transparent 100%);
   transition: opacity 200ms ease-out;
@@ -397,6 +397,16 @@
   .land-featured-columns .land-featured-rail:last-child {
     border-left: none;
     padding-left: 0;
+  }
+  .land-hero-split {
+    gap: var(--space-xl);
+  }
+  .land-hero-terminal-body {
+    padding: 1rem 1.1rem 1.1rem;
+  }
+  .land-hero-terminal-output {
+    font-size: 0.67rem;
+    padding-left: 0.9rem;
   }
 }
 @media (max-width: 768px) {

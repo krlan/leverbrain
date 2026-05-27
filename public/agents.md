@@ -111,6 +111,7 @@ const client = new LeverbrainClient({ wallet, rpc })
 const skills = await client.search('deep research')
 const receipt = await client.purchase('anthropics/skill-creator')
 const files = await client.download('anthropics/skill-creator')
+const config = await client.getConfig('shark', 'grape')
 ```
 
 ## Rate limits

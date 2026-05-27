@@ -102,7 +102,8 @@ export default function DocsPage() {
               <h3>Commands</h3>
               <div className="docs-code">
                 <pre>{`leverbrain search <query>           # Search marketplace
-leverbrain get <author/slug>        # Get listing JSON
+leverbrain get <author/slug>        # Download selected skill
+leverbrain cfg <handle/name>        # Download lab configs
 leverbrain purchases --wallet <pk>  # List purchase receipts
 leverbrain publish ./my-skill \\
   --wallet <PUBLISHER_WALLET> \\
@@ -116,7 +117,8 @@ leverbrain publish ./my-skill \\
               <p>Three quick CLI checks:</p>
               <ol>
                 <li>Search listings: <code>leverbrain search deep-research</code></li>
-                <li>Read full listing JSON: <code>leverbrain get &lt;author&gt;/&lt;slug-from-search&gt;</code></li>
+                <li>Download a skill package: <code>leverbrain get &lt;author&gt;/&lt;slug-from-search&gt;</code></li>
+                <li>Download saved configuration: <code>leverbrain cfg &lt;handle&gt;/&lt;config-name&gt;</code></li>
                 <li>Check receipts for a wallet: <code>leverbrain purchases --wallet &lt;BUYER_WALLET&gt;</code></li>
               </ol>
               <p>
@@ -295,7 +297,10 @@ const skills = await client.search('deep research')
 const listing = await client.getSkill('commandcodeai', 'cca-leads')
 
 // Pull receipts for a wallet
-const receipts = await client.getPurchasesByBuyer('<BUYER_WALLET>')`}</pre>
+const receipts = await client.getPurchasesByBuyer('<BUYER_WALLET>')
+
+// Fetch saved configuration
+const config = await client.getConfig('shark', 'grape')`}</pre>
               </div>
             </section>
 

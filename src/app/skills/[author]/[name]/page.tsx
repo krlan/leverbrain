@@ -48,6 +48,7 @@ interface EditableSkill {
     title: string
     items: { name: string; url: string }[]
   }[]
+  useCases?: string[]
 }
 
 interface EditFormState {
@@ -346,6 +347,7 @@ export default function SkillDetailPage() {
         overviewHtml: convexSkill.overviewHtml ?? staticSkill?.overviewHtml ?? undefined,
         imageUrl: convexSkill.imageUrl ?? staticSkill?.imageUrl ?? undefined,
         screenshots: staticSkill?.screenshots ?? undefined,
+        useCases: convexSkill.useCases ?? staticSkill?.useCases ?? undefined,
       }
     }
 
@@ -655,7 +657,7 @@ export default function SkillDetailPage() {
                           gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
                           gap: '16px'
                         }}>
-                          {convMeta.useCases.map((useCase, idx) => (
+                          {(skill.useCases || convMeta.useCases).map((useCase, idx) => (
                             <div key={idx} style={{
                               background: 'rgba(255, 255, 255, 0.01)',
                               border: '1px solid rgba(255, 255, 255, 0.03)',

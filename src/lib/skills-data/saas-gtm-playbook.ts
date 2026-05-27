@@ -35,6 +35,7 @@ Work through sections sequentially or jump to the module you need.`,
   createdAt: '2025-04-10',
   creatorWallet: 'CYVikdfqKK1SmPasR93k1p6CntrmqGW4YcoSYQQ2TeVp',
   fileUrl: 'https://github.com/leverbrain/leverbrain',
+  useCases: ["Map out a 90-day launch roadmap for new SaaS features.","Track funnel conversion benchmarks from registration to active user.","Execute channel distribution strategies across ProductHunt, X, and newsletters."],
   overviewHtml: `
     <div class="skill-enrichment">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 32px; border: 1px solid var(--color-border);">

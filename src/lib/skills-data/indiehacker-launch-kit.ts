@@ -36,6 +36,7 @@ A single markdown file you run from with all the posts, DMs, and submissions pre
   creatorWallet: 'CYVikdfqKK1SmPasR93k1p6CntrmqGW4YcoSYQQ2TeVp',
   fileUrl: 'https://github.com/leverbrain/leverbrain',
   imageUrl: '/images/skills/indie-launch.png',
+  useCases: ["Check off launch-readiness steps for ProductHunt and HackerNews.","Verify SEO metadata, OpenGraph tags, and speed indexes.","Draft launch announcements matching proven growth copywriting templates."],
   overviewHtml: `
     <div class="skill-enrichment">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 32px; border: 1px solid var(--color-border);">

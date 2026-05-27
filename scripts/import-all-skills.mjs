@@ -198,6 +198,94 @@ function generatePreviewHtml(title, slug) {
   `.trim()
 }
 
+let conversationalMetadataCache = null;
+
+function getHardcodedMetadata(slug) {
+  if (!conversationalMetadataCache) {
+    const metaPath = path.resolve(ROOT, 'src/lib/conversational-metadata.ts');
+    if (!fs.existsSync(metaPath)) {
+      conversationalMetadataCache = {};
+      return null;
+    }
+    const content = fs.readFileSync(metaPath, 'utf8');
+    let js = content
+      .replace(/export\s+const\s+CONVERSATIONAL_METADATA\s*:\s*Record<[\s\S]*?>\s*=\s*/g, 'globalThis.tempMeta = ')
+      .replace(/:\s*SkillMetadata/g, '')
+      .replace(/interface\s+SkillMetadata\s*\{[\s\S]*?\}/g, '')
+      .replace(/export\s+function\s+getConversationalOverview[\s\S]*$/g, '');
+    try {
+      new Function(js)();
+      conversationalMetadataCache = globalThis.tempMeta || {};
+    } catch (err) {
+      console.warn('Could not parse conversational-metadata.ts:', err.message);
+      conversationalMetadataCache = {};
+    }
+  }
+  return conversationalMetadataCache[slug];
+}
+
+function extractUseCases(slug, title, desc, readme) {
+  const hardcoded = getHardcodedMetadata(slug);
+  if (hardcoded && hardcoded.useCases) {
+    return hardcoded.useCases;
+  }
+
+  const useCases = [];
+  if (readme) {
+    const lines = readme.split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('-') || trimmed.startsWith('*') || /^\d+\./.test(trimmed)) {
+        const cleanItem = trimmed
+          .replace(/^[-*\d.]+\s+/, '') // strip bullet
+          .replace(/`([^`]+)`/g, '$1') // strip backticks
+          .replace(/\*\*([^*]+)\*\*/g, '$1') // strip bold
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // strip links
+          .trim();
+        
+        if (cleanItem && cleanItem.length > 10 && cleanItem.length < 150) {
+          let formatted = cleanItem.charAt(0).toUpperCase() + cleanItem.slice(1);
+          if (!formatted.endsWith('.') && !formatted.endsWith('!') && !formatted.endsWith('?')) {
+            formatted += '.';
+          }
+          if (!useCases.includes(formatted)) {
+            useCases.push(formatted);
+          }
+        }
+      }
+      if (useCases.length >= 3) break;
+    }
+  }
+
+  // Fallback to description sentences
+  if (useCases.length < 3) {
+    const sentences = desc.split(/[.!?]\s+/).map(s => s.trim()).filter(s => s.length > 5);
+    for (const s of sentences) {
+      let cleanSentence = s.charAt(0).toUpperCase() + s.slice(1);
+      if (!cleanSentence.endsWith('.') && !cleanSentence.endsWith('!') && !cleanSentence.endsWith('?')) {
+        cleanSentence += '.';
+      }
+      if (!useCases.includes(cleanSentence)) {
+        useCases.push(cleanSentence);
+      }
+      if (useCases.length >= 3) break;
+    }
+  }
+
+  // Absolute fallback
+  const defaultUseCases = [
+    `Automate repetitive ${title.toLowerCase()} development routines.`,
+    `Standardize workspace output and document generation for ${title.toLowerCase()}.`,
+    `Integrate advanced ${title.toLowerCase()} model directives into your agent pipeline.`
+  ];
+
+  while (useCases.length < 3) {
+    useCases.push(defaultUseCases[useCases.length]);
+  }
+
+  return useCases.slice(0, 3);
+}
+
 function processSkillDir(author, slug, folderPath, fileUrl) {
   let mdContent = ''
   let skillFilePath = path.join(folderPath, 'SKILL.md')
@@ -261,6 +349,7 @@ function processSkillDir(author, slug, folderPath, fileUrl) {
   }
 
   const variableName = slug.replace(/-([a-z0-9])/g, g => g[1].toUpperCase())
+  const useCases = extractUseCases(slug, title, desc, readme)
   
   const tsContent = `import { SkillListing } from '../skills-data'
 
@@ -284,6 +373,7 @@ export const ${variableName}: SkillListing = {
   createdAt: '${new Date().toISOString().slice(0, 10)}',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: '${fileUrl}',
+  useCases: ${JSON.stringify(useCases)},
   overviewHtml: ${JSON.stringify(overviewHtml)},
   previewHtml: ${JSON.stringify(previewHtml)}
 }
@@ -477,6 +567,7 @@ export interface SkillListing {
   previewHtml?: string
   overviewHtml?: string
   imageUrl?: string
+  useCases?: string[]
   screenshots?: {
     title: string
     items: { name: string; url: string }[]

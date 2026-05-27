@@ -100,6 +100,7 @@ export const upsertSkill = mutation({
     overviewHtml: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
     createdAt: v.optional(v.string()),
+    useCases: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const existing = await ctx.db
@@ -136,6 +137,7 @@ export const publishSkill = mutation({
     imageUrl: v.optional(v.string()),
     fileUrl: v.optional(v.string()),
     isPrivate: v.optional(v.boolean()),
+    useCases: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const author = args.author.trim().toLowerCase();
@@ -201,6 +203,7 @@ export const publishSkill = mutation({
       featured: existing?.featured ?? false,
       createdAt: existing?.createdAt ?? nowIso,
       isPrivate: args.isPrivate ?? false,
+      useCases: args.useCases,
     };
 
     if (existing) {

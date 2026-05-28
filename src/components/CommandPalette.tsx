@@ -33,7 +33,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const convexSkills = useQuery(api.skills.listSkills, {})
+  const convexSkills = useQuery(api.skills.listCustomSkills, {})
 
   const searchableSkills = mergeSkillPool(convexSkills)
   const normalizedQuery = query.trim().toLowerCase()

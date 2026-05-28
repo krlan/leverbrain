@@ -5,6 +5,11 @@ import { v } from "convex/values";
    Skills — queries
    ───────────────────────────────────────────── */
 
+function stripHeavyFields(skill: any) {
+  const { readme, previewHtml, overviewHtml, ...rest } = skill;
+  return rest;
+}
+
 export const listSkills = query({
   args: {
     category: v.optional(v.string()),
@@ -23,7 +28,17 @@ export const listSkills = query({
     if (args.featured) {
       skills = skills.filter((s) => s.featured === true);
     }
-    return skills.filter((s) => s.isPrivate !== true);
+    return skills.filter((s) => s.isPrivate !== true).map(stripHeavyFields);
+  },
+});
+
+export const listCustomSkills = query({
+  args: {},
+  handler: async (ctx) => {
+    const skills = await ctx.db.query("skills").collect();
+    return skills
+      .filter((s) => s.isPrivate !== true && s.isSeeded !== true)
+      .map(stripHeavyFields);
   },
 });
 
@@ -48,26 +63,29 @@ export const searchSkills = query({
     const q = args.query.toLowerCase().trim();
     if (!q) return [];
     const all = await ctx.db.query("skills").collect();
-    return all.filter(
-      (s) =>
-        s.isPrivate !== true &&
-        (s.name.toLowerCase().includes(q) ||
-        s.tagline.toLowerCase().includes(q) ||
-        s.description.toLowerCase().includes(q) ||
-        s.tags.some((t) => t.toLowerCase().includes(q)) ||
-        s.author.toLowerCase().includes(q) ||
-        s.category.toLowerCase().includes(q))
-    );
+    return all
+      .filter(
+        (s) =>
+          s.isPrivate !== true &&
+          (s.name.toLowerCase().includes(q) ||
+          s.tagline.toLowerCase().includes(q) ||
+          s.description.toLowerCase().includes(q) ||
+          s.tags.some((t) => t.toLowerCase().includes(q)) ||
+          s.author.toLowerCase().includes(q) ||
+          s.category.toLowerCase().includes(q))
+      )
+      .map(stripHeavyFields);
   },
 });
 
 export const getSkillsByAuthor = query({
   args: { author: v.string() },
   handler: async (ctx, args) => {
-    return await ctx.db
+    const skills = await ctx.db
       .query("skills")
       .withIndex("by_author", (q) => q.eq("author", args.author))
       .collect();
+    return skills.map(stripHeavyFields);
   },
 });
 
@@ -102,6 +120,7 @@ export const upsertSkill = mutation({
     createdAt: v.optional(v.string()),
     useCases: v.optional(v.array(v.string())),
     exampleUsage: v.optional(v.string()),
+    isSeeded: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const existing = await ctx.db
@@ -207,6 +226,7 @@ export const publishSkill = mutation({
       isPrivate: args.isPrivate ?? false,
       useCases: args.useCases,
       exampleUsage: args.exampleUsage,
+      isSeeded: false,
     };
 
     if (existing) {

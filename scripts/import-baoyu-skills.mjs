@@ -453,6 +453,8 @@ export interface SkillListing {
   previewHtml?: string
   overviewHtml?: string
   imageUrl?: string
+  useCases?: string[]
+  exampleUsage?: string
   screenshots?: {
     title: string
     items: { name: string; url: string }[]

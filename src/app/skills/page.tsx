@@ -117,7 +117,7 @@ function PriceTag({ price }: { price: string }) {
 
 function SkillsContent() {
   const searchParams = useSearchParams()
-  const convexSkills = useQuery(api.skills.listSkills, {})
+  const convexSkills = useQuery(api.skills.listCustomSkills, {})
   const [search, setSearch] = useState('')
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {

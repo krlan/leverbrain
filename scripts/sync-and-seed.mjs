@@ -127,6 +127,8 @@ async function main() {
       imageUrl: skill.imageUrl,
       createdAt: skill.createdAt || new Date().toISOString().slice(0, 10),
       useCases: skill.useCases,
+      exampleUsage: skill.exampleUsage,
+      isSeeded: true,
     }
 
     try {

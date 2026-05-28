@@ -76,14 +76,42 @@ function parseFrontmatter(source) {
 
   const lines = yamlStr.split('\n')
   const metadata = {}
+  let currentKey = null
+  let currentValue = []
+  let isFoldedBlock = false
+
   for (const line of lines) {
     const trimmed = line.trim()
     if (!trimmed || trimmed.startsWith('#')) continue
-    if (trimmed.startsWith('-') || trimmed.includes(': ') === false) continue
-    const colonIdx = trimmed.indexOf(':')
-    const key = trimmed.slice(0, colonIdx).trim()
-    const val = trimmed.slice(colonIdx + 1).trim()
-    metadata[key] = val.replace(/^['"]|['"]$/g, '') // strip quotes
+
+    // Check if it starts a new key: value
+    const matchKeyVal = line.match(/^([a-zA-Z0-9_-]+)\s*:\s*(.*)$/)
+    if (matchKeyVal) {
+      // Save previous key if any
+      if (currentKey) {
+        let valStr = currentValue.join(isFoldedBlock ? ' ' : '\n').trim()
+        metadata[currentKey] = valStr.replace(/^['"]|['"]$/g, '')
+      }
+      currentKey = matchKeyVal[1].trim()
+      const rest = matchKeyVal[2].trim()
+      if (rest === '>' || rest === '|') {
+        isFoldedBlock = rest === '>'
+        currentValue = []
+      } else {
+        isFoldedBlock = false
+        currentValue = [rest]
+      }
+    } else {
+      // It's a continuation of the previous value
+      if (currentKey) {
+        currentValue.push(line.trim())
+      }
+    }
+  }
+  
+  if (currentKey) {
+    let valStr = currentValue.join(isFoldedBlock ? ' ' : '\n').trim()
+    metadata[currentKey] = valStr.replace(/^['"]|['"]$/g, '')
   }
 
   return { metadata, readme }
@@ -224,59 +252,203 @@ function getHardcodedMetadata(slug) {
   return conversationalMetadataCache[slug];
 }
 
-function extractUseCases(slug, title, desc, readme) {
+function extractDescriptionFromReadme(readme) {
+  if (!readme) return '';
+  const paragraphs = readme.split('\n\n');
+  for (let p of paragraphs) {
+    p = p.trim();
+    if (!p) continue;
+    // Skip headers
+    if (p.startsWith('#')) continue;
+    // Skip lists
+    if (p.startsWith('-') || p.startsWith('*') || p.startsWith('1.')) continue;
+    // Skip code blocks
+    if (p.startsWith('```')) continue;
+    // Clean up markdown formatting (bold, links, code tags)
+    let clean = p
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (clean.length > 30 && clean.length < 400) {
+      return clean;
+    }
+  }
+  return '';
+}
+
+function extractWhenToUseFromReadme(readme) {
+  if (!readme) return '';
+  const match = readme.match(/## (?:When to Use|When to Use This Skill|适用场景|When to use)[\s\S]*?\n\n([\s\S]*?)(?:\n\n##|$)/i);
+  if (match) {
+    const lines = match[1].split('\n').map(l => l.trim()).filter(Boolean);
+    const paragraphs = [];
+    for (const line of lines) {
+      if (line.startsWith('#') || line.startsWith('`')) break;
+      paragraphs.push(line);
+    }
+    const merged = paragraphs.join(' ').replace(/\s+/g, ' ').trim();
+    if (merged.length > 15 && merged.length < 600) {
+      let clean = merged
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/\*\*([^*]+)\*\*/g, '$1')
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+      return clean;
+    }
+  }
+  return '';
+}
+
+function enrichWithHumor(title, desc, tagline, slug) {
+  const s = slug.toLowerCase();
+  const t = title.toLowerCase();
+  const d = desc.toLowerCase();
+
+  // If tagline and desc are identical, shorten/tweak the tagline
+  if (tagline.trim().toLowerCase() === desc.trim().toLowerCase()) {
+    if (tagline.length > 80) {
+      tagline = tagline.slice(0, 77) + '...';
+    }
+  }
+
+  // Remove generic stubs completely and replace with something funny/conversational
+  if (desc.includes('Guides end-to-end execution of')) {
+    desc = `Helps you automate and manage your ${title} workflow directly in your local environment.`;
+  }
+
+  let humor = '';
+  if (s.includes('audit') || s.includes('security') || s.includes('scan') || s.includes('yara') || s.includes('semgrep') || s.includes('insecure')) {
+    humor = "Point it at your code, watch it probe for bugs, and hope nothing catches fire in production.";
+  } else if (s.includes('git') || s.includes('commit') || s.includes('branch') || s.includes('pr') || s.includes('merge')) {
+    humor = "Because git reflog should be a historical curiosity, not your primary workflow tool.";
+  } else if (s.includes('test') || s.includes('tdd') || s.includes('verification') || s.includes('check') || s.includes('e2e')) {
+    humor = "Saves you from the inevitable frustration of screaming at your test runner at 2 AM.";
+  } else if (s.includes('debug') || s.includes('diagnose') || s.includes('trouble')) {
+    humor = "Helps you track down that one typo causing a stack overflow, without losing your sanity.";
+  } else if (s.includes('design') || s.includes('theme') || s.includes('canvas') || s.includes('art') || s.includes('css')) {
+    humor = "Create premium visual layouts directly in your terminal, with zero multiplayer cursor spam.";
+  } else if (s.includes('document') || s.includes('pdf') || s.includes('docx') || s.includes('xlsx') || s.includes('excel') || s.includes('text') || s.includes('article') || s.includes('write')) {
+    humor = "Let the AI handle the boring formatting while you take full credit for the presentation.";
+  } else if (s.includes('marketing') || s.includes('pricing') || s.includes('launch') || s.includes('brand') || s.includes('business')) {
+    humor = "Make your startup look like a venture-backed decacorn before you've even written a single line of backend code.";
+  } else if (s.includes('career') || s.includes('resume') || s.includes('interview')) {
+    humor = "Tailor your credentials to look like the ultimate senior architect (even if you just copy-paste from StackOverflow).";
+  } else if (s.includes('mcp') || s.includes('api') || s.includes('database') || s.includes('db') || s.includes('railway') || s.includes('pocketbase') || s.includes('sentry')) {
+    humor = "Orchestrate your backend infrastructure without clicking through 50 web console tabs.";
+  } else if (s.includes('productivity') || s.includes('obsidian') || s.includes('note') || s.includes('task') || s.includes('triage') || s.includes('agenda')) {
+    humor = "Perfect for looking extremely organized while you're actually just procrastinating.";
+  } else if (s.includes('video') || s.includes('audio') || s.includes('media') || s.includes('speech')) {
+    humor = "Process complex media pipelines without spending half your day on StackOverflow looking up ffmpeg flags.";
+  } else {
+    humor = "Because writing all of this boilerplate manually is a cry for help.";
+  }
+
+  if (humor && !desc.includes(humor)) {
+    desc = `${desc.trim()} ${humor}`;
+  }
+
+  if (tagline.length > 120) {
+    tagline = tagline.slice(0, 117) + '...';
+  } else if (!tagline.endsWith('.')) {
+    tagline = tagline + '.';
+  }
+
+  return { desc, tagline };
+}
+
+function extractUseCases(slug, title, desc, readme, subSkills, tagline = '') {
   const hardcoded = getHardcodedMetadata(slug);
   if (hardcoded && hardcoded.useCases) {
     return hardcoded.useCases;
   }
 
+  if (subSkills && subSkills.length > 0) {
+    return subSkills.slice(0, 3).map(s => {
+      let text = s.desc.split(/[.!?]/)[0].trim();
+      if (text.toLowerCase().includes('should be used when') || text.length > 100 || text.length < 10) {
+        text = `Automate ${s.name.toLowerCase()} workflows in your workspace`;
+      }
+      if (!text.endsWith('.')) text += '.';
+      return text;
+    });
+  }
+
   const useCases = [];
   if (readme) {
     const lines = readme.split('\n');
+    let currentHeader = '';
+    let skipSection = false;
+    
+    const excludeHeaders = [
+      'prerequisites', 'prerequisite', 'installation', 'quick start', 'usage', 
+      'requirements', 'testing', 'ci integration', 'limitations', 'references', 
+      'acknowledgments', 'setup', 'dependencies', 'how to install', 'how to use', 
+      'configuration', 'prerequisites/setup', 'run tests', 'license', 'commands', 
+      'options', 'build', 'author', 'license'
+    ];
+
     for (const line of lines) {
       const trimmed = line.trim();
-      if (trimmed.startsWith('-') || trimmed.startsWith('*') || /^\d+\./.test(trimmed)) {
+      if (trimmed.startsWith('#')) {
+        currentHeader = trimmed.replace(/^#+\s+/, '').trim().toLowerCase();
+        skipSection = excludeHeaders.some(h => currentHeader.includes(h));
+      } else if (!skipSection && (trimmed.startsWith('-') || trimmed.startsWith('*') || /^\d+\./.test(trimmed))) {
         const cleanItem = trimmed
-          .replace(/^[-*\d.]+\s+/, '') // strip bullet
-          .replace(/`([^`]+)`/g, '$1') // strip backticks
-          .replace(/\*\*([^*]+)\*\*/g, '$1') // strip bold
-          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // strip links
+          .replace(/^[-*\d.]+\s+/, '')
+          .replace(/`([^`]+)`/g, '$1')
+          .replace(/\*\*([^*]+)\*\*/g, '$1')
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
           .trim();
         
-        if (cleanItem && cleanItem.length > 10 && cleanItem.length < 150) {
-          let formatted = cleanItem.charAt(0).toUpperCase() + cleanItem.slice(1);
-          if (!formatted.endsWith('.') && !formatted.endsWith('!') && !formatted.endsWith('?')) {
-            formatted += '.';
-          }
-          if (!useCases.includes(formatted)) {
-            useCases.push(formatted);
+        if (cleanItem && cleanItem.length > 15 && cleanItem.length < 150) {
+          if (!cleanItem.includes('npm i') && 
+              !cleanItem.includes('pip install') && 
+              !cleanItem.includes('git clone') && 
+              !cleanItem.includes('Author:') && 
+              !cleanItem.includes('https://') &&
+              !cleanItem.includes('/') &&
+              !cleanItem.toLowerCase().startsWith('note:')) {
+            let formatted = cleanItem.charAt(0).toUpperCase() + cleanItem.slice(1);
+            if (!formatted.endsWith('.') && !formatted.endsWith('!') && !formatted.endsWith('?')) {
+              formatted += '.';
+            }
+            if (!useCases.includes(formatted)) {
+              useCases.push(formatted);
+            }
           }
         }
       }
-      if (useCases.length >= 3) break;
     }
   }
 
-  // Fallback to description sentences
   if (useCases.length < 3) {
-    const sentences = desc.split(/[.!?]\s+/).map(s => s.trim()).filter(s => s.length > 5);
+    const sentences = desc.split(/[.!?]\s+/).map(s => s.trim()).filter(s => s.length > 10 && s.length < 150);
     for (const s of sentences) {
       let cleanSentence = s.charAt(0).toUpperCase() + s.slice(1);
       if (!cleanSentence.endsWith('.') && !cleanSentence.endsWith('!') && !cleanSentence.endsWith('?')) {
         cleanSentence += '.';
       }
-      if (!useCases.includes(cleanSentence)) {
+      const lowerSentence = cleanSentence.toLowerCase();
+      const lowerTagline = tagline.toLowerCase();
+      const lowerTitle = title.toLowerCase();
+      if (!useCases.includes(cleanSentence) && 
+          !cleanSentence.includes('Guides end-to-end') &&
+          lowerSentence !== lowerTagline &&
+          !lowerTagline.includes(lowerSentence) &&
+          !lowerSentence.includes(lowerTagline) &&
+          !lowerSentence.includes(lowerTitle)) {
         useCases.push(cleanSentence);
       }
       if (useCases.length >= 3) break;
     }
   }
 
-  // Absolute fallback
+  const sName = title.toLowerCase();
   const defaultUseCases = [
-    `Automate repetitive ${title.toLowerCase()} development routines.`,
-    `Standardize workspace output and document generation for ${title.toLowerCase()}.`,
-    `Integrate advanced ${title.toLowerCase()} model directives into your agent pipeline.`
+    `Streamline my daily ${sName} development and orchestration tasks without losing my sanity.`,
+    `Automate boring ${sName} document processing and routine checks while I drink coffee.`,
+    `Tackle complex ${sName} setup challenges and let the AI agent do the heavy lifting.`
   ];
 
   while (useCases.length < 3) {
@@ -286,60 +458,274 @@ function extractUseCases(slug, title, desc, readme) {
   return useCases.slice(0, 3);
 }
 
-function generateExampleUsage(slug, name, description, tags) {
-  const s = slug.toLowerCase();
-  const d = (description || '').toLowerCase();
+function generateExampleUsage(slug, name, description, tags, subSkills) {
+  let usage = '';
+  if (subSkills && subSkills.length > 0) {
+    const firstSub = subSkills[0].name.toLowerCase();
+    usage = `Automate my ${firstSub} workflow routines`;
+  } else {
+    const s = slug.toLowerCase();
+    const d = (description || '').toLowerCase();
 
-  if (s.includes('audit') || (s.includes('security') && !s.includes('review'))) return `Run a security audit on my codebase using ${name}`;
-  if (s.includes('review') && (s.includes('code') || s.includes('pr'))) return `Review my latest code changes before I merge`;
-  if (s.includes('review')) return `Get a detailed review of my work with ${name}`;
-  if (s.includes('slide') || s.includes('deck') || s.includes('pptx')) return `Generate a slide deck for my project presentation`;
-  if (s.includes('image') && s.includes('gen')) return `Generate custom images for my project`;
-  if (s.includes('comic')) return `Turn my story into a visual comic`;
-  if (s.includes('diagram')) return `Generate a system architecture diagram for my project`;
-  if (s.includes('infographic')) return `Create an infographic visualising my report data`;
-  if (s.includes('translate')) return `Translate my document to another language`;
-  if (s.includes('markdown') && s.includes('html')) return `Convert my markdown docs to styled HTML pages`;
-  if (s.includes('url') && s.includes('markdown')) return `Convert a URL into clean markdown for my notes`;
-  if (s.includes('pdf')) return `Extract and process content from my PDF files`;
-  if (s.includes('compress')) return `Compress my images without losing quality`;
-  if (s.includes('post') && s.includes('wechat')) return `Publish my content to my WeChat account`;
-  if (s.includes('post') && s.includes('weibo')) return `Post my content to my Weibo account`;
-  if (s.includes('post') && (s.includes('-x') || s.includes('twitter'))) return `Draft and publish a thread to my X account`;
-  if (s.includes('crosspost')) return `Cross-post my latest content to all my social channels`;
-  if (s.includes('test') && s.includes('e2e')) return `Write end-to-end tests for my critical user flows`;
-  if (s.includes('test') || s.includes('tdd')) return `Write tests for my new feature`;
-  if (s.includes('mutation')) return `Run mutation tests to find gaps in my test suite`;
-  if (s.includes('git') && s.includes('clean')) return `Clean up my git history and remove stale branches`;
-  if (s.includes('git')) return `Streamline my git workflow for my project`;
-  if (s.includes('mcp')) return `Build an MCP server integration for my custom tool`;
-  if (s.includes('api')) return `Design and document my API with best practices`;
-  if (s.includes('database') || s.includes('db')) return `Design and query the database schema for my app`;
-  if (s.includes('debug') || s.includes('diagnose')) return `Debug the issue in my current codebase`;
-  if (s.includes('setup') || s.includes('scaffold')) return `Set up ${name} for my project`;
-  if (s.includes('marketing')) return `Create a marketing plan for my product launch`;
-  if (s.includes('investor')) return `Prepare investor materials for my fundraising round`;
-  if (s.includes('launch')) return `Plan the launch strategy for my product`;
-  if (s.includes('research')) return `Research my target market and competitive landscape`;
-  if (s.includes('pricing')) return `Design the pricing model for my product`;
-  if (s.includes('brand')) return `Define brand guidelines and voice for my company`;
-  if (s.includes('agent')) return `Set up an AI agent workflow for my task`;
-  if (s.includes('workflow')) return `Automate my manual workflow with an agent`;
-  if (s.includes('article') || s.includes('content')) return `Write a polished article for my blog`;
-  if (s.includes('design')) return `Improve the design of my project`;
-  if (s.includes('video')) return `Process and edit my video files`;
-  if (s.includes('media') || s.includes('image')) return `Process and optimise my media files`;
+    if (s.includes('audit') || (s.includes('security') && !s.includes('review'))) {
+      usage = `Run a security audit on my codebase using ${name}`;
+    } else if (s.includes('review') && (s.includes('code') || s.includes('pr'))) {
+      usage = `Review my latest code changes before I merge`;
+    } else if (s.includes('review')) {
+      usage = `Get a detailed review of my work with ${name}`;
+    } else if (s.includes('slide') || s.includes('deck') || s.includes('pptx')) {
+      usage = `Generate a slide deck for my project presentation`;
+    } else if (s.includes('image') && s.includes('gen')) {
+      usage = `Generate custom images for my project`;
+    } else if (s.includes('comic')) {
+      usage = `Turn my story into a visual comic`;
+    } else if (s.includes('diagram')) {
+      usage = `Generate a system architecture diagram for my project`;
+    } else if (s.includes('infographic')) {
+      usage = `Create an infographic visualising my report data`;
+    } else if (s.includes('translate')) {
+      usage = `Translate my document to another language`;
+    } else if (s.includes('markdown') && s.includes('html')) {
+      usage = `Convert my markdown docs to styled HTML pages`;
+    } else if (s.includes('url') && s.includes('markdown')) {
+      usage = `Convert a URL into clean markdown for my notes`;
+    } else if (s.includes('pdf')) {
+      usage = `Extract and process content from my PDF files`;
+    } else if (s.includes('compress')) {
+      usage = `Compress my images without losing quality`;
+    } else if (s.includes('post') && s.includes('wechat')) {
+      usage = `Publish my content to my WeChat account`;
+    } else if (s.includes('post') && s.includes('weibo')) {
+      usage = `Post my content to my Weibo account`;
+    } else if (s.includes('post') && (s.includes('-x') || s.includes('twitter'))) {
+      usage = `Draft and publish a thread to my X account`;
+    } else if (s.includes('crosspost')) {
+      usage = `Cross-post my latest content to all my social channels`;
+    } else if (s.includes('test') && s.includes('e2e')) {
+      usage = `Write end-to-end tests for my critical user flows`;
+    } else if (s.includes('test') || s.includes('tdd')) {
+      usage = `Write tests for my new feature`;
+    } else if (s.includes('mutation')) {
+      usage = `Run mutation tests to find gaps in my test suite`;
+    } else if (s.includes('git') && s.includes('clean')) {
+      usage = `Clean up my git history and remove stale branches`;
+    } else if (s.includes('git')) {
+      usage = `Streamline my git workflow for my project`;
+    } else if (s.includes('mcp')) {
+      usage = `Build an MCP server integration for my custom tool`;
+    } else if (s.includes('api')) {
+      usage = `Design and document my API with best practices`;
+    } else if (s.includes('database') || s.includes('db')) {
+      usage = `Design and query the database schema for my app`;
+    } else if (s.includes('debug') || s.includes('diagnose')) {
+      usage = `Debug the issue in my current codebase`;
+    } else if (s.includes('setup') || s.includes('scaffold')) {
+      usage = `Set up ${name} for my project`;
+    } else if (s.includes('marketing')) {
+      usage = `Create a marketing plan for my product launch`;
+    } else if (s.includes('investor')) {
+      usage = `Prepare investor materials for my fundraising round`;
+    } else if (s.includes('launch')) {
+      usage = `Plan the launch strategy for my product`;
+    } else if (s.includes('research')) {
+      usage = `Research my target market and competitive landscape`;
+    } else if (s.includes('pricing')) {
+      usage = `Design the pricing model for my product`;
+    } else if (s.includes('brand')) {
+      usage = `Define brand guidelines and voice for my company`;
+    } else if (s.includes('agent')) {
+      usage = `Set up an AI agent workflow for my task`;
+    } else if (s.includes('workflow')) {
+      usage = `Automate my manual workflow with an agent`;
+    } else if (s.includes('article') || s.includes('content')) {
+      usage = `Write a polished article for my blog`;
+    } else if (s.includes('design')) {
+      usage = `Improve the design of my project`;
+    } else if (s.includes('video')) {
+      usage = `Process and edit my video files`;
+    } else if (s.includes('media') || s.includes('image')) {
+      usage = `Process and optimise my media files`;
+    } else {
+      const verb = d.includes('generat') ? 'Generate' :
+                   d.includes('analys') || d.includes('analyz') ? 'Analyse' :
+                   d.includes('convert') ? 'Convert' :
+                   d.includes('extract') ? 'Extract' :
+                   d.includes('build') ? 'Build' :
+                   d.includes('creat') ? 'Create' :
+                   d.includes('improv') ? 'Improve' :
+                   d.includes('automat') ? 'Automate' : 'Apply';
+      const target = name.charAt(0).toLowerCase() + name.slice(1);
+      usage = `${verb} ${target} for my project`;
+    }
+  }
 
-  const verb = d.includes('generat') ? 'Generate' :
-               d.includes('analys') || d.includes('analyz') ? 'Analyse' :
-               d.includes('convert') ? 'Convert' :
-               d.includes('extract') ? 'Extract' :
-               d.includes('build') ? 'Build' :
-               d.includes('creat') ? 'Create' :
-               d.includes('improv') ? 'Improve' :
-               d.includes('automat') ? 'Automate' : 'Apply';
-  const target = name.charAt(0).toLowerCase() + name.slice(1);
-  return `${verb} ${target} for my project`;
+  return usage.replace(/\byour\b/gi, 'my').replace(/\byou\b/gi, 'I');
+}
+
+function compileCategoryMarkdown(slug, folderPath) {
+  if (!fs.existsSync(folderPath)) return null;
+  const files = fs.readdirSync(folderPath);
+  const subdirs = files.filter(f => {
+    const p = path.join(folderPath, f);
+    return fs.statSync(p).isDirectory() && f !== 'references' && f !== '.claude-plugin';
+  });
+
+  if (subdirs.length === 0) {
+    return null;
+  }
+
+  const subSkills = [];
+  for (const dir of subdirs) {
+    const subPath = path.join(folderPath, dir);
+    let subSkillFilePath = path.join(subPath, 'SKILL.md');
+    if (!fs.existsSync(subSkillFilePath)) {
+      subSkillFilePath = path.join(subPath, 'README.md');
+    }
+    if (fs.existsSync(subSkillFilePath)) {
+      const content = fs.readFileSync(subSkillFilePath, 'utf8');
+      const match = content.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+      let metadata = {};
+      if (match) {
+        const yamlStr = match[1];
+        const lines = yamlStr.split('\n');
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed.startsWith('#')) continue;
+          if (trimmed.startsWith('-') || trimmed.includes(': ') === false) continue;
+          const colonIdx = trimmed.indexOf(':');
+          const key = trimmed.slice(0, colonIdx).trim();
+          const val = trimmed.slice(colonIdx + 1).trim();
+          metadata[key] = val.replace(/^['"]|['"]$/g, '');
+        }
+      }
+      const name = metadata.name || formatTitle(dir);
+      const desc = metadata.description || `Guides end-to-end execution of ${name} workflow routines.`;
+      subSkills.push({ slug: dir, name, desc });
+    }
+  }
+
+  const title = formatTitle(slug);
+  const count = subSkills.length;
+  if (count === 0) return null;
+
+  // Custom humorous/conversational category taglines and descriptions
+  let tagline = `A workspace toolkit of ${count} ready-to-run automation routines for ${title.toLowerCase()}.`;
+  let desc = `Automates a wide range of ${title.toLowerCase()} workflows, including ${subSkills.slice(0, 3).map(s => s.name).join(', ')}, and more in your local environment.`;
+
+  if (slug === 'security') {
+    tagline = `Audits, penetration tests, and security checks: ${count} specialized workflows to harden your setup.`;
+    desc = `Automate Active Directory audits, API fuzzing, broken authentication, IDOR checks, and web vulnerabilities using Claude Code workspace directives. Just point the AI and watch it probe for gaps (and hope nothing breaks in prod).`;
+  } else if (slug === 'development') {
+    tagline = `Bootstrap, test, refactor, and review: ${count} workflows to accelerate your coding routines.`;
+    desc = `Speed up development iterations, generate tests, structure code architecture, and review diffs automatically. It's like having a junior developer who doesn't complain about coffee.`;
+  } else if (slug === 'database') {
+    tagline = `Schema migrations, backups, and query tuning: ${count} tools to manage your database.`;
+    desc = `Deploy database migrations, design SQL schemas, audit indexing strategies, and run queries. Helps you orchestrate database systems directly from your workspace without the usual headaches.`;
+  } else if (slug === 'git') {
+    tagline = `Clean commits, branches, and merges: ${count} Git workflow assistants in one package.`;
+    desc = `Organize git workflows, generate conventional commits, automate branch cleanups, and manage merges. Because git reflog should be your absolute last resort.`;
+  } else if (slug === 'marketing') {
+    tagline = `SEO optimization, copy generation, and funnel audits: ${count} tools to boost your growth engine.`;
+    desc = `Run SEO analyses, construct landing page funnels, draft targeted copy, and structure business outreach models automatically. Now you can look busy while the agent does the copywriting.`;
+  } else if (slug === 'career') {
+    tagline = `Resume tailoring, interview preparation, and job tracking: ${count} templates to launch your career.`;
+    desc = `Format resume variations, review interview questions, generate cover letters, and organize job application logs. Dress for the job you want: prompt engineer.`;
+  } else if (slug === 'productivity') {
+    tagline = `Time tracking, notes compilation, and task triaging: ${count} routines to reclaim your day.`;
+    desc = `Organize task prioritisation, structure meeting agendas, format obsidian vault notes, and compile todo lists. Perfect for keeping your workflow clean and your procrastination hidden.`;
+  } else if (slug === 'analytics') {
+    tagline = `Data aggregation, metric dashboards, and audit logs: ${count} analysis workflows.`;
+    desc = `Audit pipeline performance, track business metrics, aggregate logs, and parse analytics events directly in your terminal workspace. Keep track of what your apps are doing (before your server bills explode).`;
+  } else if (slug === 'ai-maestro') {
+    tagline = `Orchestrate agents, coordinate tasks, and manage context: ${count} orchestrations.`;
+    desc = `Manage complex multi-agent handoffs, system routing, and memory injection. Basically, you become the puppet master of a small army of bots, doing your bidding with varying degrees of success.`;
+  } else if (slug === 'ai-research') {
+    tagline = `Deep search, web scraping, and literature reviews: ${count} research assistants.`;
+    desc = `Automate academic searching, competition monitoring, patent lookups, and document synthesis. Let the AI read those dry 50-page PDFs while you skim the 1-page summary and pretend you read the whole thing.`;
+  } else if (slug === 'business-marketing') {
+    tagline = `Market size estimation, product positioning, and pitch prep: ${count} business tools.`;
+    desc = `Model financial forecasts, compile target customer personas, draft pitch decks, and optimize pricing tables. Make your startup look like a venture-backed decacorn before you've even written a single line of backend code.`;
+  } else if (slug === 'creative-design') {
+    tagline = `Visual styling, canvas components, and mockup layouts: ${count} design scripts.`;
+    desc = `Generate layouts, export SVG assets, structure theme presets, and review visual compliance. It's like having Figma in your terminal, but with 100% fewer multiplayer cursor spams and random notification pings.`;
+  } else if (slug === 'document-processing') {
+    tagline = `Parse PDFs, compile docx, and extract CSV tables: ${count} file handlers.`;
+    desc = `Convert and manipulate document formats, scrub metadata, format invoices, and extract structured tables. It's tedious work, which is exactly why you should make the AI do it while you take the credit.`;
+  } else if (slug === 'enterprise-communication') {
+    tagline = `Slack updates, email summaries, and corporate reports: ${count} comms bridges.`;
+    desc = `Draft project status updates, generate newsletters, format internal wiki pages, and summarize long Slack threads. Communicate with stakeholders in flawless corporate jargon without dying inside.`;
+  } else if (slug === 'media') {
+    tagline = `Compress images, slice audio, and process assets: ${count} media tools.`;
+    desc = `Optimize image sizes, convert audio formats, transcribe speech, and generate screenshots. Keep your site loading fast and your assets perfectly formatted, automatically.`;
+  } else if (slug === 'pocketbase') {
+    tagline = `Instant backend setup, auth configuration, and DB schemas: ${count} PocketBase scripts.`;
+    desc = `Initialize PocketBase databases, configure collection schemas, configure authentication rules, and deploy hooks. Build a fully functional backend in seconds and feel like a serverless wizard.`;
+  } else if (slug === 'railway') {
+    tagline = `Environment provisioning, service checks, and deployments: ${count} Railway helpers.`;
+    desc = `Deploy services, manage secrets, configure domain routing, and audit Railway resources directly from your terminal. Cloud infrastructure management for people who hate clicking around web consoles.`;
+  } else if (slug === 'scientific') {
+    tagline = `Data analysis, scientific modeling, and notebook helper: ${count} research tools.`;
+    desc = `Perform DNA sequence parsing, run physical simulations, build ML models with scikit-learn, and format LaTeX papers. Yes, your terminal now does actual rocket science (or at least looks like it does).`;
+  } else if (slug === 'sentry') {
+    tagline = `Error log monitoring, alert rules, and release tracking: ${count} Sentry integrations.`;
+    desc = `Configure Sentry alert thresholds, associate releases with git commits, and triage uncaught exceptions. Find out why production is on fire before your users start writing angry emails.`;
+  } else if (slug === 'sports') {
+    tagline = `Scrape stats, analyze performance, and model predictions: ${count} sports routines.`;
+    desc = `Fetch match history, parse athlete statistics, compile league tables, and run game simulations. Now you can use advanced machine learning to lose your fantasy league in style.`;
+  } else if (slug === 'utilities') {
+    tagline = `Cron scheduling, system cleanup, and path checkers: ${count} command-line utilities.`;
+    desc = `Automate shell aliases, clean temp folders, check environment paths, and encode/decode strings. The digital duct tape and WD-40 that holds your development workspace together.`;
+  } else if (slug === 'video') {
+    tagline = `Extract frames, concatenate clips, and generate previews: ${count} video scripts.`;
+    desc = `Transcode video files, generate thumbnail grids, and render micro-animations. It's like having ffmpeg, but you don't have to spend 4 hours on StackOverflow figuring out the flags.`;
+  } else if (slug === 'web-data') {
+    tagline = `Scrape web tables, parse JSON feeds, and fetch RSS: ${count} data harvesters.`;
+    desc = `Harvest unstructured web text, extract schema markup, monitor price changes, and follow RSS streams. Crawl the web for fun and profit without writing a single CSS selector.`;
+  } else if (slug === 'web-development') {
+    tagline = `Next.js, Tailwind, and React boilerplates: ${count} web dev templates.`;
+    desc = `Scaffold modern web applications, set up routing paths, configure linting gates, and build production assets. Go from empty directory to styled landing page before your coffee cools down.`;
+  } else if (slug === 'workflow-automation') {
+    tagline = `Triggers, webhooks, and multi-app syncs: ${count} automated workflows.`;
+    desc = `Bridge API integrations, trigger notifications, build webhook receivers, and sync folder changes. Sit back and watch your apps talk to each other while you take credit for the productivity boost.`;
+  }
+
+  let readme = `---
+name: ${title}
+description: ${desc}
+tagline: ${tagline}
+---
+
+# ${title} Suite
+
+Welcome to the **${title}** command center! Why write repetitive workflows from scratch when you can have an AI agent do it for you?
+
+This suite wraps **${count}** specialized automation routines designed to run directly inside your Claude Code workspace. From the mundane tasks to the complex orchestration, we've got you covered (so you can go back to sipping coffee or playing games while the AI does the heavy lifting).
+
+## What you get
+Here are the ${count} tools available in this suite:
+
+| Skill | Purpose |
+|-------|---------|
+`;
+
+  for (const sub of subSkills) {
+    const cleanDesc = sub.desc.replace(/\n/g, ' ').replace(/\|/g, '\\|');
+    readme += `| **${sub.name}** (\`${slug}/${sub.slug}\`) | ${cleanDesc} |\n`;
+  }
+
+  readme += `
+## How to use
+Run any of the sub-skills inside this category by specifying their path:
+\`\`\`bash
+npx -y leverbrain get davila7/${slug} <sub-skill-name>
+\`\`\`
+For example:
+\`\`\`bash
+npx -y leverbrain get davila7/${slug} ${subSkills[0]?.slug || 'default'}
+\`\`\`
+`;
+
+  return { readme, tagline, desc, subSkills };
 }
 
 function processSkillDir(author, slug, folderPath, fileUrl) {
@@ -349,23 +735,38 @@ function processSkillDir(author, slug, folderPath, fileUrl) {
     skillFilePath = path.join(folderPath, 'README.md')
   }
 
+  let subSkillsList = null
+  let customTagline = null
+  let customDesc = null
+
   if (fs.existsSync(skillFilePath)) {
     mdContent = fs.readFileSync(skillFilePath, 'utf8')
   } else {
-    // If no markdown file exists, create a default stub
-    mdContent = `---\nname: ${slug}\ndescription: Custom workflow skill for ${slug}.\n---\n# ${formatTitle(slug)}\n\nAuto-generated skill stub.`
+    const categoryResult = compileCategoryMarkdown(slug, folderPath)
+    if (categoryResult) {
+      mdContent = categoryResult.readme
+      customTagline = categoryResult.tagline
+      customDesc = categoryResult.desc
+      subSkillsList = categoryResult.subSkills
+    } else {
+      // If no markdown file exists, create a default stub
+      mdContent = `---\nname: ${slug}\ndescription: Custom workflow skill for ${slug}.\n---\n# ${formatTitle(slug)}\n\nAuto-generated skill stub.`
+    }
   }
 
   const { metadata, readme } = parseFrontmatter(mdContent)
   const title = metadata.name || formatTitle(slug)
-  const desc = metadata.description || `Guides end-to-end execution of ${title} workflow routines.`
+  let desc = customDesc || metadata.description || extractDescriptionFromReadme(readme) || `Guides end-to-end execution of ${title} workflow routines.`
   
-  let tagline = metadata.tagline || desc.split(/[.!?]/)[0]
-  if (tagline.length > 120) {
-    tagline = tagline.slice(0, 117) + '...'
-  } else if (!tagline.endsWith('.')) {
-    tagline = tagline + '.'
+  let tagline = customTagline || metadata.tagline
+  if (!tagline) {
+    const firstSentence = desc.split(/[.!?]/)[0].trim();
+    tagline = firstSentence;
   }
+
+  const enriched = enrichWithHumor(title, desc, tagline, slug)
+  desc = enriched.desc
+  tagline = enriched.tagline
 
   // Parse features
   const listMatch = readme.match(/## (?:What you get|What it does|Features|功能|特色)[\s\S]*?\n\n([\s\S]*?)(?:\n\n##|$)/i)
@@ -388,7 +789,7 @@ function processSkillDir(author, slug, folderPath, fileUrl) {
   }
   features = features.slice(0, 4)
 
-  let whenToUse = metadata.whenToUse || `Use when you need to automate ${title.toLowerCase()} processes.`
+  let whenToUse = metadata.whenToUse || extractWhenToUseFromReadme(readme) || `Use when you need to automate ${title.toLowerCase()} processes.`
   
   const overviewHtml = generateOverviewHtml(title, tagline, slug, features, desc)
   const previewHtml = generatePreviewHtml(title, slug)
@@ -405,11 +806,11 @@ function processSkillDir(author, slug, folderPath, fileUrl) {
   }
 
   const variableName = slug.replace(/-([a-z0-9])/g, g => g[1].toUpperCase())
-  const useCases = extractUseCases(slug, title, desc, readme)
-  const exampleUsage = generateExampleUsage(slug, title, desc, tags.join(' '))
+  const useCases = extractUseCases(slug, title, desc, readme, subSkillsList, tagline)
+  const exampleUsage = generateExampleUsage(slug, title, desc, tags.join(' '), subSkillsList)
   
   const tsContent = `import { SkillListing } from '../skills-data'
-
+ 
 export const ${variableName}: SkillListing = {
   id: '${slug}',
   author: '${author}',

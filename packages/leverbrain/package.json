@@ -1,6 +1,6 @@
 {
   "name": "leverbrain",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Client SDK and CLI for the Leverbrain Solana skill marketplace",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

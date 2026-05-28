@@ -324,4 +324,51 @@ program
     console.log(chalk.bold.green('\nConfiguration download complete!'))
   })
 
+program
+  .command('save-cfg')
+  .description('Create or update a saved configuration')
+  .argument('<name>', 'configuration name')
+  .requiredOption('-w, --wallet <wallet>', 'owner wallet address')
+  .requiredOption('-s, --skills <skills>', 'comma-separated list of author/slug skills')
+  .action(async (name, options) => {
+    const skillsList = options.skills
+      .split(',')
+      .map((s: string) => s.trim())
+      .filter(Boolean)
+    if (skillsList.length === 0) {
+      throw new Error('At least one skill must be specified')
+    }
+
+    const client = createClient()
+    const resolvedSkills = []
+
+    console.log(chalk.cyan(`Resolving skills for configuration "${name}"...`))
+    for (const item of skillsList) {
+      const parts = item.split('/')
+      const author = parts[0]
+      const slug = parts.slice(1).join('/')
+      if (!author || !slug) {
+        throw new Error(`Invalid skill identifier: "${item}". Must be in the format author/slug.`)
+      }
+
+      console.log(chalk.dim(`  Fetching ${author}/${slug}...`))
+      const skill = await client.getSkill(author, slug)
+      if (!skill) {
+        throw new Error(`Skill not found on marketplace: ${author}/${slug}`)
+      }
+
+      resolvedSkills.push({
+        id: skill.skillId,
+        author: skill.author,
+        slug: skill.slug,
+        name: skill.name,
+      })
+    }
+
+    console.log(chalk.cyan(`Saving configuration to Convex...`))
+    await client.saveConfig(options.wallet, name, resolvedSkills)
+    console.log(chalk.bold.green(`\nSuccess! Configuration "${name}" saved for wallet ${options.wallet}.`))
+  })
+
 program.parse()
+

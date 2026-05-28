@@ -104,6 +104,9 @@ export default function DocsPage() {
                 <pre>{`leverbrain search <query>           # Search marketplace
 leverbrain get <author/slug>        # Download selected skill
 leverbrain cfg <handle/name>        # Download lab configs
+leverbrain save-cfg <name> \\
+  --wallet <wallet> \\
+  --skills <skills>                 # Save lab configs
 leverbrain purchases --wallet <pk>  # List purchase receipts
 leverbrain publish ./my-skill \\
   --wallet <PUBLISHER_WALLET> \\
@@ -300,7 +303,12 @@ const listing = await client.getSkill('commandcodeai', 'cca-leads')
 const receipts = await client.getPurchasesByBuyer('<BUYER_WALLET>')
 
 // Fetch saved configuration
-const config = await client.getConfig('shark', 'grape')`}</pre>
+const config = await client.getConfig('shark', 'grape')
+
+// Save a new configuration
+await client.saveConfig('<WALLET>', 'my-stack', [
+  { id: 'exa-search', author: 'affaan-m', slug: 'exa-search', name: 'exa-search' }
+])`}</pre>
               </div>
             </section>
 

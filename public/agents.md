@@ -111,7 +111,31 @@ const client = new LeverbrainClient({ wallet, rpc })
 const skills = await client.search('deep research')
 const receipt = await client.purchase('anthropics/skill-creator')
 const files = await client.download('anthropics/skill-creator')
+
+// Retrieve stack configurations (Labs)
 const config = await client.getConfig('shark', 'grape')
+
+// Save stack configurations (Labs)
+await client.saveConfig('6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8', 'my-stack', [
+  {
+    id: 'exa-search',
+    author: 'affaan-m',
+    slug: 'exa-search',
+    name: 'exa-search'
+  }
+])
+```
+
+## CLI Configuration Management
+
+You can download and save configurations using the Leverbrain CLI:
+
+```bash
+# Save configuration pack
+npx leverbrain save-cfg <name> --wallet <wallet> --skills <author/slug,author/slug,...>
+
+# Retrieve configuration pack
+npx leverbrain cfg <handle/name>
 ```
 
 ## Rate limits
@@ -124,3 +148,4 @@ const config = await client.getConfig('shark', 'grape')
 
 - Email: hi@leverbrain.com
 - Docs: https://leverbrain.com/docs
+

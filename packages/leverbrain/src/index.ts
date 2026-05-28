@@ -144,4 +144,17 @@ export class LeverbrainClient {
       name,
     })
   }
+
+  async saveConfig(
+    walletAddress: string,
+    name: string,
+    skills: Array<{ id: string; author: string; slug: string; name: string }>
+  ) {
+    return await this.invoke<string>('/api/mutation', 'skills:saveConfig', {
+      walletAddress,
+      name,
+      skills,
+    })
+  }
 }
+

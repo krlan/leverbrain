@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/vec.svg" width="120" alt="Leverbrain Logo" />
+  <img src="public/images/octo.png" width="120" alt="Leverbrain Logo" />
   <h1>Leverbrain</h1>
   <p><strong>The expertise stack for the agentic era.</strong></p>
   <p>

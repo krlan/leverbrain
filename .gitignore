@@ -52,3 +52,15 @@ refactor.mjs
 ch.svg
 fo.svg
 n1.svg
+
+# Local bookmarks library
+bookmarks_library/
+
+# Agent skills
+.agents/
+
+# Local skills directories (except leverbrain and soul)
+skills/*
+!skills/leverbrain/
+!skills/soul/
+

@@ -1,4 +1,3 @@
-
 export default function Terms() {
   return (
     <div className="legal-page">
@@ -6,9 +5,9 @@ export default function Terms() {
         <div className="grid-bg" />
         <div className="container">
           <div className="legal-hero-content">
-            <span className="badge">Legal</span>
+            <span className="badge">Ecosystem Agreement</span>
             <h1>Terms of Service</h1>
-            <p className="legal-updated">Last updated: January 2025</p>
+            <p className="legal-updated">Last updated: May 2026</p>
           </div>
         </div>
       </section>
@@ -16,76 +15,54 @@ export default function Terms() {
       <section className="legal-content section">
         <div className="container">
           <div className="legal-body">
-            <h2>1. Service Description</h2>
-            <p>
-              Leverbrain provides AI security testing services ("Red") and AI
-              assistant products ("Shadow") as described on our website. These terms
-              govern your access to and use of our services.
+            <p className="legal-intro">
+              Welcome to Leverbrain. These Terms of Service ("Terms") govern your relationship with Leverbrain, including the use of our on-chain AI skill marketplace and related CLI or web interfaces. By connecting your Solana wallet or using our services, you agree to these Terms.
             </p>
 
-            <h2>2. User Obligations</h2>
-            <p>By using our services, you agree to:</p>
+            <h2>1. Marketplace Operations & On-chain Identity</h2>
+            <p>
+              Leverbrain operates a decentralized marketplace for executable AI routines, strategies, and blueprints. All publishing rights, edit privileges, and payout distributions are anchored directly to your public Solana wallet address.
+            </p>
             <ul>
-              <li>Provide accurate and complete information</li>
-              <li>Maintain the confidentiality of your account credentials</li>
-              <li>Use our services only for lawful purposes</li>
-              <li>Not interfere with or disrupt our services</li>
-              <li>Comply with all applicable laws and regulations</li>
+              <li><strong>Publishers:</strong> By listing an agent routine, you represent that you hold all rights to the code and documentation. You designate a Solana payout wallet to receive USDC settlements. Any edits, updates, or deletions of listings must be signed and authorized by the corresponding publisher wallet.</li>
+              <li><strong>Buyers:</strong> You purchase listing licenses using USDC. Transactions are settled directly peer-to-peer or via smart contracts. You acknowledge that blockchain transactions are irreversible, and Leverbrain cannot initiate refunds.</li>
             </ul>
 
-            <h2>3. Intellectual Property</h2>
+            <h2>2. License Grant & Executable Code</h2>
             <p>
-              All content, features, and functionality of our services are owned by
-              Leverbrain and are protected by international copyright, trademark,
-              patent, trade secret, and other intellectual property laws.
+              When you purchase a listing on the Leverbrain marketplace, you are granted a non-exclusive, non-transferable, revocable license to install and run the code bundle within your own local or sandboxed environments.
+            </p>
+            <p>
+              You are strictly prohibited from redistributing, sublicensing, reselling, or repackaging any purchased marketplace listings without explicit developer consent. 
             </p>
 
-            <h2>4. Confidentiality</h2>
+            <h2>3. Sandboxing & Disclaimer of Liability</h2>
             <p>
-              We treat all information obtained during security assessments as
-              strictly confidential. We will not disclose your vulnerabilities,
-              system architecture, or any other sensitive information to third
-              parties without your explicit written consent.
+              Many marketplace listings contain code that executes commands, scripts, or hooks on your local operating system. You are solely responsible for verifying the security of any package before execution.
+            </p>
+            <p className="legal-warning">
+              <strong>WARNING:</strong> LEVERBRAIN DOES NOT PRE-AUDIT ALL USER-SUBMITTED LISTINGS. TO THE MAXIMUM EXTENT PERMITTED BY LAW, LEVERBRAIN DISCLAIMS ALL LIABILITY FOR DAMAGE TO HARDWARE, DATA CORRUPTION, PRIVACY BREACHES, OR FINANCIAL LOSSES ARISING FROM RUNNING UNTRUSTED AI ROUTINES OUTSIDE OF A SECURE SANDBOX.
             </p>
 
-            <h2>5. Limitation of Liability</h2>
+            <h2>4. Service Fees & Blockchain Settlements</h2>
             <p>
-              To the maximum extent permitted by law, Leverbrain shall not be liable
-              for any indirect, incidental, special, consequential, or punitive
-              damages, or any loss of profits or revenues, whether incurred directly
-              or indirectly, or any loss of data, use, goodwill, or other intangible
-              losses.
+              Leverbrain may collect a protocol fee on marketplace transactions. All pricing is denominated in USDC. Gas fees (Solana network transaction fees) are the sole responsibility of the user. In the event of a blockchain fork, smart contract failure, or wallet provider outage, Leverbrain will not be liable for delayed or failed transactions.
+            </p>
+
+            <h2>5. Intellectual Property</h2>
+            <p>
+              The Leverbrain brand, CLI source code, site design, logos, and proprietary AI models are the exclusive property of Leverbrain. User-submitted listings and open-source packages remain the property of their respective creators, subject to the license granted to buyers under Section 2.
             </p>
 
             <h2>6. Dispute Resolution</h2>
             <p>
-              Any disputes arising from these terms or your use of our services will
-              be resolved through binding arbitration in accordance with applicable
-              arbitration rules. You agree to resolve disputes on an individual
-              basis and not as part of a class action.
+              Any disputes arising out of these Terms or your use of the marketplace will be resolved through binding, individual arbitration. You waive any right to participate in class actions or jury trials.
             </p>
 
-            <h2>7. Termination</h2>
+            <h2>7. Contact</h2>
             <p>
-              Either party may terminate the service agreement at any time with
-              written notice. Upon termination, your access to our services will
-              cease and we will securely delete any data we hold on your behalf,
-              unless retention is required by law.
-            </p>
-
-            <h2>8. Changes to Terms</h2>
-            <p>
-              We reserve the right to modify these terms at any time. We will
-              provide notice of material changes by posting the updated terms on
-              our website. Your continued use of our services after changes are
-              posted constitutes acceptance of the modified terms.
-            </p>
-
-            <h2>9. Contact</h2>
-            <p>
-              If you have any questions about these Terms of Service, please contact
-              us at{' '}
-              <a href="mailto:hello@leverbrain.com">hello@leverbrain.com</a>.
+              If you have any questions or require support regarding these terms, please connect with us at{' '}
+              <a href="mailto:hi@leverbrain.com">hi@leverbrain.com</a>.
             </p>
           </div>
         </div>

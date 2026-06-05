@@ -80,12 +80,16 @@ export default function Profile() {
 
   // Sync state when profile is loaded from DB
   useEffect(() => {
+    if (profile === undefined) {
+      return // Still loading
+    }
     if (profile) {
       setHandle(profile.handle || '')
       setDisplayName(profile.displayName || '')
       setBio(profile.bio || '')
       setWebsite(profile.website || '')
       setTwitter(profile.twitter || '')
+      setIsEditing(false)
     } else {
       setIsEditing(true) // Default to edit mode if no profile exists
     }

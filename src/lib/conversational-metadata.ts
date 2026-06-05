@@ -68,24 +68,6 @@ export const CONVERSATIONAL_METADATA: Record<string, SkillMetadata> = {
     ],
     presetsTip: 'Provide your master resume and the target job description to run this matching routine.'
   },
-  'agency-in-a-box': {
-    description: 'A business operational blueprint containing standard contracts, client onboarding workflows, and invoice templates for design and development agencies.',
-    useCases: [
-      'Deploy instant onboarding questionnaires for new clients.',
-      'Draft standardized freelance service level agreements.',
-      'Organize monthly billing and reporting templates in your workspace.'
-    ],
-    presetsTip: 'Use this blueprint to spin up standard folder structures and documents for client management.'
-  },
-  'saas-gtm-playbook': {
-    description: 'A marketing strategy framework outlining launch phases, distribution channels, and cohort analytics metrics for launching SaaS platforms.',
-    useCases: [
-      'Map out a 90-day launch roadmap for new SaaS features.',
-      'Track funnel conversion benchmarks from registration to active user.',
-      'Execute channel distribution strategies across ProductHunt, X, and newsletters.'
-    ],
-    presetsTip: 'Integrate this playbook to guide your product marketing team through step-by-step launch checklists.'
-  },
   'd3-visualization': {
     description: 'A code generator that compiles raw JSON datasets into beautiful, responsive D3.js interactive charts and network graphs.',
     useCases: [
@@ -103,15 +85,6 @@ export const CONVERSATIONAL_METADATA: Record<string, SkillMetadata> = {
       'Extract major discussion themes and organize them on a timeline.'
     ],
     presetsTip: 'Feed your Zoom or Google Meet text transcripts into this skill to get instant, organized digests.'
-  },
-  'indiehacker-launch-kit': {
-    description: 'A lightweight landing page, SEO, and launch-day checklist blueprint designed for shipping side projects fast.',
-    useCases: [
-      'Check off launch-readiness steps for ProductHunt and HackerNews.',
-      'Verify SEO metadata, OpenGraph tags, and speed indexes.',
-      'Draft launch announcements matching proven growth copywriting templates.'
-    ],
-    presetsTip: 'Deploy this blueprint locally to manage your product launch tasks and page configurations.'
   },
   'baoyu-article-illustrator': {
     description: 'A creative visual skill that analyzes article structures, identifies perfect positions for visual aids, and designs consistent, topic-relevant illustrations.',

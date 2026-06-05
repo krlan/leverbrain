@@ -441,3 +441,191 @@
   box-shadow: 0 4px 12px rgba(255, 111, 45, 0.16);
 }
 
+/* Layout Switcher */
+.sk-layout-switch {
+  display: flex;
+  background: rgba(16, 12, 9, 0.92);
+  border: 1px solid rgba(255, 195, 124, 0.22);
+  border-radius: var(--radius-lg);
+  height: 44px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.sk-layout-switch-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 150ms ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  padding: 0 12px;
+}
+
+.sk-layout-switch-btn:hover {
+  color: var(--color-accent-warm-light);
+}
+
+.sk-layout-switch-btn.is-active {
+  color: #311d0b;
+  background: linear-gradient(180deg, var(--color-accent-warm-light), var(--color-accent-warm));
+  box-shadow: 0 4px 12px rgba(255, 111, 45, 0.16);
+}
+
+/* Card Grid Layout */
+.sk-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-top: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.sk-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+  padding: 24px;
+  background: rgba(16, 12, 9, 0.6);
+  border: 1px solid rgba(255, 195, 124, 0.12);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.sk-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(300px circle at var(--mouse-x, 0%) var(--mouse-y, 0%), rgba(255, 172, 98, 0.06), transparent 80%);
+  transition: opacity 250ms ease;
+  z-index: -1;
+}
+
+.sk-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 198, 133, 0.32);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 172, 98, 0.03);
+}
+
+.sk-card:hover::before {
+  opacity: 1;
+}
+
+.sk-card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.sk-card-creator {
+  font-size: 0.74rem;
+  color: var(--color-text-tertiary);
+  font-weight: 500;
+  transition: color 150ms ease;
+}
+
+.sk-card:hover .sk-card-creator {
+  color: var(--color-accent-warm-light);
+}
+
+.sk-card-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+  margin: 0;
+  transition: color 150ms ease;
+}
+
+.sk-card-tagline {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sk-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Scribble note for price filter */
+.sk-scribble-note {
+  position: absolute;
+  top: 62px;
+  right: -25px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  z-index: 20;
+  animation: sk-scribble-bounce 4.4s ease-in-out infinite;
+}
+
+.sk-scribble-text {
+  font-family: 'Caveat', 'Calistoga', cursive;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-accent-warm-light);
+  text-shadow: 0 0 10px rgba(255, 154, 61, 0.4), 0 2px 4px rgba(0, 0, 0, 0.5);
+  transform: rotate(-3deg);
+  white-space: nowrap;
+}
+
+.sk-scribble-arrow {
+  color: var(--color-accent-warm-light);
+  filter: drop-shadow(0 0 4px rgba(255, 154, 61, 0.4)) drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+}
+
+@keyframes sk-scribble-bounce {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(2px) translateX(-1px) rotate(-0.5deg);
+  }
+}
+
+@media (max-width: 1024px) {
+  .sk-scribble-note {
+    right: 15px;
+    top: 62px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sk-scribble-note {
+    right: 30px;
+    top: 62px;
+  }
+}
+
+
+

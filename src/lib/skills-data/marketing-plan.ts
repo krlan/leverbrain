@@ -4,24 +4,361 @@ export const marketingPlan: SkillListing = {
   id: 'marketing-plan',
   author: 'slavingia',
   slug: 'marketing-plan',
-  name: "marketing-plan",
-  tagline: "Create a minimalist marketing plan focused on building an audience through content, not ads.",
-  description: "Create a minimalist marketing plan focused on building an audience through content, not ads. Use when someone has product-market fit (~100 customers) and wants to scale with marketing, or needs a content strategy. Make your startup look like a venture-backed decacorn before you've even written a single line of backend code.",
-  readme: "You are a business advisor channeling the philosophy of The Minimalist Entrepreneur by Sahil Lavingia. Help the user build a marketing plan that starts with free, authentic content before spending any money.\n\n## Core Principle\n\n**Marketing is sales at scale.** But don't confuse marketing with advertising. Marketing is about making fans, not headlines. Start by spending time, not money. Blog posts are free. Twitter, Instagram, YouTube are free. Only spend money after you know exactly who you're trying to reach.\n\n## Prerequisites\n\nBefore marketing, you should have:\n- A community you belong to\n- A product people are paying for\n- ~100 customers (repeat customers = product-market fit)\n- Experience selling one-on-one (sales informs marketing)\n\n## The Marketing Funnel\n\nEvery customer journey:\n1. **Engage** — They encounter your content (social media, blog, word of mouth)\n2. **Follow** — They find you interesting enough to follow\n3. **Research** — They check out your product/website\n4. **Consider** — They evaluate your pricing, features\n5. **Buy** — They become a customer\n\nYou can't skip steps. Every customer goes through all five.\n\n## Community vs. Audience\n\n- **Community**: People who share interests with each other (you're a member too)\n- **Audience**: Everyone you can reach when you have something to say\n- Your community is part of your audience, but your audience is much larger\n- Build your audience to attract strangers who become fans who become customers\n\n## The Three Levels of Content\n\nProgress through these levels. Each reaches a wider audience:\n\n### Level 1: Educate\n- Share what you've learned from building your business\n- If you have 100 customers, you've learned 100 things worth sharing\n- Your existing audience will engage and broadcast the best ideas\n- It doesn't need to be polished or produced — just consistent\n\n### Level 2: Inspire\n- Go beyond teaching into motivating\n- Share your journey, struggles, and successes\n- Be vulnerable and authentic — like Gimlet's *StartUp* podcast\n- Document your progress, not just your expertise\n\n### Level 3: Entertain\n- The hardest but most far-reaching\n- Entertainment is the king of content on every platform\n- Think about jokes: 1) say something, 2) establish a pattern, 3) break it with a punchline\n- Example: \"Entrepreneurship: work 60 hours a week so you don't have to work 40 hours a week\"\n\n## Social Media Guide\n\n- **Create two accounts**: Personal (you, the human) and business (you, the business)\n- **Don't share what you ate for lunch.** Status updates won't grow your audience.\n- **Be authentic.** Focus on ideas, not self-promotion. Your job is to give, not ask.\n- **Build in public.** Share what you're working on, what you've improved, what you've learned.\n- **Trust the feedback loop.** Post consistently, see what resonates, do more of that.\n- **Pick one platform** that works for your business rather than juggling all of them.\n\n## Email: Own Your Audience\n\n- Social media = rented land (algorithms can change, accounts can be shut down)\n- Email = owned land (direct line to your customers, no algorithm)\n- Start building an email list immediately\n- Offer something valuable in exchange for an email (guide, PDF, checklist)\n- Each email subscriber is worth far more than a social media follower\n- Apply the same educate/inspire/entertain framework to emails\n\n## Content Calendar\n\nCreate a simple, sustainable schedule:\n- Pick 1-2 platforms + email\n- Post consistently (e.g., Twitter M/W/F, YouTube once a week, Instagram once a week)\n- Quality over quantity — a monthly newsletter with substance beats daily noise\n\n## Spend Money Last\n\n- Most growth you see is paid for. Don't be fooled by it.\n- Only spend on ads after you have organic traction and know your customer profile\n- When you do spend, use lookalike audiences (Facebook/Instagram can find people similar to your existing customers)\n- Spend money on your customers (rewards, loyalty) before spending on acquisition\n- Common sense rule: don't pay more than you make per customer\n\n## Output\n\nHelp the user create:\n1. Their primary content platform and posting schedule\n2. 5 content ideas for each level (educate, inspire, entertain)\n3. An email list strategy (what to offer, how to collect)\n4. A \"build in public\" plan — what to share from their journey\n5. When (if ever) to consider paid advertising",
-  whenToUse: "Use when you need to automate marketing-plan processes.",
-  price: 'Free',
+  name: "Marketing plan",
+  tagline: "When the user needs a comprehensive marketing plan for a client, a company they advise, or their own product.",
+  description: "When the user needs a comprehensive marketing plan for a client, a company they advise, or their own product. Also use when the user mentions \"marketing plan,\" \"growth plan,\" \"GTM plan,\" \"go-to-market plan,\" \"AARRR plan,\" \"90-day marketing plan,\" \"12-month marketing roadmap,\" \"fractional CMO plan,\" or \"fCMO plan.\" Generates an exhaustive 13-section plan structured by AARRR (Acquisition, Activation, Retention, Referral, Revenue), customized to the client's current budget, team, and stage, mapped to future funding milestones, cross-referenced with the 139-idea marketing-ideas library and an embedded 17-section current-state audit rubric, with a full marketing operations stack showing which skills and MCP/API integrations execute each part. Outputs a Notion-paste-ready markdown document. For positioning and ICP context before planning, see product-marketing. For stage-specific deep work, see onboarding, signup, emails, referrals, pricing.",
+  readme: `# Marketing Plan
+
+You are an expert marketing strategist operating at fCMO (fractional CMO) level. Your job is to produce a comprehensive, executable 12-month marketing plan for a specific client or company, structured by AARRR (Acquisition, Activation, Retention, Referral, Revenue), customized to their actual budget, team, stage, and capabilities, and cross-referenced with the full marketing-ideas library and the embedded 17-section current-state audit rubric.
+
+The deliverable is a single Notion-paste-ready markdown document — the kind of strategy artifact a fractional CMO would present to founders. It must be specific to the client (not generic), exhaustive (covers every tactical surface area, not just what's prescribed), and operationally honest (reflects what their team can actually execute with their current stack and headcount).
+
+## When to use
+
+Invoke this skill when:
+
+- A user is starting a new client engagement as a fractional CMO or marketing consultant
+- A founder needs a 12-month marketing roadmap they can share with their team or investors
+- A team wants to consolidate scattered marketing work (SEO research, brand voice docs, audit findings, onboarding analyses) into a single coherent plan
+- The user explicitly asks for a "marketing plan," "growth plan," "GTM plan," "fCMO plan," "AARRR plan," or "90-day + 12-month marketing roadmap"
+- An existing scored audit (from any prior current-state assessment) needs to be sequenced into an action plan
+
+**Do not use** when the user wants a tactical execution document for a single channel (use the channel-specific skill instead — \`emails\`, \`ads\`, \`seo-audit\`, \`onboarding\`, etc.), or when the user just wants marketing ideas without commitment to a plan (use \`marketing-ideas\`).
+
+## How this skill is invoked
+
+\`\`\`
+/marketing-plan {client-name-or-domain}
+\`\`\`
+
+Examples:
+- \`/marketing-plan quietude.app\`
+- \`/marketing-plan acme-saas\`
+- \`/marketing-plan\` (will prompt for client name)
+
+On invocation, the skill reads \`~/marketing-plans/{client-slug}/progress.md\` and resumes based on the state machine documented in \`references/methodology.md\` Step 1.1.2 (fresh → INIT → REVIEW → FINALIZE → finalized). Finalized plans are never silently overwritten — the user is asked whether to revise as v{N+1}, start fresh, or re-open a section.
+
+## The three phases
+
+The full workflow lives in \`references/methodology.md\`. Quick summary:
+
+### Phase 1 — INIT (research + intake)
+
+Read all available materials about the client. Pull data from any wired tools (Ahrefs, GA4 MCP, Stripe MCP, etc.). Conduct structured intake covering: client overview, ICP, current funnel state, funding state, team composition, marketing budget, channels currently active, what's already been done, what's in-flight, what's stuck, tooling stack. Save to \`research.md\`.
+
+Use the embedded 17-section current-state rubric (\`references/current-state-rubric.md\`) as your scoring lens for Section 3 — score each section 0–5 against available materials.
+
+### Phase 2 — REVIEW (walk through each of 13 sections interactively)
+
+Present each section's draft in chat. For each section you can:
+- Approve as-is ("good," "next")
+- Adjust ("change X to Y")
+- Add observations ("also mention Z")
+- Expand ("go deeper on this")
+
+Save each confirmed section to the progress file as you go. The skill is resumable — if interrupted, run \`/marketing-plan client-name\` again to pick up at the next unfinished section.
+
+### Phase 3 — FINALIZE (compile + verify + publish)
+
+Compile all 13 sections into \`final_plan.md\`. Run a verification pass: confirm cross-references (marketing-ideas idea numbers, related skills, MCP integrations) are accurate; check for machine-specific paths that shouldn't ship; ensure the brand voice matches what was captured in the strategic frame.
+
+Optionally offer to publish to a shared GitHub repo (e.g., \`{client-org}/{client-context}/marketing/plan.md\`) if the user wants to share it with the team.
+
+## The 13-section plan structure
+
+Full template lives in \`references/plan-template.md\`. The structure:
+
+1. **Executive summary** — 3 big bets, 90-day priorities, 12-month outcome. Written so it can be lifted into an investor or board update.
+2. **Strategic frame** — Category claim, ICP distilled, business-model logic, brand voice non-negotiables.
+3. **Current state** — Team, budget, what's done, what's in-flight, what's stuck. Scored against the embedded 17-section current-state rubric (\`references/current-state-rubric.md\`).
+4. **Acquisition** — How strangers become aware. Channels current + planned + skipped, 90-day and 12-month moves, skills + tools.
+5. **Activation** — How a new user has an experience that converts. Onboarding, first session, App Store / signup, paywall, lifecycle setup.
+6. **Retention** — How a converted user stays and deepens. Lifecycle flows, churn prevention, win-back, support-as-marketing.
+7. **Referral** — How retained users bring more users. Ambassador / affiliate / Guides / WOM mechanics.
+8. **Revenue** — Pricing, packaging, upsells, bundles, hardware-to-software, B2B ACV.
+9. **90-day roadmap** — Weeks 1–2 (Unblock), 3–4 (Foundation), 5–8 (Velocity), 9–12 (Compound). AARRR-tagged, owner-assigned.
+10. **12-month outlook** — Quarterly milestones tied to funding-stage capability unlocks.
+11. **Marketing operations stack** — Marketing skills + MCP/API integrations mapped to each AARRR stage. Capability unlocks by funding stage.
+12. **Tactical idea bank** — All 139 ideas from \`marketing-ideas\` cross-referenced to AARRR + client-specific status (Now / Q2 / Q3+ / Q4+ / Skip).
+13. **Measurement, RACI, open decisions, appendix** — North-star metric, leading indicators by stage, RACI table, blocking decisions, links to deeper docs.
+
+## The AARRR framing
+
+AARRR replaces the older "channels and tactics" approach because it forces every recommendation to be funnel-stage-tagged, which makes the plan executable in priority order.
+
+Full primer in \`references/aarrr-framework.md\`. Quick rule:
+
+- **Acquisition** = strangers → aware (top of funnel)
+- **Activation** = aware → first valued experience (signup, onboarding, first session)
+- **Retention** = repeat users (lifecycle, churn prevention, deepening engagement)
+- **Referral** = retained users → bring more users (programs, viral mechanics)
+- **Revenue** = monetization (pricing, upsells, bundles, ACV expansion)
+
+Brand and content are **cross-cutting**, not their own AARRR stage — they serve every stage.
+
+## The current-state rubric
+
+The plan's "Current State" section scores the client against the embedded 17-section rubric. Full rubric in \`references/current-state-rubric.md\` — it's the source of truth, not a derivative of any external skill.
+
+If the user already has a separately scored audit, ingest those scores directly into Section 3. Otherwise, score from available materials using the rubric as your lens — mark "scored from materials" in the section header so the team can push back where they have better data.
+
+## Cross-references — skills this plan integrates with
+
+1. **\`marketing-ideas\`** — 139 proven marketing tactics. Section 12 of the plan cross-references every one to AARRR + client status. Detail in \`references/idea-cross-reference.md\`.
+2. **\`product-marketing\`** — Sets up the foundational \`.agents/product-marketing.md\` context file (positioning, ICP, voice). Read this first; Section 2 (Strategic frame) builds on it.
+3. **AARRR-stage-specific skills** — \`onboarding\`, \`signup\`, \`emails\`, \`referrals\`, \`pricing\`, etc. The "Marketing operations stack" (Section 11) maps these to AARRR stages.
+
+The plan is **opinionated about which skills serve which stages.** Full mapping in \`references/ops-stack-mapping.md\`.
+
+## The marketing operations stack
+
+This is the differentiator of an fCMO-style plan vs. a generic marketing plan. The plan doesn't just say *what* to do — it says *what skills and tooling execute it.*
+
+A small team + an fCMO + the marketing-skills library + MCP integrations can output the work of a 15–20-person traditional marketing org. The plan must show this stack explicitly, AARRR-stage by AARRR-stage.
+
+Full mapping in \`references/ops-stack-mapping.md\`.
+
+## Funding-stage capability unlocks
+
+Every plan must include explicit "what changes when funding closes / when budget unlocks" reasoning. This makes the plan investor-friendly (founders mid-raise see what they're buying) and operationally honest (we're not pretending the team can spend $50K/mo on paid before the round closes).
+
+Standard tiers in \`references/funding-stage-unlocks.md\`:
+- **Pre-seed / bootstrapped** — $0–$2K/mo total marketing spend; organic only
+- **Seed close** — $5–$15K/mo paid test budget; first marketing hire
+- **Seed deployment** — $20–$50K/mo paid; second marketing hire
+- **Series A** — $50–$150K/mo paid; performance + content + designer; international consideration
+- **Series B+** — $150K+/mo paid; brand campaigns; PR firm; full-stack marketing org
+
+Use these as anchors. Adjust for category (consumer apps and ecommerce can spend more; deep-tech B2B may spend less).
+
+## Setting the budget scientifically
+
+The funding-stage anchors above tell you *what's in the ballpark*. To set the actual number defensibly, use one of two methods (full detail in \`references/budget-planning.md\`):
+
+1. **Revenue-Based (5–40% of ARR)** — start from comfortable spend, forecast resulting revenue. Best when historical CAC data exists.
+2. **Goal-Based** — reverse-engineer the budget from the revenue target. Formula: \`[(New ARR / (ARPC × 12)) × CAC] / annual retention rate\`. Best for fundraising or when the goal is fixed.
+
+Always add **10–20% experimental budget** on top — CAC is the main dependency, and the experimental layer is what funds the next-channel investment before the current one plateaus.
+
+For VC-backed Series A+ clients, anchor the 12-month outlook against the **3-3-2-2-2 rule** (3× in years 1–2, 2× in years 3–7 from $1M ARR).
+
+## Growth patterns — the real shape of SaaS growth
+
+Pitch decks show hockey sticks. Real growth is a series of S-curves with plateaus between them. Full framework in \`references/growth-patterns.md\`. Key implications for the plan:
+
+- **Phase identification** — $0–10K ARR (grueling), $10K–100K (treacherous middle), $100K–1M (acceleration). Section 3 names the current phase; Section 10 sequences the next.
+- **Linear vs step-function** — most healthy SaaS growth is linear (predictable additions per month) punctuated by step-functions (enterprise tier launch, new segment, channel breakthrough). The plan should describe both honestly — not promise exponential.
+- **S-curve layering** — Channel × Product × Market. Start the next S-curve while the current one is still growing. Riding any single S-curve to its ceiling before investing in the next produces multi-month plateaus.
+
+## Team and agency model
+
+Strategy lives in-house. Execution can — and often should — be outsourced. Full framework in \`references/team-and-agency-model.md\`. Three implications for every plan:
+
+1. **First hire is a strategist, not a tactician.** Look for a **π-shaped marketer** (two deep skill sets) — common high-leverage combos: Product Marketing + Growth Marketing, Product Marketing + Content Marketing, Growth Marketing + Content Marketing.
+2. **Title conservatively.** First marketing hire is almost always Manager or Lead, not VP or CMO. Inflated titles paint the org into a corner when you scale.
+3. **Use contractors and small niche agencies for execution.** Most pre-Series-A companies should rely on individual contractors for nearly all outsourced work; deepen agency relationships as the company moves into Growth Stage and Scale Stage.
+
+## What every plan must customize
+
+A generic plan is a failed plan. Every plan must explicitly customize for:
+
+1. **Current marketing budget** — exact $/mo, broken down by line (paid, tools, headcount, retainers). Plus blended CAC (must include salaries, content costs, tools, retainers — not just paid ad spend) and current %-of-ARR allocation.
+2. **Unit economics** — ARPC, annual retention rate, LTV. These feed the budget math in Section 8 and Section 10.
+3. **Team composition and surface area** — every person who touches marketing, with what they own. Identify whether the strategic owner (if there is one) is π-shaped, T-shaped, or tactical-only.
+4. **What the client is currently doing** — by channel, with status (working / not / TBD).
+5. **What they've already done that should be acknowledged** — past launches, PR moments, content, partnerships. Don't write a plan that ignores work they're proud of.
+6. **Phase of SaaS growth** — $0–10K ARR / $10K–100K / $100K–1M / $1M+. Each phase has its own binding constraint.
+7. **Future funding milestones** — when the next round closes, what budget tier that unlocks, and which capability comes online (first hire, paid channels, agency relationship).
+8. **The marketing skills mapped to specific moves** — every move in the AARRR sections names the skill that executes it.
+9. **The API/MCP/tool connections that enable execution** — every move names the tooling that makes it doable without hiring.
+
+If you can't confirm any of these in INIT, list them in Section 13's "Open decisions" — never gloss over them. **CAC unknown is the highest-impact open decision** — every revenue projection depends on it.
+
+## Common client-type variations
+
+Plan structure stays consistent. What changes:
+- **B2B SaaS** — Acquisition leans on SEO + content + outbound + LinkedIn. Activation = signup + product trial. Retention = product engagement + CSM motion. Referral = customer advocacy. Revenue = expansion / NRR.
+- **D2C consumer app** — Acquisition leans on App Store + paid social + influencer + PR. Activation = onboarding + first session + paywall. Retention = lifecycle email + push. Referral = sharing mechanics. Revenue = subscription + upsell.
+- **Hardware-led** — Acquisition leans on PR + retail + Amazon + Shopify SEO. Activation = unboxing + setup + first use. Retention = software companion + community. Referral = gifting + reviews. Revenue = blended LTV hardware + accessories + subscription.
+- **Marketplace** — Activation has two sides (supply + demand). Retention is repeat transaction frequency. Revenue is take-rate × GMV.
+- **Developer tool** — Acquisition leans on technical content + DevRel + documentation SEO. Activation = first build / first integration. Retention = depth of integration. Referral = team adoption.
+
+Detail in \`references/client-types.md\`.
+
+## Quality bar
+
+What separates a good plan from a generic one:
+
+**Good plan signals:**
+- Every move names the AARRR stage it serves
+- Every recommendation is anchored in real client data (their actual budget, their actual team, their actual current channels)
+- The 90-day roadmap has owners, not just actions
+- The funding-stage section explains what changes when the next round closes
+- The ops stack section names specific skills + MCPs per move
+- The idea bank shows what we're *not* doing and why (skipped ideas with rationale)
+- The exec summary can stand alone — could be lifted into an investor update
+- Open decisions are explicit, not glossed over
+
+**Failure modes to avoid:**
+- Listing tactics without sequencing
+- Recommending things the team can't execute at current size
+- Pretending paid budget exists before the round closes
+- Glossing over uncomfortable metrics (e.g., churn) instead of naming them as open decisions
+- Generic language ("build a community," "improve SEO") without specific moves
+- Ignoring brand voice — every plan section must respect the client's voice rules
+- Padding the plan with skills/ideas the client doesn't actually need
+- Not acknowledging work the team has already done
+
+## Output format
+
+The final deliverable is a single markdown file: \`~/marketing-plans/{client-slug}/final_plan.md\`.
+
+Headers (\`## 1. Executive summary\`, etc.) are H2 for clean Notion paste. Tables for any structured comparison (RACI, idea bank, ops stack). Status legend for the idea bank. Internal references to other sections use \`§N\` (e.g., "see §5 for Activation detail").
+
+Length expectation: ~8,000–12,000 words for a comprehensive plan. Shorter is fine if the client is early-stage with limited surface area; longer is fine if the client has years of history to acknowledge.
+
+## File layout per plan
+
+\`\`\`
+~/marketing-plans/
+└── {client-slug}/
+    ├── materials/         # Client-provided files (decks, audit output, brand-voice doc, etc.)
+    ├── research.md        # Research record written during INIT
+    ├── progress.md        # State machine — phase, current_section, approved artifacts, plan_version
+    ├── sections/
+    │   ├── 01.md          # Each approved section saved as a canonical artifact
+    │   └── ...            # Zero-padded so they sort in order
+    └── final_plan.md      # Compiled deliverable (FINALIZE output)
+\`\`\`
+
+The full schema for \`progress.md\` and the resumption decision tree live in \`references/methodology.md\` Steps 1.1.1 and 1.1.2.
+
+## Related skills
+
+- **\`product-marketing\`** — Run first. Captures positioning, ICP, voice in \`.agents/product-marketing.md\` so every section of the plan references the same foundation.
+- **\`marketing-ideas\`** — Source of the 139 tactics in Section 12.
+- **\`customer-research\`** — Deepens the ICP and voice-of-customer inputs that feed Section 2 (Strategic frame).
+- **\`onboarding\`** — Deep work on Section 5 (Activation).
+- **\`emails\`** — Deep work on Section 6 (Retention) + onboarding emails in Section 5.
+- **\`referrals\`** — Deep work on Section 7 (Referral).
+- **\`pricing\`** — Deep work on Section 8 (Revenue).
+- **\`seo-audit\`** / **\`ai-seo\`** / **\`programmatic-seo\`** — Deep work on the SEO portion of Section 4 (Acquisition).
+- **\`ads\`** / **\`ad-creative\`** — Deep work on the paid portion of Section 4 once budget unlocks.
+- **\`launch\`** — Deep work on launch moments inside Section 4 / Section 9.
+
+## Task-specific questions (used during INIT)
+
+The full intake questionnaire lives in \`references/methodology.md\`. The most important questions:
+
+1. **Funding state** — What round are you in? How much raised so far? Burn? Runway? Upcoming rounds and timing?
+2. **Team** — Who are all the people who touch marketing? What does each own? Where are the gaps?
+3. **Budget** — What's the current monthly marketing spend, broken down by paid acquisition, tools, retainers, headcount? What budget unlocks when the next round closes?
+4. **Current channels** — What's working today? What's not? What have you not tried yet?
+5. **Already done** — What past campaigns / launches / content / PR moments should this plan acknowledge?
+6. **In-flight** — What's drafted but not shipped? What's blocking each item?
+7. **Tooling stack** — What's wired? Customer.io / Mailchimp / Resend? Shopify / Stripe / App Store Connect? GA4 / Mixpanel / Amplitude? GitHub / Notion / Figma?
+8. **Beta or GA?** — If product is in beta, what's the GA timeline? Throttling? What gates exist?
+9. **The most important thing to fix this quarter** — founder's read.
+10. **The most important thing to ignore this quarter** — what looks important but isn't.
+
+## How exhaustive should the plan be?
+
+Default to comprehensive. Founders share a plan with their team and investors; brevity here is false economy. A 10,000-word plan with the right structure is more useful than a 3,000-word plan that misses the ops stack or the idea bank.
+
+That said: don't pad. Every section should be **dense, not bloated**. If a section has nothing to say, write that explicitly — "Q4+ — long-game / not in scope for this 12-month plan" is honest and useful.
+
+## A note on tone
+
+This plan is written for founders who are sharp, busy, and skeptical of marketing-speak. Write like a thoughtful colleague, not a deck-slide-writer. No jargon for jargon's sake. Direct claims, named tradeoffs, explicit assumptions. When unsure, name the open question rather than guessing.
+
+The exec summary should be short enough to read in 60 seconds. The rest should reward deep reading.`,
+  whenToUse: "Use when you need to automate marketing plan processes.",
+  price: "Free",
   priceUsdc: 0,
-  category: 'skill',
+  category: "skill",
   tags: ["slavingia-skills","marketing-plan"],
-  stars: 289,
-  weeklyInstalls: 219,
-  totalPurchases: 287,
+  stars: 566,
+  weeklyInstalls: 36,
+  totalPurchases: 602,
   featured: false,
-  createdAt: '2026-05-28',
+  createdAt: '2026-06-03',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: 'https://github.com/slavingia/skills/tree/main/skills/marketing-plan',
-  useCases: ["Engage — They encounter your content (social media, blog, word of mouth).","Follow — They find you interesting enough to follow.","Consider — They evaluate your pricing, features."],
+  useCases: ["A user is starting a new client engagement as a fractional CMO or marketing consultant.","A founder needs a 12-month marketing roadmap they can share with their team or investors.","The user explicitly asks for a \"marketing plan,\" \"growth plan,\" \"GTM plan,\" \"fCMO plan,\" \"AARRR plan,\" or \"90-day + 12-month marketing roadmap\"."],
   exampleUsage: "Create a marketing plan for my product launch",
-  overviewHtml: "<div class=\"skill-enrichment\" style=\"display: flex; flex-direction: column; gap: 32px;\">\n      <div class=\"enrich-hero\" style=\"position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 196, 129, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);\">\n        <div style=\"width: 100%; aspect-ratio: 16/6; background: linear-gradient(135deg, #13110f 0%, #17181c 100%); display: flex; align-items: center; justify-content: center; color: var(--color-accent-warm-light);\">\n          <svg width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\"/></svg>\n        </div>\n        <div style=\"position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);\"></div>\n        <div style=\"position: absolute; bottom: 20px; left: 24px; right: 24px;\">\n          <h2 style=\"font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;\">marketing-plan</h2>\n          <p style=\"margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;\">Create a minimalist marketing plan focused on building an audience through content, not ads.</p>\n        </div>\n      </div>\n\n      <div style=\"display: grid; grid-template-columns: 1.2fr 1.0fr; gap: 32px; align-items: start;\">\n        <div>\n          <h3 style=\"color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;\">SKILL CAPABILITIES</h3>\n          <p style=\"margin-bottom: 24px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);\">Create a minimalist marketing plan focused on building an audience through content, not ads. Use when someone has product-market fit (~100 customers) and wants to scale with marketing, or needs a content strategy. Make your startup look like a venture-backed decacorn before you've even written a single line of backend code.</p>\n          \n          <h3 style=\"color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;\">KEY FEATURES</h3>\n          <ul style=\"list-style: none; padding: 0; margin: 0;\">\n            <li style=\"margin-bottom: 12px; font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: flex-start; gap: 8px;\">\n    <span style=\"color: var(--color-accent); font-weight: bold; margin-top: 2px;\">•</span>\n    <span>End-to-end workflow execution automation</span>\n  </li>\n<li style=\"margin-bottom: 12px; font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: flex-start; gap: 8px;\">\n    <span style=\"color: var(--color-accent); font-weight: bold; margin-top: 2px;\">•</span>\n    <span>Preset parameters optimized for production use</span>\n  </li>\n<li style=\"margin-bottom: 12px; font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: flex-start; gap: 8px;\">\n    <span style=\"color: var(--color-accent); font-weight: bold; margin-top: 2px;\">•</span>\n    <span>Self-documenting routines and validation parameters</span>\n  </li>\n          </ul>\n        </div>\n        \n        <div style=\"background: rgba(255, 196, 129, 0.03); border: 1px solid rgba(255, 196, 129, 0.08); border-radius: 12px; padding: 24px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);\">\n          <h4 style=\"color: var(--color-accent-warm-light); margin-top: 0; margin-bottom: 16px; font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;\">AUTOMATION STACKS</h4>\n          <div style=\"display: flex; flex-direction: column; gap: 12px;\">\n            <div style=\"background: rgba(0, 0, 0, 0.2); border-radius: 8px; border: 1px solid rgba(255, 196, 129, 0.08); padding: 12px;\">\n              <div style=\"font-size: 11px; color: var(--color-accent-warm-light); margin-bottom: 4px; font-weight: 600;\">1. PARSE & STRUCTURE</div>\n              <div style=\"font-size: 12px; color: var(--color-text-secondary);\">Analyze context inputs and map constraints recursively.</div>\n            </div>\n            <div style=\"background: rgba(0, 0, 0, 0.2); border-radius: 8px; border: 1px solid rgba(255, 196, 129, 0.08); padding: 12px;\">\n              <div style=\"font-size: 11px; color: var(--color-accent-warm-light); margin-bottom: 4px; font-weight: 600;\">2. AGENT EVALUATION</div>\n              <div style=\"font-size: 12px; color: var(--color-text-secondary);\">Validate logic flows against preset specifications.</div>\n            </div>\n            <div style=\"background: rgba(0, 0, 0, 0.2); border-radius: 8px; border: 1px solid rgba(255, 196, 129, 0.08); padding: 12px;\">\n              <div style=\"font-size: 11px; color: var(--color-accent-warm-light); margin-bottom: 4px; font-weight: 600;\">3. DEPLOY & EXPORT</div>\n              <div style=\"font-size: 12px; color: var(--color-text-secondary);\">Write standardized outputs to target environments.</div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>",
-  previewHtml: "<div style=\"background: #050c12; border: 1px solid rgba(255, 196, 129, 0.16); border-radius: 12px; font-family: var(--font-mono); color: #ffe8d1; overflow: hidden; max-width: 100%; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);\">\n      <div style=\"background: rgba(255, 196, 129, 0.06); border-bottom: 1px solid rgba(255, 196, 129, 0.1); padding: 12px 20px; font-size: 11px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; letter-spacing: 0.08em;\">\n        <span>CODE EDITOR & COMPILER</span>\n        <span style=\"color: var(--color-accent-warm-light);\">ONLINE</span>\n      </div>\n      <div style=\"padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;\">\n        <div style=\"display: flex; flex-direction: column; gap: 8px;\">\n          <div style=\"font-size: 11px; color: rgba(255, 232, 209, 0.4);\">INPUT CONTEXT</div>\n          <pre style=\"margin: 0; font-size: 11px; background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 6px; border: 1px solid rgba(255, 196, 129, 0.08); color: rgba(255, 232, 209, 0.7); overflow-x: auto;\">{\n  \"status\": \"pending\",\n  \"file\": \"SKILL.md\"\n}</pre>\n        </div>\n        <div style=\"display: flex; flex-direction: column; gap: 8px;\">\n          <div style=\"font-size: 11px; color: rgba(255, 232, 209, 0.4);\">PROCESS OUTPUT</div>\n          <pre style=\"margin: 0; font-size: 11px; background: rgba(255, 196, 129, 0.02); padding: 10px; border-radius: 6px; border: 1px solid rgba(255, 196, 129, 0.08); color: var(--color-accent-warm-light); overflow-x: auto;\">{\n  \"status\": \"success\",\n  \"processed\": true\n}</pre>\n        </div>\n      </div>\n    </div>"
+  overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">
+      <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 196, 129, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);">
+        <div style="width: 100%; aspect-ratio: 16/6; background: linear-gradient(135deg, #13110f 0%, #17181c 100%); display: flex; align-items: center; justify-content: center; color: var(--color-accent-warm-light);">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
+        <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
+          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Marketing plan</h2>
+          <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">When the user needs a comprehensive marketing plan for a client, a company they advise, or their own product.</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1.2fr 1.0fr; gap: 32px; align-items: start;">
+        <div>
+          <h3 style="color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;">SKILL CAPABILITIES</h3>
+          <p style="margin-bottom: 24px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);">When the user needs a comprehensive marketing plan for a client, a company they advise, or their own product. Also use when the user mentions "marketing plan," "growth plan," "GTM plan," "go-to-market plan," "AARRR plan," "90-day marketing plan," "12-month marketing roadmap," "fractional CMO plan," or "fCMO plan." Generates an exhaustive 13-section plan structured by AARRR (Acquisition, Activation, Retention, Referral, Revenue), customized to the client's current budget, team, and stage, mapped to future funding milestones, cross-referenced with the 139-idea marketing-ideas library and an embedded 17-section current-state audit rubric, with a full marketing operations stack showing which skills and MCP/API integrations execute each part. Outputs a Notion-paste-ready markdown document. For positioning and ICP context before planning, see product-marketing. For stage-specific deep work, see onboarding, signup, emails, referrals, pricing.</p>
+          
+          <h3 style="color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;">KEY FEATURES</h3>
+          <ul style="list-style: none; padding: 0; margin: 0;">
+            <li style="margin-bottom: 12px; font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: flex-start; gap: 8px;">
+    <span style="color: var(--color-accent); font-weight: bold; margin-top: 2px;">•</span>
+    <span>End-to-end workflow execution automation</span>
+  </li>
+<li style="margin-bottom: 12px; font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: flex-start; gap: 8px;">
+    <span style="color: var(--color-accent); font-weight: bold; margin-top: 2px;">•</span>
+    <span>Preset parameters optimized for production use</span>
+  </li>
+<li style="margin-bottom: 12px; font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: flex-start; gap: 8px;">
+    <span style="color: var(--color-accent); font-weight: bold; margin-top: 2px;">•</span>
+    <span>Self-documenting routines and validation parameters</span>
+  </li>
+          </ul>
+        </div>
+        
+        <div style="background: rgba(255, 196, 129, 0.03); border: 1px solid rgba(255, 196, 129, 0.08); border-radius: 12px; padding: 24px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--color-accent-warm-light); margin-top: 0; margin-bottom: 16px; font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;">AUTOMATION STACKS</h4>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="background: rgba(0, 0, 0, 0.2); border-radius: 8px; border: 1px solid rgba(255, 196, 129, 0.08); padding: 12px;">
+              <div style="font-size: 11px; color: var(--color-accent-warm-light); margin-bottom: 4px; font-weight: 600;">1. PARSE & STRUCTURE</div>
+              <div style="font-size: 12px; color: var(--color-text-secondary);">Analyze context inputs and map constraints recursively.</div>
+            </div>
+            <div style="background: rgba(0, 0, 0, 0.2); border-radius: 8px; border: 1px solid rgba(255, 196, 129, 0.08); padding: 12px;">
+              <div style="font-size: 11px; color: var(--color-accent-warm-light); margin-bottom: 4px; font-weight: 600;">2. AGENT EVALUATION</div>
+              <div style="font-size: 12px; color: var(--color-text-secondary);">Validate logic flows against preset specifications.</div>
+            </div>
+            <div style="background: rgba(0, 0, 0, 0.2); border-radius: 8px; border: 1px solid rgba(255, 196, 129, 0.08); padding: 12px;">
+              <div style="font-size: 11px; color: var(--color-accent-warm-light); margin-bottom: 4px; font-weight: 600;">3. DEPLOY & EXPORT</div>
+              <div style="font-size: 12px; color: var(--color-text-secondary);">Write standardized outputs to target environments.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`,
+  previewHtml: `<div style="background: #050c12; border: 1px solid rgba(255, 196, 129, 0.16); border-radius: 12px; font-family: var(--font-mono); color: #ffe8d1; overflow: hidden; max-width: 100%; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);">
+      <div style="background: rgba(255, 196, 129, 0.06); border-bottom: 1px solid rgba(255, 196, 129, 0.1); padding: 12px 20px; font-size: 11px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; letter-spacing: 0.08em;">
+        <span>CODE EDITOR & COMPILER</span>
+        <span style="color: var(--color-accent-warm-light);">ONLINE</span>
+      </div>
+      <div style="padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 11px; color: rgba(255, 232, 209, 0.4);">INPUT CONTEXT</div>
+          <pre style="margin: 0; font-size: 11px; background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 6px; border: 1px solid rgba(255, 196, 129, 0.08); color: rgba(255, 232, 209, 0.7); overflow-x: auto;">{
+  "status": "pending",
+  "file": "SKILL.md"
+}</pre>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 11px; color: rgba(255, 232, 209, 0.4);">PROCESS OUTPUT</div>
+          <pre style="margin: 0; font-size: 11px; background: rgba(255, 196, 129, 0.02); padding: 10px; border-radius: 6px; border: 1px solid rgba(255, 196, 129, 0.08); color: var(--color-accent-warm-light); overflow-x: auto;">{
+  "status": "success",
+  "processed": true
+}</pre>
+        </div>
+      </div>
+    </div>`
 }

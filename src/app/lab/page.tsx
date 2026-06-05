@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Bookmark, ArrowUpRight, Wallet, Copy, Check, Trash2 } from 'lucide-react'
 import { useQuery, useMutation } from 'convex/react'
@@ -28,7 +28,8 @@ function slugifyConfigName(name: string) {
 export default function LabPage() {
   const { connected, walletAddress } = useSolanaWallet()
   const [selectedSkillIds, setSelectedSkillIds] = useState<string[]>([])
-  const [configNameInput, setConfigNameInput] = useState('my-stack')
+  const [configNameInput, setConfigNameInput] = useState('cfg')
+  const [hasInitializedDefaultName, setHasInitializedDefaultName] = useState(false)
   const [copiedText, setCopiedText] = useState<string | null>(null)
   const [expandedConfigs, setExpandedConfigs] = useState<Record<string, boolean>>({})
 
@@ -82,6 +83,27 @@ export default function LabPage() {
   const saveConfig = useMutation(api.skills.saveConfig)
   const deleteConfig = useMutation(api.skills.deleteConfig)
   const toggleSavedSkill = useMutation(api.skills.toggleSavedSkill)
+  const deleteSkill = useMutation(api.skills.deleteSkillByAuthorSlug)
+
+  useEffect(() => {
+    setHasInitializedDefaultName(false)
+  }, [walletAddress])
+
+  useEffect(() => {
+    if (myConfigs && !hasInitializedDefaultName) {
+      const existingNames = new Set(myConfigs.map((c) => c.name.toLowerCase()))
+      if (!existingNames.has('cfg')) {
+        setConfigNameInput('cfg')
+      } else {
+        let counter = 2
+        while (existingNames.has(`cfg${counter}`)) {
+          counter++
+        }
+        setConfigNameInput(`cfg${counter}`)
+      }
+      setHasInitializedDefaultName(true)
+    }
+  }, [myConfigs, hasInitializedDefaultName])
 
   const handleToggleSavedSkill = async (skill: any) => {
     if (!connected || !walletAddress) return
@@ -89,10 +111,10 @@ export default function LabPage() {
       await toggleSavedSkill({
         walletAddress,
         skillId: skill.skillId || skill.id,
-        skillAuthor: skill.author,
-        skillSlug: skill.slug,
-        skillName: skill.name,
-        skillCategory: skill.category,
+        skillAuthor: skill.skillAuthor || skill.author || 'unknown',
+        skillSlug: skill.skillSlug || skill.slug || 'unknown',
+        skillName: skill.skillName || skill.name || 'Unknown Skill',
+        skillCategory: skill.skillCategory || skill.category || 'skill',
       })
     } catch (err) {
       console.error('Failed to toggle saved skill', err)
@@ -189,6 +211,20 @@ export default function LabPage() {
     }
   }
 
+  const handleDeleteSkill = async (author: string, slug: string) => {
+    if (!connected || !walletAddress) return
+    if (!confirm(`Are you sure you want to delete the published skill "${author}/${slug}"? This action cannot be undone.`)) return
+    try {
+      await deleteSkill({
+        author,
+        slug,
+        publisherWallet: walletAddress,
+      })
+    } catch (err) {
+      console.error('Failed to delete skill', err)
+    }
+  }
+
   // Generate individual installs fallback string
   const individualInstallCmd = useMemo(() => {
     if (selectedSkillsData.length === 0) return ''
@@ -253,7 +289,7 @@ export default function LabPage() {
                   </div>
                 ) : (
                   <div className="config-grid">
-                    <div className="config-grid-head">
+                    <div className="config-grid-head" style={{ gridTemplateColumns: '48px minmax(0, 1fr) 120px 60px' }}>
                       <span className="config-grid-check-cell">
                         <input
                           type="checkbox"
@@ -264,7 +300,7 @@ export default function LabPage() {
                       </span>
                       <span style={{ textAlign: 'left' }}>Skill</span>
                       <span>Author</span>
-                      <span>Category</span>
+                      <span></span>
                     </div>
                     {sortedSkills.map((item, i) => {
                       const isPrivate = myPublishedSkills?.some(ps => ps.skillId === item.skillId && ps.isPrivate)
@@ -272,7 +308,7 @@ export default function LabPage() {
                         <article
                           key={item._id}
                           className={`config-row animate-fade-in-up animate-delay-${Math.min(i % 5, 4)}`}
-                          style={{ gridTemplateColumns: '48px minmax(0, 1fr) 120px 110px' }}
+                          style={{ gridTemplateColumns: '48px minmax(0, 1fr) 120px 60px' }}
                           onMouseMove={handleMouseMove}
                         >
                           <span className="config-grid-check-cell">
@@ -305,9 +341,42 @@ export default function LabPage() {
                             </Link>
                           </div>
                           <span className="config-row-author" style={{ fontSize: '0.72rem' }}>@{item.skillAuthor}</span>
-                          <span className={categoryClass(item.skillCategory)}>
-                            {item.skillCategory}
-                          </span>
+                          
+                          {/* Trash button to remove from lab */}
+                          <button
+                            type="button"
+                            className="btn btn-outline btn-sm"
+                            onClick={() => handleToggleSavedSkill(item)}
+                            title="Remove from lab"
+                            style={{
+                              padding: '6px',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              width: '28px',
+                              height: '28px',
+                              borderRadius: '50%',
+                              color: 'var(--color-text-tertiary)',
+                              borderColor: 'transparent',
+                              background: 'transparent',
+                              justifySelf: 'center',
+                              cursor: 'pointer',
+                              outline: 'none',
+                              transition: 'all 0.15s ease'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.color = '#ff7e66';
+                              e.currentTarget.style.borderColor = 'rgba(255, 126, 102, 0.2)';
+                              e.currentTarget.style.background = 'rgba(255, 126, 102, 0.05)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.color = 'var(--color-text-tertiary)';
+                              e.currentTarget.style.borderColor = 'transparent';
+                              e.currentTarget.style.background = 'transparent';
+                            }}
+                          >
+                            <Trash2 size={13} />
+                          </button>
                         </article>
                       )
                     })}
@@ -677,13 +746,36 @@ export default function LabPage() {
                           </span>
                         </div>
 
-                        <button
-                          type="button"
-                          className={`btn ${isSaved ? 'btn-outline' : 'btn-primary'} btn-sm`}
-                          onClick={() => handleToggleSavedSkill(skill)}
-                        >
-                          {isSaved ? 'Remove from Lab' : 'Add to Lab'}
-                        </button>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <button
+                            type="button"
+                            className={`btn ${isSaved ? 'btn-outline' : 'btn-primary'} btn-sm`}
+                            onClick={() => handleToggleSavedSkill(skill)}
+                          >
+                            {isSaved ? 'Remove from Lab' : 'Add to Lab'}
+                          </button>
+                          
+                          <Link
+                            href={`/skills/${skill.author}/${skill.slug}?tab=edit`}
+                            className="btn btn-outline btn-sm"
+                            style={{ textDecoration: 'none' }}
+                          >
+                            Edit
+                          </Link>
+
+                          <button
+                            type="button"
+                            className="btn btn-outline btn-sm"
+                            onClick={() => handleDeleteSkill(skill.author, skill.slug)}
+                            style={{
+                              background: 'rgba(255, 100, 100, 0.05)',
+                              border: '1px solid rgba(255, 100, 100, 0.15)',
+                              color: '#ff8888',
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
                     )
                   })}

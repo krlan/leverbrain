@@ -28,9 +28,23 @@ if (!CONVEX_URL || !DEPLOY_KEY) {
 const client = new ConvexHttpClient(CONVEX_URL)
 client.setAdminAuth(DEPLOY_KEY)
 
+const EXCLUDED_SLUGS = new Set([
+  'agency-in-a-box',
+  'indiehacker-launch-kit',
+  'saas-gtm-playbook',
+  'ccd',
+  'youtube-summary',
+  'cold-outreach-female-accounts',
+  'yt-to-blog'
+])
+
 // Read and parse each TS file under src/lib/skills-data/
 const skillsDir = path.resolve(ROOT, 'src/lib/skills-data')
-const files = fs.readdirSync(skillsDir).filter(f => f.endsWith('.ts') && f !== 'index.ts')
+const files = fs.readdirSync(skillsDir).filter(f => {
+  if (!f.endsWith('.ts') || f === 'index.ts') return false
+  const basename = f.slice(0, -3)
+  return !EXCLUDED_SLUGS.has(basename)
+})
 
 console.log(`Found ${files.length} static skills to seed.`)
 

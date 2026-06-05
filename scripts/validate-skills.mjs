@@ -34,6 +34,16 @@ if (!CONVEX_URL || !DEPLOY_KEY) {
 const client = new ConvexHttpClient(CONVEX_URL)
 client.setAdminAuth(DEPLOY_KEY)
 
+const EXCLUDED_SLUGS = new Set([
+  'agency-in-a-box',
+  'indiehacker-launch-kit',
+  'saas-gtm-playbook',
+  'ccd',
+  'youtube-summary',
+  'cold-outreach-female-accounts',
+  'yt-to-blog'
+])
+
 function isLinkFallback(fileUrl, author) {
   const normAuthor = (author || '').toLowerCase()
   if (!fileUrl) {
@@ -54,7 +64,11 @@ async function validateLocalFiles() {
     return { success: false, fallbacks: [] }
   }
 
-  const files = fs.readdirSync(skillsDir).filter(f => f.endsWith('.ts') && f !== 'index.ts')
+  const files = fs.readdirSync(skillsDir).filter(f => {
+    if (!f.endsWith('.ts') || f === 'index.ts') return false
+    const basename = f.slice(0, -3)
+    return !EXCLUDED_SLUGS.has(basename)
+  })
   console.log(`Scanning ${files.length} static skill files...`)
 
   const fallbacks = []
@@ -110,6 +124,7 @@ async function validateConvexDb() {
   let correctCount = 0
 
   for (const skill of dbSkills) {
+    if (EXCLUDED_SLUGS.has(skill.slug)) continue
     const fileUrl = skill.fileUrl || ''
     const author = skill.author || ''
     if (isLinkFallback(fileUrl, author)) {

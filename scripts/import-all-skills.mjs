@@ -51,6 +51,27 @@ const repos = [
     localSubdir: 'mattpocock-skills',
     skillsPath: 'skills',
     getFileUrl: (slug, category) => `https://github.com/mattpocock/skills/tree/main/skills/${category}/${slug}`
+  },
+  {
+    author: 'obra',
+    gitUrl: 'https://github.com/obra/superpowers.git',
+    localSubdir: 'superpowers',
+    skillsPath: 'skills',
+    getFileUrl: (slug) => `https://github.com/obra/superpowers/tree/main/skills/${slug}`
+  },
+  {
+    author: 'tw93',
+    gitUrl: 'https://github.com/tw93/Waza.git',
+    localSubdir: 'Waza',
+    skillsPath: 'skills',
+    getFileUrl: (slug) => `https://github.com/tw93/Waza/tree/main/skills/${slug}`
+  },
+  {
+    author: 'ourostack',
+    gitUrl: 'https://github.com/ourostack/ouroboros-skills.git',
+    localSubdir: 'ouroboros-skills',
+    skillsPath: 'skills',
+    getFileUrl: (slug) => `https://github.com/ourostack/ouroboros-skills/tree/main/skills/${slug}`
   }
 ]
 
@@ -122,10 +143,93 @@ function capitalize(str) {
 }
 
 function formatTitle(slug) {
-  return slug
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
+  if (!slug) return '';
+  const ABBREVIATIONS = {
+    gtm: 'GTM',
+    saas: 'SaaS',
+    ai: 'AI',
+    b2b: 'B2B',
+    b2c: 'B2C',
+    prd: 'PRD',
+    seo: 'SEO',
+    tdd: 'TDD',
+    mrr: 'MRR',
+    cli: 'CLI',
+    sdk: 'SDK',
+    ecc: 'ECC',
+    mcp: 'MCP',
+    pdf: 'PDF',
+    html: 'HTML',
+    css: 'CSS',
+    js: 'JS',
+    api: 'API',
+    usdc: 'USDC',
+    yara: 'YARA',
+    apk: 'APK',
+    fp: 'FP',
+    gh: 'GH',
+    sms: 'SMS',
+    mvp: 'MVP',
+    url: 'URL',
+    svg: 'SVG',
+    json: 'JSON',
+    yaml: 'YAML',
+    xml: 'XML',
+    rss: 'RSS',
+    ui: 'UI',
+    ux: 'UX',
+    ci: 'CI',
+    gsd: 'GSD'
+  };
+
+  const PROPER_NOUNS = {
+    solana: 'Solana',
+    claude: 'Claude',
+    linkedin: 'LinkedIn',
+    youtube: 'YouTube',
+    wechat: 'WeChat',
+    weibo: 'Weibo',
+    reddit: 'Reddit',
+    porkbun: 'Porkbun',
+    gemini: 'Gemini',
+    chrome: 'Chrome',
+    git: 'Git',
+    semgrep: 'Semgrep',
+    'next.js': 'Next.js',
+    nextjs: 'Next.js',
+    turbopack: 'Turbopack',
+    obsidian: 'Obsidian',
+    burpsuite: 'BurpSuite',
+    gmod: 'Gmod',
+    pocketbase: 'Pocketbase',
+    sentry: 'Sentry',
+    matt: 'Matt',
+    pocock: 'Pocock',
+    brandkit: 'Brandkit'
+  };
+
+  const clean = slug.startsWith('baoyu-') ? slug.slice(6) : slug;
+  const words = clean.replace(/-/g, ' ').split(/\s+/).filter(Boolean);
+  
+  return words.map((word, idx) => {
+    const lower = word.toLowerCase();
+    
+    // Check abbreviations
+    if (ABBREVIATIONS[lower]) {
+      return ABBREVIATIONS[lower];
+    }
+    
+    // Check proper nouns
+    if (PROPER_NOUNS[lower]) {
+      return PROPER_NOUNS[lower];
+    }
+    
+    if (idx === 0) {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    } else {
+      return word.toLowerCase();
+    }
+  }).join(' ');
 }
 
 function getMockIcon(slug) {
@@ -300,57 +404,25 @@ function extractWhenToUseFromReadme(readme) {
   return '';
 }
 
-function enrichWithHumor(title, desc, tagline, slug) {
-  const s = slug.toLowerCase();
-  const t = title.toLowerCase();
-  const d = desc.toLowerCase();
-
-  // If tagline and desc are identical, shorten/tweak the tagline
-  if (tagline.trim().toLowerCase() === desc.trim().toLowerCase()) {
-    if (tagline.length > 80) {
-      tagline = tagline.slice(0, 77) + '...';
-    }
-  }
-
-  // Remove generic stubs completely and replace with something funny/conversational
+function cleanupDescAndTagline(title, desc, tagline) {
+  // Replace generic stubs
   if (desc.includes('Guides end-to-end execution of')) {
-    desc = `Helps you automate and manage your ${title} workflow directly in your local environment.`;
+    desc = `Automates ${title.toLowerCase()} workflow routines in your local environment.`;
   }
 
-  let humor = '';
-  if (s.includes('audit') || s.includes('security') || s.includes('scan') || s.includes('yara') || s.includes('semgrep') || s.includes('insecure')) {
-    humor = "Point it at your code, watch it probe for bugs, and hope nothing catches fire in production.";
-  } else if (s.includes('git') || s.includes('commit') || s.includes('branch') || s.includes('pr') || s.includes('merge')) {
-    humor = "Because git reflog should be a historical curiosity, not your primary workflow tool.";
-  } else if (s.includes('test') || s.includes('tdd') || s.includes('verification') || s.includes('check') || s.includes('e2e')) {
-    humor = "Saves you from the inevitable frustration of screaming at your test runner at 2 AM.";
-  } else if (s.includes('debug') || s.includes('diagnose') || s.includes('trouble')) {
-    humor = "Helps you track down that one typo causing a stack overflow, without losing your sanity.";
-  } else if (s.includes('design') || s.includes('theme') || s.includes('canvas') || s.includes('art') || s.includes('css')) {
-    humor = "Create premium visual layouts directly in your terminal, with zero multiplayer cursor spam.";
-  } else if (s.includes('document') || s.includes('pdf') || s.includes('docx') || s.includes('xlsx') || s.includes('excel') || s.includes('text') || s.includes('article') || s.includes('write')) {
-    humor = "Let the AI handle the boring formatting while you take full credit for the presentation.";
-  } else if (s.includes('marketing') || s.includes('pricing') || s.includes('launch') || s.includes('brand') || s.includes('business')) {
-    humor = "Make your startup look like a venture-backed decacorn before you've even written a single line of backend code.";
-  } else if (s.includes('career') || s.includes('resume') || s.includes('interview')) {
-    humor = "Tailor your credentials to look like the ultimate senior architect (even if you just copy-paste from StackOverflow).";
-  } else if (s.includes('mcp') || s.includes('api') || s.includes('database') || s.includes('db') || s.includes('railway') || s.includes('pocketbase') || s.includes('sentry')) {
-    humor = "Orchestrate your backend infrastructure without clicking through 50 web console tabs.";
-  } else if (s.includes('productivity') || s.includes('obsidian') || s.includes('note') || s.includes('task') || s.includes('triage') || s.includes('agenda')) {
-    humor = "Perfect for looking extremely organized while you're actually just procrastinating.";
-  } else if (s.includes('video') || s.includes('audio') || s.includes('media') || s.includes('speech')) {
-    humor = "Process complex media pipelines without spending half your day on StackOverflow looking up ffmpeg flags.";
-  } else {
-    humor = "Because writing all of this boilerplate manually is a cry for help.";
+  // If tagline is identical to desc, truncate tagline to first sentence
+  const descNorm = desc.trim().toLowerCase();
+  const tagNorm = tagline.trim().toLowerCase();
+  if (tagNorm === descNorm || desc.trim().toLowerCase().startsWith(tagNorm)) {
+    // tagline is a prefix of desc — that's fine, keep it short
+  } else if (tagNorm.length > 10 && descNorm.startsWith(tagNorm.slice(0, Math.min(tagNorm.length, 60)))) {
+    // very similar start — keep tagline as-is
   }
 
-  if (humor && !desc.includes(humor)) {
-    desc = `${desc.trim()} ${humor}`;
-  }
-
+  // Clamp tagline length
   if (tagline.length > 120) {
     tagline = tagline.slice(0, 117) + '...';
-  } else if (!tagline.endsWith('.')) {
+  } else if (!tagline.endsWith('.') && !tagline.endsWith('!') && !tagline.endsWith('?')) {
     tagline = tagline + '.';
   }
 
@@ -598,7 +670,7 @@ function compileCategoryMarkdown(slug, folderPath) {
           metadata[key] = val.replace(/^['"]|['"]$/g, '');
         }
       }
-      const name = metadata.name || formatTitle(dir);
+      const name = formatTitle(metadata.name || dir);
       const desc = metadata.description || `Guides end-to-end execution of ${name} workflow routines.`;
       subSkills.push({ slug: dir, name, desc });
     }
@@ -614,79 +686,79 @@ function compileCategoryMarkdown(slug, folderPath) {
 
   if (slug === 'security') {
     tagline = `Audits, penetration tests, and security checks: ${count} specialized workflows to harden your setup.`;
-    desc = `Automate Active Directory audits, API fuzzing, broken authentication, IDOR checks, and web vulnerabilities using Claude Code workspace directives. Just point the AI and watch it probe for gaps (and hope nothing breaks in prod).`;
+    desc = `Automate Active Directory audits, API fuzzing, broken authentication checks, IDOR testing, and web vulnerability scanning using Claude Code workspace directives. Point the AI at your codebase and let it surface gaps before they become incidents.`;
   } else if (slug === 'development') {
     tagline = `Bootstrap, test, refactor, and review: ${count} workflows to accelerate your coding routines.`;
-    desc = `Speed up development iterations, generate tests, structure code architecture, and review diffs automatically. It's like having a junior developer who doesn't complain about coffee.`;
+    desc = `Speed up development iterations with automated test generation, code architecture structuring, diff reviews, and refactoring passes — all runnable directly from your local workspace.`;
   } else if (slug === 'database') {
     tagline = `Schema migrations, backups, and query tuning: ${count} tools to manage your database.`;
-    desc = `Deploy database migrations, design SQL schemas, audit indexing strategies, and run queries. Helps you orchestrate database systems directly from your workspace without the usual headaches.`;
+    desc = `Deploy database migrations, design SQL schemas, audit indexing strategies, and run structured queries. Orchestrate your database systems directly from your workspace without switching context.`;
   } else if (slug === 'git') {
     tagline = `Clean commits, branches, and merges: ${count} Git workflow assistants in one package.`;
-    desc = `Organize git workflows, generate conventional commits, automate branch cleanups, and manage merges. Because git reflog should be your absolute last resort.`;
+    desc = `Organize git workflows, generate conventional commits, automate branch cleanups, manage merges, and review PRs — keeping your repository history readable and your release process consistent.`;
   } else if (slug === 'marketing') {
     tagline = `SEO optimization, copy generation, and funnel audits: ${count} tools to boost your growth engine.`;
-    desc = `Run SEO analyses, construct landing page funnels, draft targeted copy, and structure business outreach models automatically. Now you can look busy while the agent does the copywriting.`;
+    desc = `Run SEO analyses, construct landing page funnels, draft targeted copy, and structure business outreach models. Automate the content workflows that normally eat up hours of your week.`;
   } else if (slug === 'career') {
     tagline = `Resume tailoring, interview preparation, and job tracking: ${count} templates to launch your career.`;
-    desc = `Format resume variations, review interview questions, generate cover letters, and organize job application logs. Dress for the job you want: prompt engineer.`;
+    desc = `Format resume variations tailored to specific roles, review common interview questions, generate cover letters, and organize job application logs — structured to move your search forward faster.`;
   } else if (slug === 'productivity') {
     tagline = `Time tracking, notes compilation, and task triaging: ${count} routines to reclaim your day.`;
-    desc = `Organize task prioritisation, structure meeting agendas, format obsidian vault notes, and compile todo lists. Perfect for keeping your workflow clean and your procrastination hidden.`;
+    desc = `Organize task prioritization, structure meeting agendas, format Obsidian vault notes, compile todo lists, and surface what actually needs your attention today.`;
   } else if (slug === 'analytics') {
     tagline = `Data aggregation, metric dashboards, and audit logs: ${count} analysis workflows.`;
-    desc = `Audit pipeline performance, track business metrics, aggregate logs, and parse analytics events directly in your terminal workspace. Keep track of what your apps are doing (before your server bills explode).`;
+    desc = `Audit pipeline performance, track business metrics, aggregate logs, and parse analytics events directly in your terminal workspace. Get signal from your data without building a dashboard from scratch.`;
   } else if (slug === 'ai-maestro') {
     tagline = `Orchestrate agents, coordinate tasks, and manage context: ${count} orchestrations.`;
-    desc = `Manage complex multi-agent handoffs, system routing, and memory injection. Basically, you become the puppet master of a small army of bots, doing your bidding with varying degrees of success.`;
+    desc = `Manage complex multi-agent handoffs, system routing, memory injection, and tool coordination. Build reliable agent pipelines that chain tasks without losing context between steps.`;
   } else if (slug === 'ai-research') {
     tagline = `Deep search, web scraping, and literature reviews: ${count} research assistants.`;
-    desc = `Automate academic searching, competition monitoring, patent lookups, and document synthesis. Let the AI read those dry 50-page PDFs while you skim the 1-page summary and pretend you read the whole thing.`;
+    desc = `Automate academic searching, competition monitoring, patent lookups, and document synthesis. Let the AI read through the source material and surface structured summaries you can actually use.`;
   } else if (slug === 'business-marketing') {
     tagline = `Market size estimation, product positioning, and pitch prep: ${count} business tools.`;
-    desc = `Model financial forecasts, compile target customer personas, draft pitch decks, and optimize pricing tables. Make your startup look like a venture-backed decacorn before you've even written a single line of backend code.`;
+    desc = `Model financial forecasts, compile customer personas, draft pitch decks, and optimize pricing tables. Automate the business analysis workflows that feed your strategy and fundraising materials.`;
   } else if (slug === 'creative-design') {
     tagline = `Visual styling, canvas components, and mockup layouts: ${count} design scripts.`;
-    desc = `Generate layouts, export SVG assets, structure theme presets, and review visual compliance. It's like having Figma in your terminal, but with 100% fewer multiplayer cursor spams and random notification pings.`;
+    desc = `Generate layouts, export SVG assets, structure theme presets, and review visual compliance. Bring design systems into your terminal workflow without leaving the codebase.`;
   } else if (slug === 'document-processing') {
     tagline = `Parse PDFs, compile docx, and extract CSV tables: ${count} file handlers.`;
-    desc = `Convert and manipulate document formats, scrub metadata, format invoices, and extract structured tables. It's tedious work, which is exactly why you should make the AI do it while you take the credit.`;
+    desc = `Convert and manipulate document formats, scrub metadata, format invoices, and extract structured tables from unstructured sources — all through workspace-native automation.`;
   } else if (slug === 'enterprise-communication') {
     tagline = `Slack updates, email summaries, and corporate reports: ${count} comms bridges.`;
-    desc = `Draft project status updates, generate newsletters, format internal wiki pages, and summarize long Slack threads. Communicate with stakeholders in flawless corporate jargon without dying inside.`;
+    desc = `Draft project status updates, generate newsletters, format internal wiki pages, and summarize long Slack threads. Keep stakeholders informed without spending hours composing updates by hand.`;
   } else if (slug === 'media') {
     tagline = `Compress images, slice audio, and process assets: ${count} media tools.`;
-    desc = `Optimize image sizes, convert audio formats, transcribe speech, and generate screenshots. Keep your site loading fast and your assets perfectly formatted, automatically.`;
+    desc = `Optimize image sizes, convert audio formats, transcribe speech, and generate screenshots. Keep your assets consistently formatted and delivery-ready across every project.`;
   } else if (slug === 'pocketbase') {
     tagline = `Instant backend setup, auth configuration, and DB schemas: ${count} PocketBase scripts.`;
-    desc = `Initialize PocketBase databases, configure collection schemas, configure authentication rules, and deploy hooks. Build a fully functional backend in seconds and feel like a serverless wizard.`;
+    desc = `Initialize PocketBase databases, configure collection schemas, set up authentication rules, and deploy hooks. Get a fully functional backend running with minimal manual setup.`;
   } else if (slug === 'railway') {
     tagline = `Environment provisioning, service checks, and deployments: ${count} Railway helpers.`;
-    desc = `Deploy services, manage secrets, configure domain routing, and audit Railway resources directly from your terminal. Cloud infrastructure management for people who hate clicking around web consoles.`;
+    desc = `Deploy services, manage secrets, configure domain routing, and audit Railway resources directly from your terminal. Manage your cloud infrastructure without navigating web consoles.`;
   } else if (slug === 'scientific') {
     tagline = `Data analysis, scientific modeling, and notebook helper: ${count} research tools.`;
-    desc = `Perform DNA sequence parsing, run physical simulations, build ML models with scikit-learn, and format LaTeX papers. Yes, your terminal now does actual rocket science (or at least looks like it does).`;
+    desc = `Perform DNA sequence parsing, run physical simulations, build ML models with scikit-learn, and format LaTeX papers. Bring structured computation into your research workflow.`;
   } else if (slug === 'sentry') {
     tagline = `Error log monitoring, alert rules, and release tracking: ${count} Sentry integrations.`;
-    desc = `Configure Sentry alert thresholds, associate releases with git commits, and triage uncaught exceptions. Find out why production is on fire before your users start writing angry emails.`;
+    desc = `Configure Sentry alert thresholds, associate releases with git commits, triage uncaught exceptions, and route errors to the right team. Surface production issues before your users report them.`;
   } else if (slug === 'sports') {
     tagline = `Scrape stats, analyze performance, and model predictions: ${count} sports routines.`;
-    desc = `Fetch match history, parse athlete statistics, compile league tables, and run game simulations. Now you can use advanced machine learning to lose your fantasy league in style.`;
+    desc = `Fetch match history, parse athlete statistics, compile league tables, and run game simulations. Automate the data collection behind performance analysis and prediction models.`;
   } else if (slug === 'utilities') {
     tagline = `Cron scheduling, system cleanup, and path checkers: ${count} command-line utilities.`;
-    desc = `Automate shell aliases, clean temp folders, check environment paths, and encode/decode strings. The digital duct tape and WD-40 that holds your development workspace together.`;
+    desc = `Automate shell aliases, clean temp folders, check environment paths, and encode/decode strings. Core workspace utilities that keep your development environment consistent and maintainable.`;
   } else if (slug === 'video') {
     tagline = `Extract frames, concatenate clips, and generate previews: ${count} video scripts.`;
-    desc = `Transcode video files, generate thumbnail grids, and render micro-animations. It's like having ffmpeg, but you don't have to spend 4 hours on StackOverflow figuring out the flags.`;
+    desc = `Transcode video files, generate thumbnail grids, concatenate clips, and render micro-animations. Handle the full video processing pipeline from your local environment without manual ffmpeg invocations.`;
   } else if (slug === 'web-data') {
     tagline = `Scrape web tables, parse JSON feeds, and fetch RSS: ${count} data harvesters.`;
-    desc = `Harvest unstructured web text, extract schema markup, monitor price changes, and follow RSS streams. Crawl the web for fun and profit without writing a single CSS selector.`;
+    desc = `Harvest unstructured web text, extract schema markup, monitor price changes, and follow RSS streams. Collect and structure web data at the source, ready to pipe into your analysis workflows.`;
   } else if (slug === 'web-development') {
     tagline = `Next.js, Tailwind, and React boilerplates: ${count} web dev templates.`;
-    desc = `Scaffold modern web applications, set up routing paths, configure linting gates, and build production assets. Go from empty directory to styled landing page before your coffee cools down.`;
+    desc = `Scaffold modern web applications, set up routing paths, configure linting gates, and build production assets. Go from an empty directory to a working, styled application with a single command.`;
   } else if (slug === 'workflow-automation') {
     tagline = `Triggers, webhooks, and multi-app syncs: ${count} automated workflows.`;
-    desc = `Bridge API integrations, trigger notifications, build webhook receivers, and sync folder changes. Sit back and watch your apps talk to each other while you take credit for the productivity boost.`;
+    desc = `Bridge API integrations, trigger notifications, build webhook receivers, and sync folder changes. Connect your tools together so repetitive hand-offs run automatically in the background.`;
   }
 
   let readme = `---
@@ -755,7 +827,7 @@ function processSkillDir(author, slug, folderPath, fileUrl) {
   }
 
   const { metadata, readme } = parseFrontmatter(mdContent)
-  const title = metadata.name || formatTitle(slug)
+  const title = formatTitle(metadata.name || slug)
   let desc = customDesc || metadata.description || extractDescriptionFromReadme(readme) || `Guides end-to-end execution of ${title} workflow routines.`
   
   let tagline = customTagline || metadata.tagline
@@ -764,9 +836,19 @@ function processSkillDir(author, slug, folderPath, fileUrl) {
     tagline = firstSentence;
   }
 
-  const enriched = enrichWithHumor(title, desc, tagline, slug)
-  desc = enriched.desc
-  tagline = enriched.tagline
+  // Only run cleanup for individual skills — category suites already have curated descriptions
+  if (!customDesc) {
+    const cleaned = cleanupDescAndTagline(title, desc, tagline)
+    desc = cleaned.desc
+    tagline = cleaned.tagline
+  } else {
+    // Still enforce tagline punctuation for category suites
+    if (tagline.length > 120) {
+      tagline = tagline.slice(0, 117) + '...'
+    } else if (!tagline.endsWith('.') && !tagline.endsWith('!') && !tagline.endsWith('?')) {
+      tagline = tagline + '.'
+    }
+  }
 
   // Parse features
   const listMatch = readme.match(/## (?:What you get|What it does|Features|功能|特色)[\s\S]*?\n\n([\s\S]*?)(?:\n\n##|$)/i)
@@ -845,6 +927,16 @@ export const ${variableName}: SkillListing = {
   }
 }
 
+const EXCLUDED_SLUGS = new Set([
+  'agency-in-a-box',
+  'indiehacker-launch-kit',
+  'saas-gtm-playbook',
+  'ccd',
+  'youtube-summary',
+  'cold-outreach-female-accounts',
+  'yt-to-blog'
+])
+
 async function main() {
   console.log('--- Cloning target skill repositories ---')
   for (const repo of repos) {
@@ -868,8 +960,8 @@ async function main() {
     importedSkills.push({ author: 'baoyu', slug, variableName: varName })
   }
 
-  // Add the 3 leverbrain skills that are retained
-  const retainedLeverbrain = ['agency-in-a-box', 'indiehacker-launch-kit', 'saas-gtm-playbook']
+  // Add the leverbrain skills that are retained
+  const retainedLeverbrain = ['leverbrain']
   for (const slug of retainedLeverbrain) {
     const varName = slug.replace(/-([a-z0-9])/g, g => g[1].toUpperCase())
     importedSkills.push({ author: 'leverbrain', slug, variableName: varName })
@@ -963,9 +1055,68 @@ async function main() {
       fs.writeFileSync(path.join(outDir, `${slug}.ts`), result.content, 'utf8')
       importedSkills.push({ author: 'mattpocock', slug, variableName: result.variableName })
     }
+  }
+
+  // Process obra (superpowers) skills
+  const superpowersRepo = repos.find(r => r.author === 'obra')
+  const superpowersLocalDir = path.resolve(scratchDir, superpowersRepo.localSubdir, superpowersRepo.skillsPath)
+  if (fs.existsSync(superpowersLocalDir)) {
+    const superpowersDirs = fs.readdirSync(superpowersLocalDir).filter(f => fs.statSync(path.join(superpowersLocalDir, f)).isDirectory())
+    console.log(`Processing ${superpowersDirs.length} superpowers skills...`)
+    for (const slug of superpowersDirs) {
+      const folder = path.join(superpowersLocalDir, slug)
+      const fileUrl = superpowersRepo.getFileUrl(slug)
+      const result = processSkillDir('obra', slug, folder, fileUrl)
+      const outFilename = `superpowers-${slug}`
+      const varName = `superpowers${result.variableName.charAt(0).toUpperCase()}${result.variableName.slice(1)}`
+      const customResult = result.content.replace(`export const ${result.variableName}`, `export const ${varName}`)
+      fs.writeFileSync(path.join(outDir, `${outFilename}.ts`), customResult, 'utf8')
+      importedSkills.push({ author: 'obra', slug, variableName: varName, filename: outFilename })
+    }
+  }
+
+  // Process tw93 (Waza) skills
+  const wazaRepo = repos.find(r => r.author === 'tw93')
+  const wazaLocalDir = path.resolve(scratchDir, wazaRepo.localSubdir, wazaRepo.skillsPath)
+  if (fs.existsSync(wazaLocalDir)) {
+    const wazaDirs = fs.readdirSync(wazaLocalDir).filter(f => fs.statSync(path.join(wazaLocalDir, f)).isDirectory())
+    console.log(`Processing ${wazaDirs.length} Waza skills...`)
+    for (const slug of wazaDirs) {
+      const folder = path.join(wazaLocalDir, slug)
+      const fileUrl = wazaRepo.getFileUrl(slug)
+      const result = processSkillDir('tw93', slug, folder, fileUrl)
+      const outFilename = `waza-${slug}`
+      const varName = `waza${result.variableName.charAt(0).toUpperCase()}${result.variableName.slice(1)}`
+      const customResult = result.content.replace(`export const ${result.variableName}`, `export const ${varName}`)
+      fs.writeFileSync(path.join(outDir, `${outFilename}.ts`), customResult, 'utf8')
+      importedSkills.push({ author: 'tw93', slug, variableName: varName, filename: outFilename })
+    }
+  }
+
+  // Process ourostack (Ouroboros) skills
+  const ouroRepo = repos.find(r => r.author === 'ourostack')
+  const ouroLocalDir = path.resolve(scratchDir, ouroRepo.localSubdir, ouroRepo.skillsPath)
+  if (fs.existsSync(ouroLocalDir)) {
+    const ouroDirs = fs.readdirSync(ouroLocalDir).filter(f => fs.statSync(path.join(ouroLocalDir, f)).isDirectory())
+    console.log(`Processing ${ouroDirs.length} Ouroboros skills...`)
+    for (const slug of ouroDirs) {
+      const folder = path.join(ouroLocalDir, slug)
+      const fileUrl = ouroRepo.getFileUrl(slug)
+      const result = processSkillDir('ourostack', slug, folder, fileUrl)
+      const outFilename = `ouro-${slug}`
+      const varName = `ouro${result.variableName.charAt(0).toUpperCase()}${result.variableName.slice(1)}`
+      const customResult = result.content.replace(`export const ${result.variableName}`, `export const ${varName}`)
+      fs.writeFileSync(path.join(outDir, `${outFilename}.ts`), customResult, 'utf8')
+      importedSkills.push({ author: 'ourostack', slug, variableName: varName, filename: outFilename })
+    }
   }  // Physical cleanup of deleted / untracked files in src/lib/skills-data/
   console.log('\n--- Cleaning up untracked skill files ---')
   const activeFilenames = new Set(importedSkills.map(skill => (skill.filename || skill.slug) + '.ts'))
+  // Ensure excluded skills are not deleted from the system
+  for (const slug of EXCLUDED_SLUGS) {
+    activeFilenames.add(slug + '.ts')
+  }
+  
   const currentFiles = fs.readdirSync(outDir).filter(f => f.endsWith('.ts'))
   let deletedFilesCount = 0
   for (const file of currentFiles) {
@@ -983,6 +1134,7 @@ async function main() {
   const uniqueImports = []
   const seen = new Set()
   for (const skill of importedSkills) {
+    if (EXCLUDED_SLUGS.has(skill.slug)) continue
     const filename = skill.filename || skill.slug
     const key = `${skill.author}/${skill.slug}`
     if (seen.has(key)) continue

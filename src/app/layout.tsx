@@ -52,10 +52,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Calistoga&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Saira:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Calistoga&family=Caveat:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Saira:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
-        <link rel="icon" href="/vec.svg" type="image/svg+xml" />
+        <link rel="icon" href="/images/octo.png" type="image/png" />
         <title>Leverbrain — The expertise stack</title>
         <meta name="description" content="Skills, strategies, and blueprints for AI operators — purchased on-chain, deployed instantly." />
       </head>

@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { ArrowLeft, Bookmark, BookmarkCheck, BookOpen, Check, Download, ExternalLink, ShoppingCart, TrendingUp, Zap, Copy, Loader2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useMutation, useQuery } from 'convex/react'
 import { getSkillByAuthorSlug, type SkillListing } from '@/lib/skills-data'
@@ -51,6 +51,7 @@ interface EditableSkill {
   }[]
   useCases?: string[]
   exampleUsage?: string
+  isPrivate?: boolean
 }
 
 interface EditFormState {
@@ -62,6 +63,9 @@ interface EditFormState {
   priceUsdc: string
   category: SkillCategory
   tags: string
+  isPrivate: boolean
+  useCases: string
+  fileUrl: string
 }
 
 const CATEGORY_ICONS = {
@@ -293,6 +297,7 @@ function PresetGallery({ groups }: { groups: { title: string; items: { name: str
 
 export default function SkillDetailPage() {
   const params = useParams()
+  const router = useRouter()
   const author = (params?.author as string) ?? ''
   const name = (params?.name as string) ?? ''
   const [activeTab, setActiveTab] = useState<Tab>('details')
@@ -308,14 +313,20 @@ export default function SkillDetailPage() {
     priceUsdc: '0.00',
     category: 'skill',
     tags: '',
+    isPrivate: false,
+    useCases: '',
+    fileUrl: '',
   })
   const [isSaving, setIsSaving] = useState(false)
   const [editError, setEditError] = useState<string | null>(null)
   const [editSuccess, setEditSuccess] = useState<string | null>(null)
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const { connected, walletAddress, network } = useSolanaWallet()
   const { purchaseSkill, isPurchasing, purchaseStatus } = usePurchaseSkill()
   const publishSkill = useMutation(api.skills.publishSkill)
   const toggleSaved = useMutation(api.skills.toggleSavedSkill)
+  const deleteSkill = useMutation(api.skills.deleteSkillByAuthorSlug)
   const [isSavingBookmark, setIsSavingBookmark] = useState(false)
   const staticSkill = useMemo(
     () => getSkillByAuthorSlug(author, name),
@@ -351,6 +362,7 @@ export default function SkillDetailPage() {
         screenshots: staticSkill?.screenshots ?? undefined,
         useCases: convexSkill.useCases ?? staticSkill?.useCases ?? undefined,
         exampleUsage: convexSkill.exampleUsage ?? staticSkill?.exampleUsage ?? undefined,
+        isPrivate: convexSkill.isPrivate ?? false,
       }
     }
 
@@ -443,6 +455,9 @@ export default function SkillDetailPage() {
       priceUsdc: skill.priceUsdc.toFixed(2),
       category: skill.category,
       tags: skill.tags.join(', '),
+      isPrivate: skill.isPrivate ?? false,
+      useCases: skill.useCases ? skill.useCases.join(', ') : '',
+      fileUrl: skill.fileUrl || '',
     })
   }, [skill])
 
@@ -490,6 +505,25 @@ export default function SkillDetailPage() {
     }
   }
 
+  const handleDelete = async () => {
+    if (!walletAddress || !canEditListing || !skill) return
+    setIsDeleting(true)
+    setEditError(null)
+    setEditSuccess(null)
+    try {
+      await deleteSkill({
+        author: skill.author,
+        slug: skill.slug,
+        publisherWallet: walletAddress,
+      })
+      router.push('/skills')
+    } catch (error: unknown) {
+      setEditError(error instanceof Error ? error.message : 'Failed to delete listing.')
+      setIsDeleting(false)
+      setIsConfirmingDelete(false)
+    }
+  }
+
   const handleEditSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!walletAddress || !canEditListing) {
@@ -517,6 +551,11 @@ export default function SkillDetailPage() {
     setEditError(null)
     setEditSuccess(null)
 
+    const useCases = editForm.useCases
+      .split(',')
+      .map((uc) => uc.trim())
+      .filter(Boolean)
+
     try {
       await publishSkill({
         publisherWallet: walletAddress,
@@ -531,6 +570,9 @@ export default function SkillDetailPage() {
         priceUsdc: parsedPrice,
         category: editForm.category,
         tags,
+        isPrivate: editForm.isPrivate,
+        useCases: useCases.length > 0 ? useCases : undefined,
+        fileUrl: editForm.fileUrl.trim() || undefined,
       })
       setEditSuccess('Listing updated successfully.')
     } catch (error: unknown) {
@@ -580,7 +622,7 @@ export default function SkillDetailPage() {
                   className={`sd-tab ${activeTab === 'details' ? 'sd-tab--active' : ''}`}
                   onClick={() => setActiveTab('details')}
                 >
-                  View Specimen
+                  Details
                 </button>
                 <button
                   role="tab"
@@ -598,11 +640,12 @@ export default function SkillDetailPage() {
                 <div className="sd-details-flow">
                   {/* Summary / Description */}
                   <section className="sd-summary-section">
-                    <p className="sd-desc">{skill.description}</p>
                     <div className="sd-tags">
-                      {skill.tags.map((tag) => (
-                        <span key={tag} className="sd-tag">{tag}</span>
-                      ))}
+                      {skill.tags
+                        .filter((tag) => tag !== 'skill' && tag !== 'skills' && !tag.endsWith('-skills'))
+                        .map((tag) => (
+                          <span key={tag} className="sd-tag">{tag}</span>
+                        ))}
                     </div>
                   </section>
 
@@ -628,26 +671,25 @@ export default function SkillDetailPage() {
                       <PresetGallery groups={skill.screenshots} />
                     </section>
                   )}
-                  {/* Conversational Overview / Details */}
-                  {convMeta && (
-                    <section className="sd-conversational-section" style={{
-                      display: 'grid',
-                      gap: '28px',
-                      marginTop: '24px'
+                  {/* Description + Use Cases */}
+                  <section className="sd-conversational-section" style={{
+                    display: 'grid',
+                    gap: '28px',
+                    marginTop: '16px'
+                  }}>
+                    <p style={{
+                      fontSize: '1.0625rem',
+                      lineHeight: '1.75',
+                      color: 'var(--color-text-secondary)',
+                      maxWidth: '800px',
+                      margin: 0,
+                      fontWeight: 400
                     }}>
-                      {/* Clean Conversational Explanation blending with background */}
-                      <p style={{
-                        fontSize: '1.0625rem',
-                        lineHeight: '1.75',
-                        color: 'var(--color-text-secondary)',
-                        maxWidth: '800px',
-                        margin: 0,
-                        fontWeight: 400
-                      }}>
-                        {convMeta.description}
-                      </p>
+                      {skill.description}
+                    </p>
 
-                      <div style={{ marginTop: '12px' }}>
+                    {(skill.useCases && skill.useCases.length > 0) && (
+                      <div>
                         <h3 style={{
                           fontSize: '0.72rem',
                           letterSpacing: '0.15em',
@@ -663,7 +705,7 @@ export default function SkillDetailPage() {
                           gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
                           gap: '16px'
                         }}>
-                          {(skill.useCases || convMeta.useCases).map((useCase, idx) => (
+                          {skill.useCases.map((useCase, idx) => (
                             <div key={idx} style={{
                               background: 'rgba(255, 255, 255, 0.01)',
                               border: '1px solid rgba(255, 255, 255, 0.03)',
@@ -686,12 +728,32 @@ export default function SkillDetailPage() {
                           ))}
                         </div>
                       </div>
-                    </section>
-                  )}
+                    )}
+                  </section>
                 </div>
               ) : (
                 canEditListing && (
                   <form className="sd-edit-form" onSubmit={handleEditSubmit}>
+                    <div className="form-group">
+                      <span className="form-label">Visibility</span>
+                      <div className="sk-price-switch" style={{ width: 'fit-content', minWidth: '180px' }}>
+                        <button
+                          type="button"
+                          className={`sk-price-switch-btn ${!editForm.isPrivate ? 'is-active' : ''}`}
+                          onClick={() => setEditForm(f => ({ ...f, isPrivate: false }))}
+                        >
+                          Public
+                        </button>
+                        <button
+                          type="button"
+                          className={`sk-price-switch-btn ${editForm.isPrivate ? 'is-active' : ''}`}
+                          onClick={() => setEditForm(f => ({ ...f, isPrivate: true }))}
+                        >
+                          Private
+                        </button>
+                      </div>
+                    </div>
+
                     <label className="form-group">
                       <span className="form-label">Name *</span>
                       <input
@@ -787,6 +849,37 @@ export default function SkillDetailPage() {
                     </label>
 
                     <label className="form-group">
+                      <span className="form-label">Use cases (comma separated, optional)</span>
+                      <input
+                        className="form-input"
+                        type="text"
+                        value={editForm.useCases}
+                        autoComplete="off"
+                        spellCheck
+                        onChange={(event) =>
+                          setEditForm((current) => ({ ...current, useCases: event.target.value }))
+                        }
+                        placeholder="Audit smart contracts, Check for reentrancy bugs, Generate audit reports"
+                      />
+                    </label>
+
+                    <label className="form-group">
+                      <span className="form-label">Repository / Source Link *</span>
+                      <input
+                        className="form-input"
+                        type="text"
+                        value={editForm.fileUrl}
+                        autoComplete="off"
+                        spellCheck={false}
+                        onChange={(event) =>
+                          setEditForm((current) => ({ ...current, fileUrl: event.target.value }))
+                        }
+                        placeholder="https://github.com/username/repo/tree/main/skills/my-skill"
+                        required
+                      />
+                    </label>
+
+                    <label className="form-group">
                       <span className="form-label">When to use</span>
                       <textarea
                         className="form-textarea"
@@ -810,10 +903,41 @@ export default function SkillDetailPage() {
                       />
                     </label>
 
-                    <div className="sd-edit-actions">
-                      <button type="submit" className="btn btn-primary" disabled={isSaving}>
+                    <div className="sd-edit-actions" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                      <button type="submit" className="btn btn-primary" disabled={isSaving || isDeleting}>
                         {isSaving ? 'Saving…' : 'Save listing'}
                       </button>
+                      
+                      {!isConfirmingDelete ? (
+                        <button
+                          type="button"
+                          className="btn btn-red"
+                          onClick={() => setIsConfirmingDelete(true)}
+                          disabled={isSaving || isDeleting}
+                        >
+                          Delete Listing
+                        </button>
+                      ) : (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ fontSize: '0.8rem', color: '#ffbba8' }}>Confirm delete?</span>
+                          <button
+                            type="button"
+                            className="btn btn-red btn-sm"
+                            onClick={handleDelete}
+                            disabled={isDeleting}
+                          >
+                            {isDeleting ? 'Deleting…' : 'Yes, Delete'}
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-outline btn-sm"
+                            onClick={() => setIsConfirmingDelete(false)}
+                            disabled={isDeleting}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      )}
                     </div>
 
                     {editError && <p className="profile-error">{editError}</p>}
@@ -1005,7 +1129,7 @@ export default function SkillDetailPage() {
         </div>
 
         {/* Source Code Inspector (full width, below content/sidebar) */}
-        {activeTab === 'details' && isFreeSkill && skill.readme && (
+        {activeTab === 'details' && (isFreeSkill || isPurchased || canEditListing) && (skill.fileUrl || skill.readme) && (
           <div className="animate-fade-in-up animate-delay-2" style={{ width: '100%' }}>
             <SourceCodeInspector
               author={skill.author}

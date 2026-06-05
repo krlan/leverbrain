@@ -37,6 +37,62 @@
   justify-content: flex-start;
 }
 
+/* ─── Hero subtitle lines ─── */
+.land-hero-sub-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.land-hero-sub-line + .land-hero-sub-line {
+  margin-top: 0.38rem;
+}
+
+/* ─── Solana logo — inline, blended ─── */
+.land-hero-solana {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.land-hero-solana-img {
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  filter: saturate(0.9) brightness(1.1);
+  transition: opacity 250ms ease;
+}
+.land-hero-solana-img:hover {
+  opacity: 0.85;
+}
+
+/* ─── Stack logos strip ─── */
+.land-hero-stack-logos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+.land-hero-stack-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.55;
+  filter: grayscale(0.1) brightness(1.0);
+  transition: opacity 220ms ease, filter 220ms ease;
+  border-radius: 5px;
+  overflow: hidden;
+}
+/* Hermes is black-on-white — invert so it reads on dark bg */
+.land-hero-stack-logo:first-child {
+  filter: invert(1) grayscale(0.1) brightness(0.95);
+}
+.land-hero-stack-logo:hover {
+  opacity: 0.85;
+  filter: grayscale(0) brightness(1);
+}
+.land-hero-stack-logo:first-child:hover {
+  filter: invert(1) grayscale(0) brightness(1);
+}
+
 /* ─── Hero Terminal Block ─── */
 .land-hero-terminal {
   justify-self: end;

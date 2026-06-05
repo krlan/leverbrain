@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react'
 
 export default function Footer() {
@@ -10,7 +11,13 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link href="/" className="footer-logo">
-              <span className="footer-logo-mark" aria-hidden="true" />
+              <Image
+                src="/images/octo.png"
+                alt="Leverbrain Logo"
+                width={72}
+                height={72}
+                className="footer-logo-mark"
+              />
               <span>LEVERBRAIN</span>
             </Link>
             <p className="footer-tagline">

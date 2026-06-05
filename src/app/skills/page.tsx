@@ -3,7 +3,7 @@
 import { Suspense, useMemo, useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { Search, X, ChevronDown } from 'lucide-react'
+import { Search, X, ChevronDown, LayoutGrid, List, ArrowRight } from 'lucide-react'
 import { useQuery } from 'convex/react'
 import { type SkillCategory } from '@/lib/skills-data'
 import { mergeSkillPool } from '@/lib/skill-pool'
@@ -98,6 +98,16 @@ type MarketType = SkillCategory | 'all'
 type PriceFilter = 'free' | 'paid'
 type SortBy = (typeof SORT_OPTIONS)[number]['id']
 
+function getAuthorAvatarUrl(author: string) {
+  const cleanAuthor = author.toLowerCase().trim()
+  if (cleanAuthor === 'anthropics') return '/images/claude.png'
+  if (cleanAuthor === 'composiohq') return 'https://avatars.githubusercontent.com/u/105432322?v=4'
+  if (cleanAuthor === '199-biotechnologies') return 'https://avatars.githubusercontent.com/u/81938501?v=4'
+  if (cleanAuthor === 'leverbrain') return '/images/octo.png'
+  if (cleanAuthor === 'baoyu') return 'https://avatars.githubusercontent.com/u/648674?v=4'
+  return `https://github.com/${cleanAuthor}.png`
+}
+
 function formatCategoryLabel(category: string) {
   if (!category) return 'Unknown'
   return category
@@ -138,8 +148,9 @@ function SkillsContent() {
 
   const [marketType, setMarketType] = useState<MarketType>(initialMarketType)
   const [categoryFilter, setCategoryFilter] = useState<string>('all')
-  const [priceFilter, setPriceFilter] = useState<PriceFilter>('paid')
+  const [priceFilter, setPriceFilter] = useState<PriceFilter>(searchParams?.get('category') === 'strategy' || searchParams?.get('category') === 'blueprint' ? 'paid' : 'paid') // Keep standard initialization
   const [sortBy, setSortBy] = useState<SortBy>('popularity')
+  const [layout, setLayout] = useState<'grid' | 'list'>('grid')
 
   const skillPool = useMemo(() => mergeSkillPool(convexSkills), [convexSkills])
 
@@ -236,7 +247,7 @@ function SkillsContent() {
                 />
               </div>
 
-              <div className="sk-select-wrap">
+              <div className="sk-select-wrap" style={{ position: 'relative' }}>
                 <span className="sk-select-title">Price</span>
                 <div className="sk-price-switch">
                   <button
@@ -254,6 +265,15 @@ function SkillsContent() {
                     Free
                   </button>
                 </div>
+                {priceFilter === 'paid' && (
+                  <div className="sk-scribble-note">
+                    <span className="sk-scribble-text">check these too!</span>
+                    <svg className="sk-scribble-arrow" width="30" height="25" viewBox="0 0 50 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M42 28C35 22 25 8 12 8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                      <path d="M18 4L11 8L17 14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                )}
               </div>
 
               <div className="sk-select-wrap">
@@ -264,6 +284,28 @@ function SkillsContent() {
                   options={SORT_OPTIONS}
                   ariaLabel="Sort option"
                 />
+              </div>
+
+              <div className="sk-select-wrap" style={{ flex: '0 0 auto', minWidth: '86px' }}>
+                <span className="sk-select-title">Layout</span>
+                <div className="sk-layout-switch" style={{ width: '86px' }}>
+                  <button
+                    type="button"
+                    className={`sk-layout-switch-btn ${layout === 'grid' ? 'is-active' : ''}`}
+                    onClick={() => setLayout('grid')}
+                    aria-label="Grid view"
+                  >
+                    <LayoutGrid size={14} />
+                  </button>
+                  <button
+                    type="button"
+                    className={`sk-layout-switch-btn ${layout === 'list' ? 'is-active' : ''}`}
+                    onClick={() => setLayout('list')}
+                    aria-label="List view"
+                  >
+                    <List size={14} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -290,6 +332,47 @@ function SkillsContent() {
                 Clear filters
               </button>
             </div>
+          ) : layout === 'grid' ? (
+            <div className="sk-cards-grid">
+              {filtered.map((skill, i) => (
+                <Link
+                  key={skill.id}
+                  href={`/skills/${skill.author}/${skill.slug}`}
+                  className={`sk-card animate-fade-in-up animate-delay-${Math.min(i % 6, 4)}`}
+                  onMouseMove={handleMouseMove}
+                >
+                  <div className="sk-card-top">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <img
+                        src={getAuthorAvatarUrl(skill.author)}
+                        alt={`${skill.author} avatar`}
+                        style={{
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                          border: '1px solid rgba(255, 196, 129, 0.2)'
+                        }}
+                      />
+                      <span className="sk-card-creator" style={{ margin: 0 }}>@{skill.author}</span>
+                    </div>
+                    <h2 className="sk-card-name" style={{ marginTop: '6px' }}>{skill.name}</h2>
+                    <p className="sk-card-tagline">{skill.tagline}</p>
+                  </div>
+
+                  <div className="sk-card-bottom">
+                    {skill.category !== 'skill' ? (
+                      <span className={`sk-cat-pill sk-cat-pill--${skill.category}`}>
+                        {skill.category}
+                      </span>
+                    ) : (
+                      <span />
+                    )}
+                    <PriceTag price={skill.price} />
+                  </div>
+                </Link>
+              ))}
+            </div>
           ) : (
             <div className="sk-grid">
               <div className="sk-grid-head">
@@ -312,15 +395,35 @@ function SkillsContent() {
                   </div>
 
                   <span className="sk-row-creator">@{skill.author}</span>
-                  <span className={`sk-cat-pill sk-cat-pill--${skill.category}`}>
-                    {skill.category}
-                  </span>
+                  {skill.category !== 'skill' ? (
+                    <span className={`sk-cat-pill sk-cat-pill--${skill.category}`}>
+                      {skill.category}
+                    </span>
+                  ) : (
+                    <span className="sk-row-creator" style={{ opacity: 0 }}>-</span>
+                  )}
                   <PriceTag price={skill.price} />
                 </Link>
               ))}
             </div>
           )}
         </section>
+
+        {priceFilter === 'paid' && (
+          <section className="land-showcase config-showcase animate-fade-in-up" style={{ marginTop: '48px', paddingBottom: '32px' }}>
+            <div className="land-red-card">
+              <div className="land-red-card-content">
+                <h3>Share your edge</h3>
+                <p className="land-agent-headline land-agent-headline--red" style={{ marginBottom: '16px' }}>
+                  Publish the skills that helped you win, and let others build faster.
+                </p>
+                <Link href="/publish" className="btn btn-red">
+                  Publish a skill <ArrowRight size={14} />
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   )

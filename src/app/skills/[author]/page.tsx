@@ -22,7 +22,7 @@ const STATIC_PROFILES: Record<string, {
   anthropics: {
     displayName: 'Anthropic',
     bio: 'Creators of Claude, pushing the frontier of AI alignment, safety, and agent capabilities.',
-    avatarUrl: 'https://avatars.githubusercontent.com/u/79624505?v=4',
+    avatarUrl: '/images/claude.png',
     github: 'https://github.com/anthropics',
     website: 'https://anthropic.com',
     twitter: 'anthropic_ai',
@@ -50,13 +50,33 @@ const STATIC_PROFILES: Record<string, {
   },
   leverbrain: {
     displayName: 'Leverbrain',
-    bio: 'Foundational models, SDKs, and CLI tools for the Solana-backed skill economy.',
-    avatarUrl: 'https://avatars.githubusercontent.com/u/190823902?v=4',
+    bio: 'You are here. The Skill Marketplace on Solana.',
+    avatarUrl: '/images/octo.png',
     github: 'https://github.com/leverbrain',
     website: 'https://leverbrain.com',
     twitter: 'leverbrain',
     verified: true,
     background: 'linear-gradient(135deg, rgba(255, 188, 104, 0.22) 0%, rgba(20, 15, 12, 0.98) 100%)',
+  },
+  baoyu: {
+    displayName: 'Baoyu',
+    bio: 'AI auxiliary content creation pioneer. Author of baoyu-skills, WeChat public account owner, developer, and translator.',
+    avatarUrl: 'https://avatars.githubusercontent.com/u/648674?v=4',
+    github: 'https://github.com/JimLiu',
+    website: 'https://baoyu.io',
+    twitter: 'dotey',
+    verified: true,
+    background: 'linear-gradient(135deg, rgba(80, 200, 120, 0.22) 0%, rgba(20, 15, 12, 0.98) 100%)',
+  },
+  'affaan-m': {
+    displayName: 'Affaan Mustafa',
+    bio: 'SF-based builder. Creator of Everything Claude Code (ECC) and AgentShield. Focuses on AI agent ecosystems, autonomous frameworks, and security.',
+    avatarUrl: 'https://github.com/affaan-m.png',
+    github: 'https://github.com/affaan-m',
+    website: 'https://affaanmustafa.com',
+    twitter: 'affaanmustafa',
+    verified: true,
+    background: 'linear-gradient(135deg, rgba(230, 53, 162, 0.22) 0%, rgba(20, 15, 12, 0.98) 100%)',
   }
 }
 
@@ -103,9 +123,11 @@ export default function AuthorProfilePage() {
       return {
         displayName: dbProfile.displayName || dbProfile.handle || authorRaw,
         bio: dbProfile.bio || 'Creator on Leverbrain.',
-        avatarUrl: dbProfile.avatarUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${author}`,
+        avatarUrl: dbProfile.avatarUrl || staticProf?.avatarUrl || `https://github.com/${dbProfile.handle || author}.png`,
         website: dbProfile.website || staticProf?.website,
-        github: dbProfile.website?.includes('github.com') ? dbProfile.website : staticProf?.github,
+        github: dbProfile.website?.includes('github.com')
+          ? dbProfile.website
+          : (staticProf?.github || (dbProfile.handle ? `https://github.com/${dbProfile.handle}` : `https://github.com/${author}`)),
         twitter: dbProfile.twitter || staticProf?.twitter,
         verified: true,
         background: staticProf?.background || 'linear-gradient(135deg, rgba(255, 188, 104, 0.15) 0%, rgba(20, 15, 12, 0.98) 100%)',
@@ -117,7 +139,8 @@ export default function AuthorProfilePage() {
     return {
       displayName: authorRaw,
       bio: 'Developer on the Leverbrain network.',
-      avatarUrl: `https://api.dicebear.com/7.x/bottts/svg?seed=${author}`,
+      avatarUrl: `https://github.com/${author}.png`,
+      github: `https://github.com/${author}`,
       verified: false,
       background: 'linear-gradient(135deg, rgba(255, 188, 104, 0.12) 0%, rgba(20, 15, 12, 0.98) 100%)',
     }
@@ -158,16 +181,10 @@ export default function AuthorProfilePage() {
   const stats = useMemo(() => {
     const count = combinedSkills.length
     const downloads = combinedSkills.reduce((acc, s) => acc + (s.totalPurchases ?? 0), 0)
-    const ratingSum = combinedSkills.reduce((acc, s) => {
-      const starRating = 72 + Math.log10(Math.max(s.stars ?? 0, 1)) * 8
-      return acc + Math.max(72, Math.min(99, Math.round(starRating)))
-    }, 0)
-    const avgRating = count > 0 ? Math.round(ratingSum / count) : 85
 
     return {
       count,
       downloads,
-      rating: `${avgRating}/100`,
     }
   }, [combinedSkills])
 
@@ -235,10 +252,6 @@ export default function AuthorProfilePage() {
                 <span className="ap-stat-val">{formatCompact(stats.downloads)}</span>
                 <span className="ap-stat-lbl">installs</span>
               </div>
-              <div className="ap-stat-box">
-                <span className="ap-stat-val">{stats.rating}</span>
-                <span className="ap-stat-lbl">reputation</span>
-              </div>
             </div>
           </div>
         </div>
@@ -253,9 +266,8 @@ export default function AuthorProfilePage() {
             </div>
           ) : (
             <div className="sk-grid">
-              <div className="sk-grid-head">
+              <div className="sk-grid-head" style={{ gridTemplateColumns: 'minmax(0, 1fr) 150px 110px' }}>
                 <span>Skill</span>
-                <span>Creator</span>
                 <span>Category</span>
                 <span>Price</span>
               </div>
@@ -268,6 +280,7 @@ export default function AuthorProfilePage() {
                     key={skillKey}
                     href={`/skills/${skill.author}/${skill.slug}`}
                     className={`sk-row animate-fade-in-up animate-delay-${Math.min(i % 6, 4)}`}
+                    style={{ gridTemplateColumns: 'minmax(0, 1fr) 150px 110px' }}
                     onMouseMove={handleMouseMove}
                   >
                     <div className="sk-row-main">
@@ -275,11 +288,14 @@ export default function AuthorProfilePage() {
                       <p className="sk-row-tagline">{skill.tagline}</p>
                     </div>
 
-                    <span className="sk-row-creator">@{skill.author}</span>
-                    <span className={`sk-cat-pill sk-cat-pill--${skill.category}`}>
-                      <CatIcon size={10} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
-                      {skill.category}
-                    </span>
+                    {skill.category !== 'skill' ? (
+                      <span className={`sk-cat-pill sk-cat-pill--${skill.category}`} style={{ justifySelf: 'center' }}>
+                        <CatIcon size={10} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+                        {skill.category}
+                      </span>
+                    ) : (
+                      <span style={{ opacity: 0 }}>-</span>
+                    )}
                     <PriceTag price={skill.price} />
                   </Link>
                 )

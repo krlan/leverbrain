@@ -34,6 +34,16 @@ if (!CONVEX_URL || !DEPLOY_KEY) {
 const client = new ConvexHttpClient(CONVEX_URL)
 client.setAdminAuth(DEPLOY_KEY)
 
+const EXCLUDED_SLUGS = new Set([
+  'agency-in-a-box',
+  'indiehacker-launch-kit',
+  'saas-gtm-playbook',
+  'ccd',
+  'youtube-summary',
+  'cold-outreach-female-accounts',
+  'yt-to-blog'
+])
+
 async function main() {
   const skillsDir = path.resolve(ROOT, 'src/lib/skills-data')
   if (!fs.existsSync(skillsDir)) {
@@ -41,7 +51,11 @@ async function main() {
     process.exit(1)
   }
 
-  const files = fs.readdirSync(skillsDir).filter(f => f.endsWith('.ts') && f !== 'index.ts')
+  const files = fs.readdirSync(skillsDir).filter(f => {
+    if (!f.endsWith('.ts') || f === 'index.ts') return false
+    const basename = f.slice(0, -3)
+    return !EXCLUDED_SLUGS.has(basename)
+  })
   console.log(`Loading ${files.length} static skills...`)
 
   const staticSkills = []
@@ -87,7 +101,8 @@ async function main() {
       try {
         await client.mutation('skills:deleteSkillByAuthorSlug', {
           author: dbSkill.author,
-          slug: dbSkill.slug
+          slug: dbSkill.slug,
+          publisherWallet: dbSkill.creatorWallet || '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8'
         })
         deletedCount++
       } catch (err) {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, Search, X } from 'lucide-react'
 import { useSolanaWallet } from '@/contexts/SolanaWalletContext'
@@ -45,7 +46,13 @@ export default function Header({ onOpenPalette }: HeaderProps) {
       <div className="container">
         <nav className="nav">
           <Link href="/" className="logo">
-            <span className="logo-mark" aria-hidden="true" />
+            <Image
+              src="/images/octo.png"
+              alt="Leverbrain Logo"
+              width={84}
+              height={84}
+              className="logo-mark"
+            />
             <span className="logo-text">Leverbrain</span>
           </Link>
 

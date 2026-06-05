@@ -487,10 +487,10 @@ export const toggleSavedSkill = mutation({
   args: {
     walletAddress: v.string(),
     skillId: v.string(),
-    skillAuthor: v.string(),
-    skillSlug: v.string(),
-    skillName: v.string(),
-    skillCategory: v.string(),
+    skillAuthor: v.optional(v.string()),
+    skillSlug: v.optional(v.string()),
+    skillName: v.optional(v.string()),
+    skillCategory: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const existing = await ctx.db
@@ -506,7 +506,12 @@ export const toggleSavedSkill = mutation({
     }
 
     await ctx.db.insert("savedSkills", {
-      ...args,
+      walletAddress: args.walletAddress,
+      skillId: args.skillId,
+      skillAuthor: args.skillAuthor ?? "unknown",
+      skillSlug: args.skillSlug ?? "unknown",
+      skillName: args.skillName ?? "Unknown Skill",
+      skillCategory: args.skillCategory ?? "skill",
       savedAt: Date.now(),
     });
     return { saved: true };
@@ -614,13 +619,41 @@ export const deleteConfig = mutation({
 });
 
 export const deleteSkillByAuthorSlug = mutation({
-  args: { author: v.string(), slug: v.string() },
+  args: { author: v.string(), slug: v.string(), publisherWallet: v.string() },
   handler: async (ctx, args) => {
     const existing = await ctx.db
       .query("skills")
       .withIndex("by_author_slug", (q) => q.eq("author", args.author).eq("slug", args.slug))
       .first();
     if (existing) {
+      if (existing.creatorWallet && existing.creatorWallet !== args.publisherWallet) {
+        throw new Error("Only the creator can delete this skill");
+      }
+      
+      const targetSkillId = existing.skillId;
+      
+      // 1. Delete all bookmarks / savedSkills referencing this skill
+      const savedEntries = await ctx.db
+        .query("savedSkills")
+        .filter((q) => q.eq(q.field("skillId"), targetSkillId))
+        .collect();
+      for (const entry of savedEntries) {
+        await ctx.db.delete(entry._id);
+      }
+      
+      // 2. Remove this skill from all saved configurations
+      const allConfigs = await ctx.db.query("configs").collect();
+      for (const config of allConfigs) {
+        const prunedSkills = config.skills.filter((s) => s.id !== targetSkillId);
+        if (prunedSkills.length !== config.skills.length) {
+          await ctx.db.patch(config._id, {
+            skills: prunedSkills,
+            updatedAt: Date.now(),
+          });
+        }
+      }
+
+      // 3. Delete the skill listing itself
       await ctx.db.delete(existing._id);
       return true;
     }

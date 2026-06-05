@@ -32,12 +32,10 @@
 }
 
 .footer-logo-mark {
-  width: 24px;
-  height: 24px;
+  width: 72px;
+  height: 72px;
   display: block;
-  background: currentColor;
-  -webkit-mask: url('/vec.svg') center / contain no-repeat;
-  mask: url('/vec.svg') center / contain no-repeat;
+  object-fit: contain;
 }
 
 .footer-logo:hover {

@@ -1,4 +1,3 @@
-
 export default function Privacy() {
   return (
     <div className="legal-page">
@@ -6,9 +5,9 @@ export default function Privacy() {
         <div className="grid-bg" />
         <div className="container">
           <div className="legal-hero-content">
-            <span className="badge">Legal</span>
+            <span className="badge">Data & Protection</span>
             <h1>Privacy Policy</h1>
-            <p className="legal-updated">Last updated: January 2025</p>
+            <p className="legal-updated">Last updated: May 2026</p>
           </div>
         </div>
       </section>
@@ -16,76 +15,60 @@ export default function Privacy() {
       <section className="legal-content section">
         <div className="container">
           <div className="legal-body">
+            <p className="legal-intro">
+              At Leverbrain, we prioritize your security and data privacy. This Privacy Policy details how we collect, store, and process information when you interact with the Leverbrain marketplace, CLI applications, and decentralized smart contract interfaces.
+            </p>
+
             <h2>1. Information We Collect</h2>
             <p>
-              We collect information you provide directly to us, such as when you
-              fill out a contact form, request a demo, or communicate with us via
-              email. This may include your name, email address, company name, job
-              title, and any other information you choose to provide.
+              Because Leverbrain operates on a decentralized foundation, we minimize personal data collection. We collect the following types of information:
             </p>
-            <p>
-              We also automatically collect certain information when you visit our
-              website, including your IP address, browser type, operating system,
-              referring URLs, and information about how you interact with our website.
-            </p>
-
-            <h2>2. How We Use Your Information</h2>
-            <p>We use the information we collect to:</p>
             <ul>
-              <li>Respond to your inquiries and provide customer support</li>
-              <li>Send you information about our products and services</li>
-              <li>Improve our website and user experience</li>
-              <li>Analyze usage patterns and trends</li>
-              <li>Comply with legal obligations</li>
+              <li><strong>On-chain Wallet Data:</strong> Public Solana wallet addresses, transaction signatures, and payment history related to marketplace listings. We do not collect private keys, seed phrases, or personal transaction histories unrelated to our platform.</li>
+              <li><strong>Publisher Metadata:</strong> Optional profile details provided by creators (handles, display names, bios, avatar URLs, GitHub profiles, or Twitter links) which are stored in our decentralized database to build creator profiles.</li>
+              <li><strong>Usage Analytics:</strong> Standard logs of platform interaction (IP address, browser type, page views, and download counts) to optimize performance, prevent abuse, and track popular routines.</li>
             </ul>
 
-            <h2>3. Information Sharing</h2>
-            <p>
-              We do not sell, trade, or otherwise transfer your personal information
-              to third parties except as described in this policy. We may share
-              information with trusted service providers who assist us in operating
-              our website and conducting our business, so long as those parties agree
-              to keep this information confidential.
+            <h2>2. Local Execution Privacy</h2>
+            <p className="legal-notice">
+              <strong>IMPORTANT:</strong> Leverbrain CLI tools and marketplace routines execute directly on your local system or sandboxed hardware. We do not collect, intercept, or upload your terminal command history, local directory paths, agent logs, or variables processed during execution. All AI processing data remains local to your environment.
             </p>
 
-            <h2>4. Third-Party Services</h2>
-            <p>
-              We may use third-party services for analytics, email delivery, and
-              customer relationship management. These services may collect information
-              sent by your browser as part of a web page request, such as cookies or
-              your IP address.
-            </p>
-
-            <h2>5. Data Retention</h2>
-            <p>
-              We retain your personal information only for as long as necessary to
-              fulfill the purposes for which it was collected, including to satisfy
-              any legal, accounting, or reporting requirements. When we no longer
-              need your information, we will securely delete or anonymize it.
-            </p>
-
-            <h2>6. Your Rights</h2>
-            <p>You have the right to:</p>
+            <h2>3. How We Use Information</h2>
+            <p>We use the collected metadata and on-chain records to:</p>
             <ul>
-              <li>Access the personal information we hold about you</li>
-              <li>Request correction of inaccurate information</li>
-              <li>Request deletion of your personal information</li>
-              <li>Object to processing of your personal information</li>
-              <li>Request portability of your data</li>
+              <li>Process and verify license purchases for marketplace listings.</li>
+              <li>Validate publisher editing rights and route USDC payouts to creator wallets.</li>
+              <li>Prevent sybil attacks, platform spam, and unauthorized modifications of listings.</li>
+              <li>Diagnose technical issues on our web portal and API endpoints.</li>
             </ul>
 
-            <h2>7. Security</h2>
+            <h2>4. Third-Party Integrations & Decoupling</h2>
             <p>
-              We implement appropriate technical and organizational security measures
-              to protect your personal information against unauthorized access,
-              alteration, disclosure, or destruction.
+              Our web applications interface with third-party providers:
+            </p>
+            <ul>
+              <li><strong>Blockchain Nodes:</strong> Solana RPC endpoints process your transaction requests. These nodes may log standard browser/IP telemetry under their own privacy rules.</li>
+              <li><strong>AI Providers:</strong> When configuring API keys (e.g. OpenAI, Anthropic, Gemini) in your local environment, your requests are routed directly to those provider endpoints. Their privacy policies govern the retention of your prompt and completion logs.</li>
+            </ul>
+
+            <h2>5. Data Retention & Deletion</h2>
+            <p>
+              Any off-chain profile data (handles, bios, custom listing information) is retained as long as your wallet is active on our marketplace. You can request deletion or revision of your off-chain profile elements by signing a verification message with your publisher wallet.
+            </p>
+            <p>
+              Please note that on-chain data (transaction signatures, smart contract state, payout receipts) is permanently recorded on the Solana blockchain and cannot be edited, deleted, or anonymized.
             </p>
 
-            <h2>8. Contact</h2>
+            <h2>6. Data Security</h2>
             <p>
-              If you have any questions about this Privacy Policy or our data
-              practices, please contact us at{' '}
-              <a href="mailto:hello@leverbrain.com">hello@leverbrain.com</a>.
+              We implement industry-standard cryptographic verification and database access controls to prevent unauthorized access or disclosure of publisher records. We strongly encourage all users to run third-party routines in sandboxed environments (e.g. Docker, virtual machines) to isolate execution risks.
+            </p>
+
+            <h2>7. Contact</h2>
+            <p>
+              For privacy inquiries, database correction requests, or support, please contact us at{' '}
+              <a href="mailto:hi@leverbrain.com">hi@leverbrain.com</a>.
             </p>
           </div>
         </div>

@@ -117,11 +117,13 @@ function parseFrontmatter(source) {
 }
 
 function formatTitle(slug) {
+  if (!slug) return '';
   const clean = slug.startsWith('baoyu-') ? slug.slice(6) : slug
   return clean
-    .split('-')
+    .replace(/-/g, ' ')
+    .split(/\s+/)
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
+    .join(' ');
 }
 
 function getMockIcon(slug) {

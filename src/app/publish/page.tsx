@@ -22,6 +22,7 @@ interface PublishFormState {
   fileUrl: string
   isPrivate: boolean
   exampleUsage: string
+  useCases: string
 }
 
 function slugify(value: string) {
@@ -76,6 +77,7 @@ const INITIAL_FORM: PublishFormState = {
   fileUrl: '',
   isPrivate: false,
   exampleUsage: '',
+  useCases: '',
 }
 
 export default function PublishPage() {
@@ -102,8 +104,7 @@ export default function PublishPage() {
 
   // Package Source states
   const [sourceType, setSourceType] = useState<'upload' | 'github'>('upload')
-  const [githubRepoUrl, setGithubRepoUrl] = useState('')
-  const [githubFolderPath, setGithubFolderPath] = useState('')
+  const [githubUrl, setGithubUrl] = useState('')
   const [uploadStatus, setUploadStatus] = useState<string | null>(null)
 
   const derivedAuthor = useMemo(() => {
@@ -114,13 +115,6 @@ export default function PublishPage() {
     return handle || walletFallbackAuthor(walletAddress)
   }, [profile?.handle, walletAddress])
 
-  const combinedGithubUrl = useMemo(() => {
-    if (!githubRepoUrl) return ''
-    const cleanRepo = githubRepoUrl.trim().replace(/\/+$/, '')
-    const cleanFolder = githubFolderPath.trim().replace(/^\/+|\/+$/g, '')
-    if (!cleanFolder) return cleanRepo
-    return `${cleanRepo}/tree/main/${cleanFolder}`
-  }, [githubRepoUrl, githubFolderPath])
 
   const handleFolderUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
@@ -174,7 +168,10 @@ export default function PublishPage() {
             ? metadata.tags.join(', ') 
             : (metadata.tags ? String(metadata.tags) : prev.tags),
           fileUrl: `uploaded://${slugify(metadata.name || 'skill')}`,
-          isPrivate: metadata.isPrivate !== undefined ? Boolean(metadata.isPrivate) : prev.isPrivate
+          isPrivate: metadata.isPrivate !== undefined ? Boolean(metadata.isPrivate) : prev.isPrivate,
+          useCases: Array.isArray(metadata.useCases)
+            ? metadata.useCases.join(', ')
+            : (metadata.useCases ? String(metadata.useCases) : prev.useCases)
         }))
         
         setUploadStatus(`Successfully parsed SKILL.md: Loaded "${metadata.name || 'Unnamed'}"`)
@@ -224,7 +221,11 @@ export default function PublishPage() {
       category = form.category
     }
 
-    const finalFileUrl = sourceType === 'github' ? combinedGithubUrl : form.fileUrl
+    const finalFileUrl = sourceType === 'github' ? githubUrl.trim() : form.fileUrl
+    const useCases = form.useCases
+      .split(',')
+      .map((uc) => uc.trim())
+      .filter(Boolean)
 
     setPublishError(null)
     setPublishedSkillPath(null)
@@ -247,13 +248,13 @@ export default function PublishPage() {
         fileUrl: finalFileUrl || undefined,
         isPrivate: form.isPrivate,
         exampleUsage: form.exampleUsage || undefined,
+        useCases: useCases.length > 0 ? useCases : undefined,
       })
 
       const nextPath = `/skills/${result.author}/${result.slug}`
       setPublishedSkillPath(nextPath)
       setForm(INITIAL_FORM)
-      setGithubRepoUrl('')
-      setGithubFolderPath('')
+      setGithubUrl('')
       setUploadStatus(null)
     } catch (error: unknown) {
       setPublishError(error instanceof Error ? error.message : 'Failed to publish skill.')
@@ -407,6 +408,24 @@ export default function PublishPage() {
                   </span>
                 </label>
 
+                <label className="form-group">
+                  <span className="form-label">Use cases <span style={{ opacity: 0.5, fontWeight: 400 }}>(comma separated, optional)</span></span>
+                  <input
+                    className="form-input"
+                    type="text"
+                    value={form.useCases}
+                    autoComplete="off"
+                    spellCheck
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, useCases: event.target.value }))
+                    }
+                    placeholder="Audit smart contracts, Check for reentrancy bugs, Generate audit reports"
+                  />
+                  <span style={{ fontSize: '0.74rem', color: 'var(--color-text-tertiary)', marginTop: '4px', display: 'block' }}>
+                    Key capabilities of this skill. Shown in the &quot;What it can do&quot; section on the listing page.
+                  </span>
+                </label>
+
                 {!form.isPrivate && (
                   <>
                     <div className="publish-grid">
@@ -541,34 +560,17 @@ export default function PublishPage() {
                     </div>
                   ) : (
                     <div style={{ display: 'grid', gap: '16px' }}>
-                      <div className="publish-grid">
-                        <label className="form-group" style={{ margin: 0 }}>
-                          <span className="form-label" style={{ fontSize: '0.74rem' }}>GitHub Repository URL *</span>
-                          <input
-                            className="form-input"
-                            type="url"
-                            value={githubRepoUrl}
-                            onChange={(e) => setGithubRepoUrl(e.target.value)}
-                            placeholder="https://github.com/username/repo"
-                            required={sourceType === 'github'}
-                          />
-                        </label>
-                        <label className="form-group" style={{ margin: 0 }}>
-                          <span className="form-label" style={{ fontSize: '0.74rem' }}>Folder Path in Repo</span>
-                          <input
-                            className="form-input"
-                            type="text"
-                            value={githubFolderPath}
-                            onChange={(e) => setGithubFolderPath(e.target.value)}
-                            placeholder="skills/my-skill"
-                          />
-                        </label>
-                      </div>
-                      {combinedGithubUrl && (
-                        <div style={{ fontSize: '0.74rem', color: 'var(--color-text-tertiary)' }}>
-                          Combined Target URL: <code style={{ color: 'var(--color-accent-warm-light)', fontFamily: 'var(--font-mono)' }}>{combinedGithubUrl}</code>
-                        </div>
-                      )}
+                      <label className="form-group" style={{ margin: 0 }}>
+                        <span className="form-label" style={{ fontSize: '0.74rem' }}>GitHub Link *</span>
+                        <input
+                          className="form-input"
+                          type="url"
+                          value={githubUrl}
+                          onChange={(e) => setGithubUrl(e.target.value)}
+                          placeholder="https://github.com/username/repo/tree/main/skills/my-skill"
+                          required={sourceType === 'github'}
+                        />
+                      </label>
                     </div>
                   )}
                 </div>

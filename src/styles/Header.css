@@ -43,12 +43,12 @@
 }
 
 .logo-mark {
-  width: 28px;
-  height: 28px;
+  width: 84px;
+  height: 84px;
   display: block;
-  background: currentColor;
-  -webkit-mask: url('/vec.svg') center / contain no-repeat;
-  mask: url('/vec.svg') center / contain no-repeat;
+  object-fit: contain;
+  margin-right: -10px;
+  transform: translateY(4px);
 }
 
 .logo-text {

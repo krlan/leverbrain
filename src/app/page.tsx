@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, BookOpen, Layers, Zap } from 'lucide-react'
 import { getFeaturedSkills } from '@/lib/skills-data'
@@ -64,8 +65,39 @@ export default function Landing() {
                 The expertise stack.
               </h1>
               <p className="land-hero-sub animate-fade-in-up animate-delay-1">
-                Trade agent skills, strategies, tutorials and blueprints.<br />
-                Seamlessly integrate with your current stack
+                <span className="land-hero-sub-line">
+                  Trade agent skills, strategies, tutorials and blueprints
+                  <span className="land-hero-solana">
+                    <Image
+                      src="/images/solana.png"
+                      alt="Solana"
+                      width={22}
+                      height={22}
+                      className="land-hero-solana-img"
+                    />
+                  </span>
+                </span>
+                <span className="land-hero-sub-line land-hero-sub-line--stack">
+                  Use in
+                  <span className="land-hero-stack-logos">
+                    <span className="land-hero-stack-logo" title="Hermes">
+                      <Image src="/images/hermes.png" alt="Hermes" width={22} height={22} />
+                    </span>
+                    <span className="land-hero-stack-logo" title="Openclaw">
+                      <Image src="/images/openclaw.png" alt="Openclaw" width={20} height={20} />
+                    </span>
+                    <span className="land-hero-stack-logo" title="Claude">
+                      <Image src="/images/claude.png" alt="Claude" width={20} height={20} />
+                    </span>
+                    <span className="land-hero-stack-logo" title="Codex">
+                      <Image src="/images/codex-app.png" alt="Codex" width={20} height={20} />
+                    </span>
+                    <span className="land-hero-stack-logo" title="OpenCode">
+                      <Image src="/images/opencode.png" alt="OpenCode" width={20} height={20} />
+                    </span>
+                  </span>
+                  and more
+                </span>
               </p>
 
               <div className="land-hero-actions animate-fade-in-up animate-delay-2">

@@ -5,8 +5,8 @@ export const xBookmarks: SkillListing = {
   author: 'leverbrain',
   slug: 'x-bookmarks',
   name: "X bookmarks",
-  tagline: "End-to-end local knowledge archiving for X/Twitter bookmarks.",
-  description: "End-to-end local knowledge archiving for X/Twitter bookmarks. Handles installation of Field Theory, active cookie injection, sync timeline, and direct GraphQL Draft.js article extraction to align and download all images locally. Actions: sync, enrich, archive, export, index, compile glossary.",
+  tagline: "Local self-custody bookmarks syncing and long-form article extractor.",
+  description: "Archive and enrich your bookmarked X posts and long-form articles. Resolves scrambled images and missing text by extracting from the GraphQL API directly with active cookies and mapping Draft.js blocks.",
   readme: `# X Bookmarks - Knowledge Archival & Article Enrichment
 
 End-to-end local knowledge archiving workflow for X (Twitter) bookmarks and articles. Resolves limitations of the standard Field Theory CLI, particularly the link-only constraint bug and missing/scrambled images, by querying the X GraphQL API directly with active cookies and mapping Draft.js blocks to download and embed local media files in the correct positions.
@@ -118,7 +118,7 @@ Before finalizing any bookmarks library updates, verify these items:
 - [ ] Every article has its cover image and inline images downloaded to \`/bookmarks_library/images/\`.
 - [ ] Image paths in the exported markdown files are relative (e.g. \`../images/<filename>.jpg\`).
 - [ ] Run \`npx fieldtheory index\` to rebuild the FTS5 search index, enabling fast keyword searches.`,
-  whenToUse: "Use when you need to automate x bookmarks processes.",
+  whenToUse: "Use this skill when compiling or indexing long-form X posts, media attachments, and articles into a local markdown library.",
   price: "Free",
   priceUsdc: 0,
   category: "skill",
@@ -140,14 +140,14 @@ Before finalizing any bookmarks library updates, verify these items:
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
         <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
           <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">X bookmarks</h2>
-          <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">End-to-end local knowledge archiving for X/Twitter bookmarks.</p>
+          <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">Local self-custody bookmarks syncing and long-form article extractor.</p>
         </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1.2fr 1.0fr; gap: 32px; align-items: start;">
         <div>
           <h3 style="color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;">SKILL CAPABILITIES</h3>
-          <p style="margin-bottom: 24px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);">End-to-end local knowledge archiving for X/Twitter bookmarks. Handles installation of Field Theory, active cookie injection, sync timeline, and direct GraphQL Draft.js article extraction to align and download all images locally. Actions: sync, enrich, archive, export, index, compile glossary.</p>
+          <p style="margin-bottom: 24px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);">Archive and enrich your bookmarked X posts and long-form articles. Resolves scrambled images and missing text by extracting from the GraphQL API directly with active cookies and mapping Draft.js blocks.</p>
           
           <h3 style="color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;">KEY FEATURES</h3>
           <ul style="list-style: none; padding: 0; margin: 0;">

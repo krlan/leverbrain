@@ -103,7 +103,6 @@ import { entryPointAnalyzer } from './skills-data/entry-point-analyzer'
 import { evalHarness } from './skills-data/eval-harness'
 import { everythingClaudeCode } from './skills-data/everything-claude-code'
 import { exaSearch } from './skills-data/exa-search'
-import { facelessPageAnonymity } from './skills-data/faceless-page-anonymity'
 import { falAiMedia } from './skills-data/fal-ai-media'
 import { findCommunity } from './skills-data/find-community'
 import { firebaseApkScanner } from './skills-data/firebase-apk-scanner'
@@ -137,8 +136,6 @@ import { launch } from './skills-data/launch'
 import { leadMagnets } from './skills-data/lead-magnets'
 import { letFateDecide } from './skills-data/let-fate-decide'
 import { leverbrain } from './skills-data/leverbrain'
-import { linkedinB2bFunnel } from './skills-data/linkedin-b2b-funnel'
-import { linkedinOpportunity } from './skills-data/linkedin-opportunity'
 import { lockIn } from './skills-data/lock-in'
 import { marketResearch } from './skills-data/market-research'
 import { marketing } from './skills-data/marketing'
@@ -177,7 +174,6 @@ import { ouroWorkIdeator } from './skills-data/ouro-work-ideator'
 import { ouroWorkMerger } from './skills-data/ouro-work-merger'
 import { ouroWorkPlanner } from './skills-data/ouro-work-planner'
 import { ouroWorkbenchOperator } from './skills-data/ouro-workbench-operator'
-import { outboundEcosystem } from './skills-data/outbound-ecosystem'
 import { outputSkill } from './skills-data/output-skill'
 import { paywalls } from './skills-data/paywalls'
 import { pdf } from './skills-data/pdf'
@@ -194,7 +190,6 @@ import { propertyBasedTesting } from './skills-data/property-based-testing'
 import { prospecting } from './skills-data/prospecting'
 import { prototype } from './skills-data/prototype'
 import { railway } from './skills-data/railway'
-import { redditMrrPlaybook } from './skills-data/reddit-mrr-playbook'
 import { redesignSkill } from './skills-data/redesign-skill'
 import { referrals } from './skills-data/referrals'
 import { review } from './skills-data/review'
@@ -255,7 +250,6 @@ import { themeFactory } from './skills-data/theme-factory'
 import { toIssues } from './skills-data/to-issues'
 import { toPrd } from './skills-data/to-prd'
 import { trailmark } from './skills-data/trailmark'
-import { trendjackingLinkedin } from './skills-data/trendjacking-linkedin'
 import { triage } from './skills-data/triage'
 import { utilities } from './skills-data/utilities'
 import { validateIdea } from './skills-data/validate-idea'
@@ -276,7 +270,6 @@ import { webData } from './skills-data/web-data'
 import { webDevelopment } from './skills-data/web-development'
 import { webappTesting } from './skills-data/webapp-testing'
 import { wells1137YtVideoDownloader } from './skills-data/wells1137-yt-video-downloader'
-import { whitePageEmpire } from './skills-data/white-page-empire'
 import { wmantlyPorkbunSkill } from './skills-data/wmantly-porkbun-skill'
 import { workflowAutomation } from './skills-data/workflow-automation'
 import { workflowSkillDesign } from './skills-data/workflow-skill-design'
@@ -428,7 +421,6 @@ export const SKILLS: SkillListing[] = [
   evalHarness,
   everythingClaudeCode,
   exaSearch,
-  facelessPageAnonymity,
   falAiMedia,
   findCommunity,
   firebaseApkScanner,
@@ -462,8 +454,6 @@ export const SKILLS: SkillListing[] = [
   leadMagnets,
   letFateDecide,
   leverbrain,
-  linkedinB2bFunnel,
-  linkedinOpportunity,
   lockIn,
   marketResearch,
   marketing,
@@ -502,7 +492,6 @@ export const SKILLS: SkillListing[] = [
   ouroWorkMerger,
   ouroWorkPlanner,
   ouroWorkbenchOperator,
-  outboundEcosystem,
   outputSkill,
   paywalls,
   pdf,
@@ -519,7 +508,6 @@ export const SKILLS: SkillListing[] = [
   prospecting,
   prototype,
   railway,
-  redditMrrPlaybook,
   redesignSkill,
   referrals,
   review,
@@ -580,7 +568,6 @@ export const SKILLS: SkillListing[] = [
   toIssues,
   toPrd,
   trailmark,
-  trendjackingLinkedin,
   triage,
   utilities,
   validateIdea,
@@ -601,7 +588,6 @@ export const SKILLS: SkillListing[] = [
   webDevelopment,
   webappTesting,
   wells1137YtVideoDownloader,
-  whitePageEmpire,
   wmantlyPorkbunSkill,
   workflowAutomation,
   workflowSkillDesign,

@@ -4,17 +4,15 @@ export const xAlgo: SkillListing = {
   id: 'x-algo',
   author: 'leverbrain',
   slug: 'x-algo',
-  name: "X algo",
-  tagline: "Guides end-to-end execution of X algo workflow routines.",
-  description: "Automates x algo workflow routines in your local environment.",
-  readme: `INSIGHTS_X_algorithm_EN
-md
-# Insights from the X "For You" algorithm
-﻿
+  name: "X algorithm",
+  tagline: "Optimize reach and feed placement using reverse-engineered code insights.",
+  description: "Detailed content optimization playbook based on the open-source xAI algorithm. Maximize dwell time, reply ranking, and in-network score, while bypassing author diversity decay, OON discounts, and the min-traction gate.",
+  readme: `# Insights from the X "For You" algorithm
+
 > Analysis of the source code published by xAI on May 15, 2026 at [github.com/xai-org/x-algorithm](https://github.com/xai-org/x-algorithm).
 >
 > Every claim in this document is backed by a citation to its source file. When something can't be confirmed from the code (e.g. exact numerical weight values), it's stated explicitly.
-﻿
+
 ---
 ﻿
 ## TL;DR for content creators
@@ -1859,7 +1857,7 @@ Implication: quoting accounts with many cross-blocks reduces your effective reac
 ---
 ﻿
 *Document generated from static analysis of the code published on 15-may-2026. Includes two review passes over the repository. Does not include empirical experimentation on real accounts; every claim comes from the repository or is explicitly marked as inference.*`,
-  whenToUse: "Use when you need to automate x algo processes.",
+  whenToUse: "Use this skill to design posts and publishing schedules that align with the physical constraints of the X recommendation engine.",
   price: "Free",
   priceUsdc: 0,
   category: "skill",
@@ -1872,7 +1870,7 @@ Implication: quoting accounts with many cross-blocks reduces your effective reac
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/x-algo',
   useCases: ["Private accounts (is_protected) don't generate embeddings → they don't appear in out-of-network retrieval. If you want reach, you can't be private.","Candidate Sourcing — multiple sources in parallel:.","Thunder → in-network posts (from people you follow) served from a RAM store, sub-millisecond."],
-  exampleUsage: "Automate x algo for my project",
+  exampleUsage: "Apply x algorithm for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 196, 129, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);">
         <div style="width: 100%; aspect-ratio: 16/6; background: linear-gradient(135deg, #13110f 0%, #17181c 100%); display: flex; align-items: center; justify-content: center; color: var(--color-accent-warm-light);">
@@ -1880,15 +1878,15 @@ Implication: quoting accounts with many cross-blocks reduces your effective reac
         </div>
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
         <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
-          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">X algo</h2>
-          <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">Guides end-to-end execution of X algo workflow routines.</p>
+          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">X algorithm</h2>
+          <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">Optimize reach and feed placement using reverse-engineered code insights.</p>
         </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1.2fr 1.0fr; gap: 32px; align-items: start;">
         <div>
           <h3 style="color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;">SKILL CAPABILITIES</h3>
-          <p style="margin-bottom: 24px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);">Automates x algo workflow routines in your local environment.</p>
+          <p style="margin-bottom: 24px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);">Detailed content optimization playbook based on the open-source xAI algorithm. Maximize dwell time, reply ranking, and in-network score, while bypassing author diversity decay, OON discounts, and the min-traction gate.</p>
           
           <h3 style="color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;">KEY FEATURES</h3>
           <ul style="list-style: none; padding: 0; margin: 0;">

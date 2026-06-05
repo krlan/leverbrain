@@ -44,7 +44,14 @@ const EXCLUDED_SLUGS = new Set([
   'yt-to-blog',
   'feydefi-geo-audit-optimizer',
   'jackfriks-b2c-marketing',
-  'ryudi84-sovereign-brand-voice-writer'
+  'ryudi84-sovereign-brand-voice-writer',
+  'faceless-page-anonymity',
+  'linkedin-b2b-funnel',
+  'linkedin-opportunity',
+  'outbound-ecosystem',
+  'reddit-mrr-playbook',
+  'trendjacking-linkedin',
+  'white-page-empire'
 ])
 
 async function main() {

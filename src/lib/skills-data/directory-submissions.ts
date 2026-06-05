@@ -384,7 +384,7 @@ Keep the plan actionable. Every item should be something the user can do today.
   whenToUse: "Use when you need to automate directory submissions processes.",
   price: "Free",
   priceUsdc: 0,
-  category: "\\\\\\\\\\\\\\\\`/blog/best-[category]-tools-2026\\\\\\\\\\\\\\\\`. Include yourself + 10 competitors with real reviews. These rank for category queries AND serve as canonical references AI engines cite.",
+  category: "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\`/blog/best-[category]-tools-2026\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\`. Include yourself + 10 competitors with real reviews. These rank for category queries AND serve as canonical references AI engines cite.",
   tags: ["coreyhaines31-skills","directory-submissions"],
   stars: 299,
   weeklyInstalls: 183,

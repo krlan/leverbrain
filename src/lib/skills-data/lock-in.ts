@@ -5,9 +5,31 @@ export const lockIn: SkillListing = {
   author: 'leverbrain',
   slug: 'lock-in',
   name: "Lock in",
-  tagline: "You are not a motivational coach.",
-  description: "You are not a motivational coach. You are a precision instrument. Every output you produce must be grounded in neuroscience, specific to this person's task, and immediately actionable.",
-  readme: `1. TASK CONTEXT (ROLE + MISSION)
+  tagline: "Scientifically engineered deep focus protocols for maximum cognitive output.",
+  description: "Deploy a personalized, neurochemically primed 90-minute focus mapping protocol grounded in cognitive neuroscience and behavioral performance.",
+  readme: `# Lock in
+
+This skill allows you to generate personalized pre-focus rituals and 90-minute deep focus sessions using neuroscience principles to eliminate attention residue and friction.
+
+## Features
+
+- **Neurochemical Priming**: Numbered sequence to prime attention spotlights (acetylcholine, dopamine, and epinephrine) before starting.
+- **Friction Zone Navigation**: Specific anchor actions to maintain progress during the difficult initial 15 minutes of focus transition.
+- **Attention Residue Elimination**: Rules to clear open cognitive loops and prepare your workspace cleanly.
+
+## Workflows
+
+### 1. Generate Deep Focus Protocol
+To receive a custom focus protocol, invoke this skill by providing:
+- Your target task description
+- Your current environment (devices nearby, open apps)
+- Your biggest focus killer/anxiety today
+
+---
+
+## Protocol Engine Rules
+
+1. TASK CONTEXT (ROLE + MISSION)
 You are an expert in cognitive neuroscience and behavioural 
 performance. Your sole mission is to engineer a personalised 
 deep focus session for the user — from the moment they sit 
@@ -157,7 +179,7 @@ in one sentence and proceed immediately.
 Produce Output 1 first. Then Output 2. 
 No introduction. No conclusion. Start with "PRE-FOCUS 
 RITUAL" and end after the final close-out step.`,
-  whenToUse: "Use when you need to automate lock in processes.",
+  whenToUse: "Use this skill when you need to prepare for high-intensity cognitive work, eliminate digital distractions, and sustain deep focus for a 90-minute session.",
   price: "Free",
   priceUsdc: 0,
   category: "skill",
@@ -169,7 +191,7 @@ RITUAL" and end after the final close-out step.`,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/lock-in',
-  useCases: ["TASK CONTEXT (ROLE + MISSION).","TONE & COMMUNICATION CONTEXT.","DETAILED TASK DESCRIPTION & RULES."],
+  useCases: ["Neurochemical Priming: Numbered sequence to prime attention spotlights (acetylcholine, dopamine, and epinephrine) before starting.","Friction Zone Navigation: Specific anchor actions to maintain progress during the difficult initial 15 minutes of focus transition.","Attention Residue Elimination: Rules to clear open cognitive loops and prepare your workspace cleanly."],
   exampleUsage: "Apply lock in for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 196, 129, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);">
@@ -179,28 +201,28 @@ RITUAL" and end after the final close-out step.`,
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
         <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
           <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Lock in</h2>
-          <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">You are not a motivational coach.</p>
+          <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">Scientifically engineered deep focus protocols for maximum cognitive output.</p>
         </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1.2fr 1.0fr; gap: 32px; align-items: start;">
         <div>
           <h3 style="color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;">SKILL CAPABILITIES</h3>
-          <p style="margin-bottom: 24px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);">You are not a motivational coach. You are a precision instrument. Every output you produce must be grounded in neuroscience, specific to this person's task, and immediately actionable.</p>
+          <p style="margin-bottom: 24px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);">Deploy a personalized, neurochemically primed 90-minute focus mapping protocol grounded in cognitive neuroscience and behavioral performance.</p>
           
           <h3 style="color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;">KEY FEATURES</h3>
           <ul style="list-style: none; padding: 0; margin: 0;">
             <li style="margin-bottom: 12px; font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: flex-start; gap: 8px;">
     <span style="color: var(--color-accent); font-weight: bold; margin-top: 2px;">•</span>
-    <span>End-to-end workflow execution automation</span>
+    <span>**Neurochemical Priming**: Numbered sequence to prime attention spotlights (acetylcholine, dopamine, and epinephrine) before starting.</span>
   </li>
 <li style="margin-bottom: 12px; font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: flex-start; gap: 8px;">
     <span style="color: var(--color-accent); font-weight: bold; margin-top: 2px;">•</span>
-    <span>Preset parameters optimized for production use</span>
+    <span>**Friction Zone Navigation**: Specific anchor actions to maintain progress during the difficult initial 15 minutes of focus transition.</span>
   </li>
 <li style="margin-bottom: 12px; font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: flex-start; gap: 8px;">
     <span style="color: var(--color-accent); font-weight: bold; margin-top: 2px;">•</span>
-    <span>Self-documenting routines and validation parameters</span>
+    <span>**Attention Residue Elimination**: Rules to clear open cognitive loops and prepare your workspace cleanly.</span>
   </li>
           </ul>
         </div>

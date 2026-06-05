@@ -105,7 +105,6 @@ import { everythingClaudeCode } from './skills-data/everything-claude-code'
 import { exaSearch } from './skills-data/exa-search'
 import { facelessPageAnonymity } from './skills-data/faceless-page-anonymity'
 import { falAiMedia } from './skills-data/fal-ai-media'
-import { feydefiGeoAuditOptimizer } from './skills-data/feydefi-geo-audit-optimizer'
 import { findCommunity } from './skills-data/find-community'
 import { firebaseApkScanner } from './skills-data/firebase-apk-scanner'
 import { firstCustomers } from './skills-data/first-customers'
@@ -134,7 +133,6 @@ import { insecureDefaults } from './skills-data/insecure-defaults'
 import { internalComms } from './skills-data/internal-comms'
 import { investorMaterials } from './skills-data/investor-materials'
 import { investorOutreach } from './skills-data/investor-outreach'
-import { jackfriksB2cMarketing } from './skills-data/jackfriks-b2c-marketing'
 import { launch } from './skills-data/launch'
 import { leadMagnets } from './skills-data/lead-magnets'
 import { letFateDecide } from './skills-data/let-fate-decide'
@@ -201,7 +199,6 @@ import { redesignSkill } from './skills-data/redesign-skill'
 import { referrals } from './skills-data/referrals'
 import { review } from './skills-data/review'
 import { revops } from './skills-data/revops'
-import { ryudi84SovereignBrandVoiceWriter } from './skills-data/ryudi84-sovereign-brand-voice-writer'
 import { salesEnablement } from './skills-data/sales-enablement'
 import { scaffoldExercises } from './skills-data/scaffold-exercises'
 import { schema } from './skills-data/schema'
@@ -433,7 +430,6 @@ export const SKILLS: SkillListing[] = [
   exaSearch,
   facelessPageAnonymity,
   falAiMedia,
-  feydefiGeoAuditOptimizer,
   findCommunity,
   firebaseApkScanner,
   firstCustomers,
@@ -462,7 +458,6 @@ export const SKILLS: SkillListing[] = [
   internalComms,
   investorMaterials,
   investorOutreach,
-  jackfriksB2cMarketing,
   launch,
   leadMagnets,
   letFateDecide,
@@ -529,7 +524,6 @@ export const SKILLS: SkillListing[] = [
   referrals,
   review,
   revops,
-  ryudi84SovereignBrandVoiceWriter,
   salesEnablement,
   scaffoldExercises,
   schema,

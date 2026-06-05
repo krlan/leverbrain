@@ -763,7 +763,10 @@ const EXCLUDED_SLUGS = new Set([
   'ccd',
   'youtube-summary',
   'cold-outreach-female-accounts',
-  'yt-to-blog'
+  'yt-to-blog',
+  'feydefi-geo-audit-optimizer',
+  'jackfriks-b2c-marketing',
+  'ryudi84-sovereign-brand-voice-writer'
 ])
 
 function main() {

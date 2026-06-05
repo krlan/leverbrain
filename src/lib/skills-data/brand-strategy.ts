@@ -64,7 +64,7 @@ To condense the strategy into memorable copy:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/brand-strategy',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/brand-strategy',
   useCases: ["Brand Purpose & Core Values: Exercise templates to identify the brand's core mission and operational principles.","Archetype & Personality Profiling: Frameworks to choose archetypes (e.g., Creator, Outlaw) and map personality traits.","Positioning & Messaging Matrix: Formulate positioning statements, taglines, narratives, and elevator pitches."],
   exampleUsage: "Define brand guidelines and voice for my company",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

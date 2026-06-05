@@ -129,7 +129,7 @@ Before finalizing any bookmarks library updates, verify these items:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/x-bookmarks',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/x-bookmarks',
   useCases: ["Resolving the \"scrambled images\" or \"missing text\" issues on X Article syncs.","Rebuilding or formatting the local markdown glossary, monthly statistics, or search indexes.","Bookmarks from non-X sources (e.g. browser bookmarks, pocket, instapaper)."],
   exampleUsage: "Extract x bookmarks for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

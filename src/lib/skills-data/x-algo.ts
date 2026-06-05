@@ -1870,7 +1870,7 @@ Implication: quoting accounts with many cross-blocks reduces your effective reac
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/x-algo',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/x-algo',
   useCases: ["Private accounts (is_protected) don't generate embeddings → they don't appear in out-of-network retrieval. If you want reach, you can't be private.","Candidate Sourcing — multiple sources in parallel:.","Thunder → in-network posts (from people you follow) served from a RAM store, sub-millisecond."],
   exampleUsage: "Automate x algo for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

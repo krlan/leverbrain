@@ -190,7 +190,7 @@ Convex backend verifies that the signature is valid, checks the Solana RPC nodes
   featured: false,
   createdAt: '2026-06-05',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/leverbrain',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/leverbrain',
   useCases: ["Automating the download of marketplace skills or blueprints via the CLI.","Publishing new skills, strategies, or blueprints using Web or CLI commands.","Managing and saving developer configurations (Labs) to group tools for agent workflows."],
   exampleUsage: "Create leverbrain for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

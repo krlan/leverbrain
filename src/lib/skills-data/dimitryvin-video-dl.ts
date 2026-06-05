@@ -98,7 +98,7 @@ For advanced usage, yt-dlp is available at \`~/.local/bin/yt-dlp\` (updated) or 
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/dimitryvin-video-dl',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/dimitryvin-video-dl',
   useCases: ["Filename format: {title}-{id}.{ext}.","Returns full path to downloaded file on success.","Reddit videos require merging video+audio (handled automatically)."],
   exampleUsage: "Process and edit my video files",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

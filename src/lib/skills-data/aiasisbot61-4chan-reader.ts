@@ -41,7 +41,7 @@ python3 scripts/chan_extractor.py thread <board> <thread_id> [output_root_dir] [
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/aiasisbot61-4chan-reader',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/aiasisbot61-4chan-reader',
   useCases: ["Word_limit (optional): Limits each line of post text to the specified number of words.","Scripts: Uses chan_extractor.py for all operations.","Tackle complex 4chan reader setup challenges and let the AI agent do the heavy lifting."],
   exampleUsage: "Extract 4chan reader for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

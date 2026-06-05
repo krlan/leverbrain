@@ -58,7 +58,7 @@ Draft posts that respect Reddit's anti-spam culture:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/reddit-mrr-playbook',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/reddit-mrr-playbook',
   useCases: ["Value-First Thread Framework: Formulas to share case studies, tools, and build-in-public stories that gain upvotes.","Subreddit Selection Matrix: How to target communities in the 10K-500K member sweet spot with active daily discussions.","Indirect Conversion Funnels: Turn helpful comments and posts into profile visits and inbound inquiries."],
   exampleUsage: "Generate reddit MRR playbook for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

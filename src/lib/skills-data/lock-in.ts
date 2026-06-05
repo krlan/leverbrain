@@ -190,7 +190,7 @@ RITUAL" and end after the final close-out step.`,
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/lock-in',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/lock-in',
   useCases: ["Neurochemical Priming: Numbered sequence to prime attention spotlights (acetylcholine, dopamine, and epinephrine) before starting.","Friction Zone Navigation: Specific anchor actions to maintain progress during the difficult initial 15 minutes of focus transition.","Attention Residue Elimination: Rules to clear open cognitive loops and prepare your workspace cleanly."],
   exampleUsage: "Apply lock in for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

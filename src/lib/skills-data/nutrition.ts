@@ -201,7 +201,7 @@ not like I am reading a clinical diet sheet.`,
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/nutrition',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/nutrition',
   useCases: ["How quickly I want to lose the weight (e.g. steady and sustainable.","My job type (desk job, on my feet, manual labour, etc.).","How many times per week I currently exercise, and what type."],
   exampleUsage: "Build nutrition for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

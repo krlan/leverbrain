@@ -61,7 +61,7 @@ Restructure your pricing and delivery to reduce buyer risk:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/outbound-ecosystem',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/outbound-ecosystem',
   useCases: ["Coordinated Sequencing: Mix channels (email -> LinkedIn connection -> message -> follow-ups) systematically.","Offer Engineering: De-risk high-ticket retrains using outcome-focused positioning and performance-based risk reversals.","Trust Stack Architecture: Ensure prospects see consistent authority signals when researching you across platforms."],
   exampleUsage: "Generate outbound ecosystem for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

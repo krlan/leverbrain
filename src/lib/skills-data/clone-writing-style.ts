@@ -39,7 +39,7 @@ Here's what I want you to do:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/clone-writing-style',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/clone-writing-style',
   useCases: ["Ask me to provide a text sample (500+ words minimum) of the style I want to clone.","Once I provide the sample, analyze it for:.","Sentence rhythm (short vs long patterns)."],
   exampleUsage: "Analyse clone writing style for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

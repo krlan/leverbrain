@@ -277,7 +277,7 @@ Begin by asking me your first question.`,
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/distill-me',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/distill-me',
   useCases: ["What I believe that others in my field don’t.","Hot takes I’d defend to the death.","Conventional wisdom I think is wrong."],
   exampleUsage: "Extract distill me for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

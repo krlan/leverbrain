@@ -63,7 +63,7 @@ Publish posts that establish immediate authority:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/faceless-page-anonymity',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/faceless-page-anonymity',
   useCases: ["Radical Transparency Positioning: Bio, introduction, and pinned post templates declaring anonymity as a feature.","Value-First Feed Strategy: Framework for posting high-signal, zero-fluff tactical guides.","Micro-conversion Funnel: Set up a seamless reader-to-buyer pathway using bio links and direct message prompts."],
   exampleUsage: "Convert faceless page anonymity for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

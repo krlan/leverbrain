@@ -112,7 +112,7 @@ The skill uses \`yt-dlp\`, a robust YouTube downloader that:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/wells1137-yt-video-downloader',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/wells1137-yt-video-downloader',
   useCases: ["Best (default): Highest quality available.","480p: Standard definition.","360p: Lower quality."],
   exampleUsage: "Process and edit my video files",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

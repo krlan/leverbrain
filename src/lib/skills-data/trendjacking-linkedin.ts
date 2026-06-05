@@ -73,7 +73,7 @@ Manually or systematically distribute the asset and start conversations:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/trendjacking-linkedin',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/trendjacking-linkedin',
   useCases: ["Seismic Event Mapping: Standard workflow to track, analyze, and capitalize on tech announcements in real-time.","Teardown Copy Framework: Structure viral posts that provide instant summaries, code samples, or benchmarks.","Comment-to-Lead Automations: Call-to-value strategies that convert comment spikes into direct message leads and calendar events."],
   exampleUsage: "Generate trendjacking LinkedIn for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

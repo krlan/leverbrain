@@ -60,7 +60,7 @@ Plan posts that demonstrate expertise and personality:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/linkedin-opportunity',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/linkedin-opportunity',
   useCases: ["Profile-as-Landing-Page Framework: Swap resume sections for outcome-focused copywriting, clear CTAs, and optimized featured sections.","Supply-Demand Content Blueprint: Strategies to replace corporate jargon with contrarian, high-utility posts that stand out.","Inbound Conversation Funnel: Practical workflows to handle profile views and turn post engagement into discovery calls."],
   exampleUsage: "Generate linkedIn opportunity for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

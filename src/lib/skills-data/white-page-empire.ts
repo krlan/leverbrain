@@ -59,7 +59,7 @@ Format the document to look raw and discoverable:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/white-page-empire',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/white-page-empire',
   useCases: ["Disarming Design Strategy: Rules for formatting documents (minimal colors, fonts, clean grids) to mimic private discoverable notes.","Intimacy Copy Framework: Guidelines for writing in a raw, conversational, and direct tone of voice.","Inline Conversion Triggers: Place soft, natural CTAs and booking pathways directly inside the body copy."],
   exampleUsage: "Convert white page empire for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

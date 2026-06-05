@@ -556,9 +556,13 @@ function generatePreviewHtml(title, slug) {
 // Maps new skill slugs to author and fileUrl, prioritizing existing TS definitions
 function getAuthorAndFileUrl(slug, existingMeta) {
   if (existingMeta && existingMeta.author && existingMeta.fileUrl) {
+    let fileUrl = existingMeta.fileUrl
+    if (fileUrl.includes('github.com/leverbrain/leverbrain')) {
+      fileUrl = fileUrl.replace('github.com/leverbrain/leverbrain', 'github.com/krlan/leverbrain')
+    }
     return {
       author: existingMeta.author,
-      fileUrl: existingMeta.fileUrl
+      fileUrl: fileUrl
     }
   }
 
@@ -601,10 +605,9 @@ function getAuthorAndFileUrl(slug, existingMeta) {
     }
   }
 
-  // Fallback for clawskills, target articles, and local custom skills
   return {
     author: 'leverbrain',
-    fileUrl: `https://github.com/leverbrain/leverbrain/tree/main/skills/${slug}`
+    fileUrl: `https://github.com/krlan/leverbrain/tree/main/skills/${slug}`
   }
 }
 

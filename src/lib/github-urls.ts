@@ -8,9 +8,14 @@ export interface GitHubRepoDetails {
 export function parseGitHubUrl(url: string): GitHubRepoDetails | null {
   const match = url.match(/github\.com\/([^/]+)\/([^/]+)(?:\/(?:tree|blob)\/([^/]+)\/(.+))?/)
   if (!match) return null
+  let owner = match[1]
+  let repo = match[2]
+  if (owner === 'leverbrain' && repo === 'leverbrain') {
+    owner = 'krlan'
+  }
   return {
-    owner: match[1],
-    repo: match[2],
+    owner,
+    repo,
     branch: match[3] || 'main',
     path: match[4] || '',
   }
@@ -31,7 +36,7 @@ export function resolveRepoUrl(author: string, slug: string, fileUrl?: string): 
   if (normAuthor === 'baoyu' || normAuthor === 'jimliu') {
     return `https://github.com/JimLiu/baoyu-skills/tree/main/skills/${slug}`
   }
-  return `https://github.com/leverbrain/leverbrain/tree/main/skills/${slug}`
+  return `https://github.com/krlan/leverbrain/tree/main/skills/${slug}`
 }
 
 export function resolveFileRawUrl(author: string, slug: string, filename: string, fileUrl?: string): string {
@@ -54,7 +59,7 @@ export function resolveFileRawUrl(author: string, slug: string, filename: string
   if (normAuthor === 'baoyu' || normAuthor === 'jimliu') {
     return `https://raw.githubusercontent.com/JimLiu/baoyu-skills/main/skills/${slug}/${filename}`
   }
-  return `https://raw.githubusercontent.com/leverbrain/leverbrain/main/skills/${slug}/${filename}`
+  return `https://raw.githubusercontent.com/krlan/leverbrain/main/skills/${slug}/${filename}`
 }
 
 export function resolveFileBlobUrl(author: string, slug: string, filename: string, fileUrl?: string): string {
@@ -77,7 +82,7 @@ export function resolveFileBlobUrl(author: string, slug: string, filename: strin
   if (normAuthor === 'baoyu' || normAuthor === 'jimliu') {
     return `https://github.com/JimLiu/baoyu-skills/blob/main/skills/${slug}/${filename}`
   }
-  return `https://github.com/leverbrain/leverbrain/blob/main/skills/${slug}/${filename}`
+  return `https://github.com/krlan/leverbrain/blob/main/skills/${slug}/${filename}`
 }
 
 export function getGitHubRepoDetails(author: string, slug: string, fileUrl?: string): GitHubRepoDetails {
@@ -86,7 +91,7 @@ export function getGitHubRepoDetails(author: string, slug: string, fileUrl?: str
     if (details) return details
   }
   const normAuthor = author.toLowerCase()
-  let owner = 'leverbrain'
+  let owner = 'krlan'
   let repo = 'leverbrain'
   let path = `skills/${slug}`
   let branch = 'main'

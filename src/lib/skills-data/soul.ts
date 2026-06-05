@@ -39,7 +39,7 @@ To configure your assistant to use a specific persona (e.g. \`steipete.md\`):
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/soul',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/soul',
   useCases: ["High-Agency Personality: Equips your assistant with strong, direct takes rather than dry \"it depends\" hedging.","Fluff Elimination: Strips out polite boilerplate phrases like \"Great question!\" or \"I'd be happy to help\" to deliver answers instantly.","Natural Wit & Tone: Adjusts communication style to support subtle humor, direct warnings about bad ideas, and natural phrasing."],
   exampleUsage: "Apply soul for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

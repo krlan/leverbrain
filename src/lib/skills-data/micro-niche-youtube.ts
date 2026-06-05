@@ -56,7 +56,7 @@ Plan a balanced content mix across three layers of buyer awareness:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/micro-niche-youtube',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/micro-niche-youtube',
   useCases: ["Qualified Market Targeting: Skip mass appeal; map your content strategy to the active search queries of high-intent buyers.","DM & Calendar Booking Funnel: Turn viewers into leads by directing them to custom landing pages, social DMs, or booking links.","Narrow down the topic: Instead of general \"SEO strategies,\" target \"Programmatic SEO for B2B SaaS Founders.\"."],
   exampleUsage: "Generate micro niche YouTube for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

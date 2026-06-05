@@ -191,7 +191,7 @@ node scripts/porkbun-dns.js create example.com type=A name=* content=192.0.2.1
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/wmantly-porkbun-skill',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/wmantly-porkbun-skill',
   useCases: ["Enable API access for each domain: Domain Management → Details → API Access → Enable.","Check environment variables: echo $PORKBUN_API_KEY.","Ensure API access is enabled for the specific domain."],
   exampleUsage: "Create porkbun for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

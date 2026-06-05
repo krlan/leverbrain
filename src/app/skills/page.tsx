@@ -154,6 +154,10 @@ function SkillsContent() {
 
   const skillPool = useMemo(() => mergeSkillPool(convexSkills), [convexSkills])
 
+  const freeSkillsCount = useMemo(() => {
+    return skillPool.filter((skill) => skill.priceUsdc === 0).length
+  }, [skillPool])
+
   const categoryOptions = useMemo(
     () =>
       Array.from(new Set(skillPool.map((skill) => skill.category)))
@@ -267,7 +271,7 @@ function SkillsContent() {
                 </div>
                 {priceFilter === 'paid' && (
                   <div className="sk-scribble-note">
-                    <span className="sk-scribble-text">check these too!</span>
+                    <span className="sk-scribble-text">{freeSkillsCount} more!</span>
                     <svg className="sk-scribble-arrow" width="30" height="25" viewBox="0 0 50 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M42 28C35 22 25 8 12 8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
                       <path d="M18 4L11 8L17 14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>

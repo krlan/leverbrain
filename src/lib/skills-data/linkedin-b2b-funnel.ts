@@ -55,7 +55,7 @@ Queue and publish posts across three layers of the funnel weekly:
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/linkedin-b2b-funnel',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/linkedin-b2b-funnel',
   useCases: ["Three-Tier Content Funnel: Structure posts across Top-of-Funnel (attention), Middle-of-Funnel (familiarity), and Bottom-of-Funnel (conversion).","Trial Conversion Pathways: Link profiles, comments, and featured sections to high-intent product landing pages.","Cross-Engagement Plan: Have both accounts interact, tag, and quote each other's insights to show strong team alignment."],
   exampleUsage: "Apply linkedIn B2B funnel for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

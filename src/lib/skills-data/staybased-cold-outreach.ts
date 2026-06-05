@@ -278,7 +278,7 @@ Hi [Name] — saw your [post/company/role]. Working on [relevant thing] and thou
   featured: false,
   createdAt: '2026-06-04',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/staybased-cold-outreach',
+  fileUrl: 'https://github.com/krlan/leverbrain/tree/main/skills/staybased-cold-outreach',
   useCases: ["Crafting multi-touch follow-up sequences.","Personalizing outreach at scale for a specific ICP.","Building lead magnets to pair with cold outreach."],
   exampleUsage: "Generate staybased cold outreach for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">

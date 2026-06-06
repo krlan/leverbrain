@@ -320,7 +320,7 @@ function SkillsContent() {
           </p>
 
           {filtered.length === 0 ? (
-            <div className="sk-empty animate-fade-in-up">
+            <div key={`empty-container-${priceFilter}`} className="sk-empty animate-fade-in-up">
               <p>No skills matched your search. Try different keywords.</p>
               <button
                 type="button"
@@ -337,7 +337,7 @@ function SkillsContent() {
               </button>
             </div>
           ) : layout === 'grid' ? (
-            <div className="sk-cards-grid">
+            <div key={`grid-container-${priceFilter}`} className="sk-cards-grid">
               {filtered.map((skill, i) => (
                 <Link
                   key={`grid-${priceFilter}-${skill.id}`}
@@ -378,7 +378,7 @@ function SkillsContent() {
               ))}
             </div>
           ) : (
-            <div className="sk-grid">
+            <div key={`list-container-${priceFilter}`} className="sk-grid">
               <div className="sk-grid-head">
                 <span>Skill</span>
                 <span>Creator</span>

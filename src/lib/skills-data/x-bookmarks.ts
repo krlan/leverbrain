@@ -119,8 +119,8 @@ Before finalizing any bookmarks library updates, verify these items:
 - [ ] Image paths in the exported markdown files are relative (e.g. \`../images/<filename>.jpg\`).
 - [ ] Run \`npx fieldtheory index\` to rebuild the FTS5 search index, enabling fast keyword searches.`,
   whenToUse: "Use this skill when compiling or indexing long-form X posts, media attachments, and articles into a local markdown library.",
-  price: "Free",
-  priceUsdc: 0,
+  price: "$9.99",
+  priceUsdc: 9.99,
   category: "skill",
   tags: ["leverbrain-skills","x-bookmarks"],
   stars: 510,

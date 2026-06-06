@@ -2,6 +2,8 @@
 name: Brand strategy
 description: Build a comprehensive brand strategy, positioning framework, and communication guidelines for startups and products.
 tagline: Define startup positioning and brand identity frameworks.
+price: "$9.99"
+priceUsdc: 9.99
 whenToUse: Use this skill to run brand strategy workshops, define startup positioning, and align team communication around a shared brand identity.
 license: MIT
 category: strategy

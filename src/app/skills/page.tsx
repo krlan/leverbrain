@@ -340,7 +340,7 @@ function SkillsContent() {
             <div className="sk-cards-grid">
               {filtered.map((skill, i) => (
                 <Link
-                  key={skill.id}
+                  key={`grid-${priceFilter}-${skill.id}`}
                   href={`/skills/${skill.author}/${skill.slug}`}
                   className={`sk-card animate-fade-in-up animate-delay-${Math.min(i % 6, 4)}`}
                   onMouseMove={handleMouseMove}
@@ -388,7 +388,7 @@ function SkillsContent() {
 
               {filtered.map((skill, i) => (
                 <Link
-                  key={skill.id}
+                  key={`list-${priceFilter}-${skill.id}`}
                   href={`/skills/${skill.author}/${skill.slug}`}
                   className={`sk-row animate-fade-in-up animate-delay-${Math.min(i % 6, 4)}`}
                   onMouseMove={handleMouseMove}

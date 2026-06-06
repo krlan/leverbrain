@@ -54,8 +54,8 @@ To condense the strategy into memorable copy:
   - Define "We sound like X, not Y" guidelines.
   - Create a list of blacklisted industry jargon terms.`,
   whenToUse: "Use this skill to run brand strategy workshops, define startup positioning, and align team communication around a shared brand identity.",
-  price: "Free",
-  priceUsdc: 0,
+  price: "$9.99",
+  priceUsdc: 9.99,
   category: "strategy",
   tags: ["leverbrain-skills","brand-strategy"],
   stars: 405,

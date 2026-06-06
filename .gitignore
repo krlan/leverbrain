@@ -63,6 +63,7 @@ bookmarks_library/
 skills/*
 !skills/leverbrain/
 !skills/soul/
+!skills/claude-design/
 !skills/lock-in/
 !skills/aiasisbot61-4chan-reader/
 !skills/brand-strategy/

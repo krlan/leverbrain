@@ -2,6 +2,8 @@
 name: X bookmarks
 tagline: Local self-custody bookmarks syncing and long-form article extractor.
 description: Archive and enrich your bookmarked X posts and long-form articles. Resolves scrambled images and missing text by extracting from the GraphQL API directly with active cookies and mapping Draft.js blocks.
+author: santa
+creatorWallet: Fd983Npa5kCh1WohgZ4xJj95EUefGxwyBEfXHbBYhBZh
 price: "$9.99"
 priceUsdc: 9.99
 category: skill

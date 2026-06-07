@@ -173,9 +173,11 @@ export default function Landing() {
                       </p>
                       <p className="land-featured-lane-tagline">{skill.tagline}</p>
                     </div>
-                    <span className={`land-featured-category land-featured-category--${skill.category}`}>
-                      {skill.category}
-                    </span>
+                    {(skill.category === 'strategy' || skill.category === 'blueprint') && (
+                      <span className={`land-featured-category land-featured-category--${skill.category}`}>
+                        {skill.category}
+                      </span>
+                    )}
                     <span className="land-featured-lane-price">{skill.price}</span>
                   </Link>
                 ))}
@@ -195,9 +197,11 @@ export default function Landing() {
                       </p>
                       <p className="land-featured-lane-tagline">{skill.tagline}</p>
                     </div>
-                    <span className={`land-featured-category land-featured-category--${skill.category}`}>
-                      {skill.category}
-                    </span>
+                    {(skill.category === 'strategy' || skill.category === 'blueprint') && (
+                      <span className={`land-featured-category land-featured-category--${skill.category}`}>
+                        {skill.category}
+                      </span>
+                    )}
                     <span className="land-featured-lane-price">{skill.price}</span>
                   </Link>
                 ))}

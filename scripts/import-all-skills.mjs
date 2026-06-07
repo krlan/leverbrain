@@ -1209,19 +1209,27 @@ export function getSkillsByAuthor(author: string): SkillListing[] {
 }
 
 export function getFeaturedSkills(): SkillListing[] {
-  const featured = SKILLS
-    .filter((s) => s.featured)
-    .sort((a, b) => b.totalPurchases - a.totalPurchases)
+  const targetSlugs = [
+    'theme-factory',
+    'baoyu-infographic',
+    'distill-me',
+    'grill-me',
+    'handoff',
+    'claude-design',
+    'programmatic-seo',
+    'writing-skills',
+    'taste-skill',
+    'x-algo'
+  ]
 
-  if (featured.length >= 10) {
-    return featured.slice(0, 10)
+  const featured: SkillListing[] = []
+  for (const slug of targetSlugs) {
+    const skill = SKILLS.find((s) => s.slug === slug)
+    if (skill) {
+      featured.push(skill)
+    }
   }
-
-  const fallback = SKILLS
-    .filter((s) => !s.featured)
-    .sort((a, b) => b.totalPurchases - a.totalPurchases)
-
-  return [...featured, ...fallback].slice(0, 10)
+  return featured
 }
 
 export function searchSkills(query: string): SkillListing[] {

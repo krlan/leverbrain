@@ -31,6 +31,7 @@ export default defineSchema({
     exampleUsage: v.optional(v.string()),
     isSeeded: v.optional(v.boolean()),
   })
+    .index("by_skill_id", ["skillId"])
     .index("by_author", ["author"])
     .index("by_author_slug", ["author", "slug"])
     .index("by_category", ["category"])

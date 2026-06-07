@@ -296,7 +296,7 @@ export const recordPurchase = mutation({
     // Increment totalPurchases counter on the skill
     const skill = await ctx.db
       .query("skills")
-      .filter((q) => q.eq(q.field("skillId"), args.skillId))
+      .withIndex("by_skill_id", (q) => q.eq("skillId", args.skillId))
       .first();
     if (skill) {
       await ctx.db.patch(skill._id, {
@@ -335,7 +335,7 @@ export const getPurchasesByBuyer = query({
       purchases.map(async (purchase) => {
         const skill = await ctx.db
           .query("skills")
-          .filter((q) => q.eq(q.field("skillId"), purchase.skillId))
+          .withIndex("by_skill_id", (q) => q.eq("skillId", purchase.skillId))
           .first();
 
         return {

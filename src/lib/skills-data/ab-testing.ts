@@ -4,7 +4,7 @@ export const abTesting: SkillListing = {
   id: 'ab-testing',
   author: 'coreyhaines31',
   slug: 'ab-testing',
-  name: "Ab testing",
+  name: "A/B testing",
   tagline: "When the user wants to plan, design, or implement an A/B test or experiment, or build a growth experimentation program.",
   description: "When the user wants to plan, design, or implement an A/B test or experiment, or build a growth experimentation program. Also use when the user mentions \"A/B test,\" \"split test,\" \"experiment,\" \"test this change,\" \"variant copy,\" \"multivariate test,\" \"hypothesis,\" \"should I test this,\" \"which version is better,\" \"test two versions,\" \"statistical significance,\" \"how long should I run this test,\" \"growth experiments,\" \"experiment velocity,\" \"experiment backlog,\" \"ICE score,\" \"experimentation program,\" or \"experiment playbook.\" Use this whenever someone is comparing two approaches and wants to measure which performs better, or when they want to build a systematic experimentation practice. For tracking implementation, see analytics. For page-level conversion optimization, see cro.",
   readme: `# A/B Test Setup
@@ -353,7 +353,7 @@ Over time, your playbook becomes a library of proven growth patterns specific to
 - **cro**: For generating test ideas based on CRO principles
 - **analytics**: For setting up test measurement
 - **copywriting**: For creating variant copy`,
-  whenToUse: "Use when you need to automate ab testing processes.",
+  whenToUse: "Use when you need to automate a/b testing processes.",
   price: "Free",
   priceUsdc: 0,
   category: "skill",
@@ -374,7 +374,7 @@ Over time, your playbook becomes a library of proven growth patterns specific to
         </div>
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
         <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
-          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Ab testing</h2>
+          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">A/B testing</h2>
           <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">When the user wants to plan, design, or implement an A/B test or experiment, or build a growth experimentation program.</p>
         </div>
       </div>

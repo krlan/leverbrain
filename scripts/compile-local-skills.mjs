@@ -193,10 +193,18 @@ function formatTitle(slug) {
   };
 
   const clean = slug.startsWith('baoyu-') ? slug.slice(6) : slug;
-  const words = clean.replace(/-/g, ' ').split(/\s+/).filter(Boolean);
+  let cleanName = clean;
+  if (!clean.includes(' ') && clean.includes('-')) {
+    cleanName = clean.replace(/-/g, ' ');
+  }
+  const words = cleanName.split(/\s+/).filter(Boolean);
   
   return words.map((word, idx) => {
     const lower = word.toLowerCase();
+    
+    if (lower === 'a/b' || lower === 'ab') {
+      return 'A/B';
+    }
     
     // Check abbreviations
     if (ABBREVIATIONS[lower]) {

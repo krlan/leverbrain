@@ -4,7 +4,7 @@ export const saasGtmPlaybook: SkillListing = {
   id: 'saas-gtm-playbook',
   author: 'leverbrain',
   slug: 'saas-gtm-playbook',
-  name: 'SaaS GTM Playbook',
+  name: 'SaaS GTM playbook',
   tagline: 'Full go-to-market strategy for early-stage SaaS products.',
   description:
     'A structured go-to-market strategy covering positioning, ICP definition, channel selection, early traction playbook, and metrics framework for early-stage SaaS.',

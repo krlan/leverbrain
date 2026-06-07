@@ -118,12 +118,104 @@ function parseFrontmatter(source) {
 
 function formatTitle(slug) {
   if (!slug) return '';
-  const clean = slug.startsWith('baoyu-') ? slug.slice(6) : slug
-  return clean
-    .replace(/-/g, ' ')
-    .split(/\s+/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  const ABBREVIATIONS = {
+    gtm: 'GTM',
+    saas: 'SaaS',
+    ai: 'AI',
+    b2b: 'B2B',
+    b2c: 'B2C',
+    prd: 'PRD',
+    seo: 'SEO',
+    tdd: 'TDD',
+    mrr: 'MRR',
+    cli: 'CLI',
+    sdk: 'SDK',
+    ecc: 'ECC',
+    mcp: 'MCP',
+    pdf: 'PDF',
+    html: 'HTML',
+    css: 'CSS',
+    js: 'JS',
+    api: 'API',
+    usdc: 'USDC',
+    yara: 'YARA',
+    apk: 'APK',
+    fp: 'FP',
+    gh: 'GH',
+    sms: 'SMS',
+    mvp: 'MVP',
+    url: 'URL',
+    svg: 'SVG',
+    json: 'JSON',
+    yaml: 'YAML',
+    xml: 'XML',
+    rss: 'RSS',
+    ui: 'UI',
+    ux: 'UX',
+    ci: 'CI',
+    gsd: 'GSD',
+    xhs: 'XHS',
+    d3: 'D3',
+    qa: 'QA',
+    dtc: 'DTC'
+  };
+
+  const PROPER_NOUNS = {
+    solana: 'Solana',
+    claude: 'Claude',
+    linkedin: 'LinkedIn',
+    youtube: 'YouTube',
+    wechat: 'WeChat',
+    weibo: 'Weibo',
+    reddit: 'Reddit',
+    porkbun: 'Porkbun',
+    gemini: 'Gemini',
+    chrome: 'Chrome',
+    git: 'Git',
+    semgrep: 'Semgrep',
+    'next.js': 'Next.js',
+    nextjs: 'Next.js',
+    turbopack: 'Turbopack',
+    obsidian: 'Obsidian',
+    burpsuite: 'BurpSuite',
+    gmod: 'Gmod',
+    pocketbase: 'Pocketbase',
+    sentry: 'Sentry',
+    matt: 'Matt',
+    pocock: 'Pocock',
+    brandkit: 'Brandkit'
+  };
+
+  const clean = slug.startsWith('baoyu-') ? slug.slice(6) : slug;
+  let cleanName = clean;
+  if (!clean.includes(' ') && clean.includes('-')) {
+    cleanName = clean.replace(/-/g, ' ');
+  }
+  const words = cleanName.split(/\s+/).filter(Boolean);
+  
+  return words.map((word, idx) => {
+    const lower = word.toLowerCase();
+    
+    if (lower === 'a/b' || lower === 'ab') {
+      return 'A/B';
+    }
+    
+    // Check abbreviations
+    if (ABBREVIATIONS[lower]) {
+      return ABBREVIATIONS[lower];
+    }
+    
+    // Check proper nouns
+    if (PROPER_NOUNS[lower]) {
+      return PROPER_NOUNS[lower];
+    }
+    
+    if (idx === 0) {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    } else {
+      return word.toLowerCase();
+    }
+  }).join(' ');
 }
 
 function getMockIcon(slug) {

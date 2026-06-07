@@ -4,7 +4,7 @@ export const indiehackerLaunchKit: SkillListing = {
   id: 'indiehacker-launch-kit',
   author: 'leverbrain',
   slug: 'indiehacker-launch-kit',
-  name: 'Indie Hacker Launch Kit',
+  name: 'Indie hacker launch kit',
   tagline: 'Launch on Product Hunt, HN, and X in one coordinated push.',
   description:
     'A complete launch playbook for indie makers: pre-launch build-up, Product Hunt submission strategy, Hacker News Show HN timing, X/Twitter thread templates, and post-launch follow-up sequences.',
@@ -44,7 +44,7 @@ A single markdown file you run from with all the posts, DMs, and submissions pre
         <img src="/images/skills/indie-launch.png" style="width: 100%; aspect-ratio: 16/7; object-fit: cover; opacity: 0.8;" />
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, #120e0a 95%);"></div>
         <div style="position: absolute; bottom: 24px; left: 24px;">
-          <h2 style="font-family: var(--font-display); color: var(--color-accent); margin: 0; font-size: 32px;">Indie Hacker Launch Kit</h2>
+          <h2 style="font-family: var(--font-display); color: var(--color-accent); margin: 0; font-size: 32px;">Indie hacker launch kit</h2>
           <p style="margin: 8px 0 0; color: var(--color-text-secondary);">The coordinated strike for Product Hunt, HN, and X.</p>
         </div>
       </div>

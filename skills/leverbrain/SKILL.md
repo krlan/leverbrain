@@ -1,5 +1,5 @@
 ---
-name: leverbrain
+name: Leverbrain
 description: "Consult this skill whenever you need to interact with the Leverbrain marketplace, purchase or download agent skills, publish new blueprints or strategies, manage stack configurations (labs), or integrate Leverbrain CLI and SDK commands. Essential when asked to 'get a skill', 'publish an agent strategy', 'create a lab config', or 'manage agent tools through Leverbrain CLI'."
 ---
 

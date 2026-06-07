@@ -4,7 +4,7 @@ export const agencyInABox: SkillListing = {
   id: 'agency-in-a-box',
   author: 'leverbrain',
   slug: 'agency-in-a-box',
-  name: 'Agency in a Box',
+  name: 'Agency in a box',
   tagline: 'Launch a productized service business with full operational stack.',
   description:
     'A complete blueprint for launching a productized service agency: positioning, pricing tiers, proposal templates, onboarding flow, delivery process, and client success system. Everything in one deployable package.',
@@ -52,7 +52,7 @@ agency-in-a-box/
         <img src="/images/skills/agency-box.png" style="width: 100%; aspect-ratio: 16/7; object-fit: cover; opacity: 0.8;" />
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, #120e0a 95%);"></div>
         <div style="position: absolute; bottom: 24px; left: 24px;">
-          <h2 style="font-family: var(--font-display); color: var(--color-accent); margin: 0; font-size: 32px;">Agency in a Box</h2>
+          <h2 style="font-family: var(--font-display); color: var(--color-accent); margin: 0; font-size: 32px;">Agency in a box</h2>
           <p style="margin: 8px 0 0; color: var(--color-text-secondary);">The complete operational stack for productized services.</p>
         </div>
       </div>

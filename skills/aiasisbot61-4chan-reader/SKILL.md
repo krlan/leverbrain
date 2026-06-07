@@ -1,5 +1,5 @@
 ---
-name: 4chan-reader
+name: 4chan reader
 description: Browse 4chan boards and extract thread discussions into structured text files. Use when you need to fetch catalog information or specific thread content (including post text and file metadata) from 4chan boards like /a/, /vg/, /v/, etc.
 ---
 

@@ -79,6 +79,13 @@ const repos = [
     localSubdir: 'kunchenguid-no-mistakes',
     skillsPath: 'skills',
     getFileUrl: (slug) => `https://github.com/kunchenguid/no-mistakes/tree/main/skills/${slug}`
+  },
+  {
+    author: 'elvisun',
+    gitUrl: 'https://github.com/elvisun/newsjack.git',
+    localSubdir: 'elvisun-newsjack',
+    skillsPath: 'skills',
+    getFileUrl: (slug) => `https://github.com/elvisun/newsjack/tree/main/skills/${slug}`
   }
 ]
 
@@ -815,7 +822,7 @@ npx -y leverbrain get davila7/${slug} ${subSkills[0]?.slug || 'default'}
   return { readme, tagline, desc, subSkills };
 }
 
-function processSkillDir(author, slug, folderPath, fileUrl) {
+function processSkillDir(author, slug, folderPath, fileUrl, appendContent = '') {
   let mdContent = ''
   let skillFilePath = path.join(folderPath, 'SKILL.md')
   if (!fs.existsSync(skillFilePath)) {
@@ -828,6 +835,13 @@ function processSkillDir(author, slug, folderPath, fileUrl) {
 
   if (fs.existsSync(skillFilePath)) {
     mdContent = fs.readFileSync(skillFilePath, 'utf8')
+    if (appendContent) {
+      mdContent = mdContent.replace(/\(\.\.\/ETHICS\.md\)/g, '(#ethics-reference)');
+      mdContent = mdContent.replace(/\(\.\.\/WHY-NOT-SPAM\.md\)/g, '(#why-not-spam-reference)');
+      mdContent = mdContent.replace(/`?skills\/ETHICS\.md`?/g, '[ETHICS.md](#ethics-reference)');
+      mdContent = mdContent.replace(/`?skills\/WHY-NOT-SPAM\.md`?/g, '[WHY-NOT-SPAM.md](#why-not-spam-reference)');
+      mdContent += appendContent;
+    }
   } else {
     const categoryResult = compileCategoryMarkdown(slug, folderPath)
     if (categoryResult) {
@@ -1148,6 +1162,35 @@ async function main() {
       const result = processSkillDir('kunchenguid', slug, folder, fileUrl)
       fs.writeFileSync(path.join(outDir, `${slug}.ts`), result.content, 'utf8')
       importedSkills.push({ author: 'kunchenguid', slug, variableName: result.variableName })
+    }
+  }
+
+  // Process elvisun (newsjack) skills
+  const elvisunRepo = repos.find(r => r.author === 'elvisun')
+  const elvisunLocalDir = path.resolve(scratchDir, elvisunRepo.localSubdir, elvisunRepo.skillsPath)
+  if (fs.existsSync(elvisunLocalDir)) {
+    // Read parent directory files (ETHICS.md, WHY-NOT-SPAM.md) to append to each skill
+    const ethicsPath = path.resolve(scratchDir, elvisunRepo.localSubdir, 'skills/ETHICS.md')
+    const whyNotSpamPath = path.resolve(scratchDir, elvisunRepo.localSubdir, 'skills/WHY-NOT-SPAM.md')
+    let appendRefs = '\n'
+    if (fs.existsSync(ethicsPath)) {
+      appendRefs += `\n---\n\n## Ethics Reference\n\n${fs.readFileSync(ethicsPath, 'utf8')}\n`
+    }
+    if (fs.existsSync(whyNotSpamPath)) {
+      appendRefs += `\n---\n\n## Why Not Spam Reference\n\n${fs.readFileSync(whyNotSpamPath, 'utf8')}\n`
+    }
+
+    const elvisunDirs = fs.readdirSync(elvisunLocalDir).filter(f => {
+      if (f === 'ETHICS.md' || f === 'WHY-NOT-SPAM.md') return false
+      return fs.statSync(path.join(elvisunLocalDir, f)).isDirectory()
+    })
+    console.log(`Processing ${elvisunDirs.length} elvisun skills...`)
+    for (const slug of elvisunDirs) {
+      const folder = path.join(elvisunLocalDir, slug)
+      const fileUrl = elvisunRepo.getFileUrl(slug)
+      const result = processSkillDir('elvisun', slug, folder, fileUrl, appendRefs)
+      fs.writeFileSync(path.join(outDir, `${slug}.ts`), result.content, 'utf8')
+      importedSkills.push({ author: 'elvisun', slug, variableName: result.variableName })
     }
   }
 

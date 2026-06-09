@@ -13,6 +13,7 @@ import { aiSeo } from './skills-data/ai-seo'
 import { aiasisbot614chanReader } from './skills-data/aiasisbot61-4chan-reader'
 import { algorithmicArt } from './skills-data/algorithmic-art'
 import { analytics } from './skills-data/analytics'
+import { angleGenerator } from './skills-data/angle-generator'
 import { apiDesign } from './skills-data/api-design'
 import { articleWriting } from './skills-data/article-writing'
 import { askQuestionsIfUnderspecified } from './skills-data/ask-questions-if-underspecified'
@@ -72,7 +73,10 @@ import { contentEngine } from './skills-data/content-engine'
 import { contentStrategy } from './skills-data/content-strategy'
 import { copyEditing } from './skills-data/copy-editing'
 import { copywriting } from './skills-data/copywriting'
+import { coverageTracker } from './skills-data/coverage-tracker'
+import { coverageTrackerSetup } from './skills-data/coverage-tracker-setup'
 import { creativeDesign } from './skills-data/creative-design'
+import { crisisHolding } from './skills-data/crisis-holding'
 import { cro } from './skills-data/cro'
 import { crosspost } from './skills-data/crosspost'
 import { cultureIndex } from './skills-data/culture-index'
@@ -103,8 +107,10 @@ import { entryPointAnalyzer } from './skills-data/entry-point-analyzer'
 import { evalHarness } from './skills-data/eval-harness'
 import { everythingClaudeCode } from './skills-data/everything-claude-code'
 import { exaSearch } from './skills-data/exa-search'
+import { factCheck } from './skills-data/fact-check'
 import { falAiMedia } from './skills-data/fal-ai-media'
 import { findCommunity } from './skills-data/find-community'
+import { findJournalists } from './skills-data/find-journalists'
 import { firebaseApkScanner } from './skills-data/firebase-apk-scanner'
 import { firstCustomers } from './skills-data/first-customers'
 import { followBuilders } from './skills-data/follow-builders'
@@ -132,6 +138,7 @@ import { insecureDefaults } from './skills-data/insecure-defaults'
 import { internalComms } from './skills-data/internal-comms'
 import { investorMaterials } from './skills-data/investor-materials'
 import { investorOutreach } from './skills-data/investor-outreach'
+import { journalistFitCheck } from './skills-data/journalist-fit-check'
 import { launch } from './skills-data/launch'
 import { leadMagnets } from './skills-data/lead-magnets'
 import { letFateDecide } from './skills-data/let-fate-decide'
@@ -144,6 +151,7 @@ import { marketingPlan } from './skills-data/marketing-plan'
 import { marketingPsychology } from './skills-data/marketing-psychology'
 import { mcpBuilder } from './skills-data/mcp-builder'
 import { mcpServerPatterns } from './skills-data/mcp-server-patterns'
+import { meanestEditor } from './skills-data/meanest-editor'
 import { media } from './skills-data/media'
 import { microNicheYoutube } from './skills-data/micro-niche-youtube'
 import { migrateToShoehorn } from './skills-data/migrate-to-shoehorn'
@@ -153,6 +161,11 @@ import { mleWorkflow } from './skills-data/mle-workflow'
 import { modernPython } from './skills-data/modern-python'
 import { mutationTesting } from './skills-data/mutation-testing'
 import { mvp } from './skills-data/mvp'
+import { newsSearch } from './skills-data/news-search'
+import { newsjackDetector } from './skills-data/newsjack-detector'
+import { newsjackMonitorSetup } from './skills-data/newsjack-monitor-setup'
+import { newsjackTriage } from './skills-data/newsjack-triage'
+import { newsworthinessCheck } from './skills-data/newsworthiness-check'
 import { nextjsTurbopack } from './skills-data/nextjs-turbopack'
 import { noMistakes } from './skills-data/no-mistakes'
 import { nutrition } from './skills-data/nutrition'
@@ -181,6 +194,7 @@ import { pdf } from './skills-data/pdf'
 import { pocketbase } from './skills-data/pocketbase'
 import { popups } from './skills-data/popups'
 import { pptx } from './skills-data/pptx'
+import { prStrategist } from './skills-data/pr-strategist'
 import { pricing } from './skills-data/pricing'
 import { processize } from './skills-data/processize'
 import { productCapability } from './skills-data/product-capability'
@@ -191,8 +205,10 @@ import { propertyBasedTesting } from './skills-data/property-based-testing'
 import { prospecting } from './skills-data/prospecting'
 import { prototype } from './skills-data/prototype'
 import { railway } from './skills-data/railway'
+import { reactiveComment } from './skills-data/reactive-comment'
 import { redesignSkill } from './skills-data/redesign-skill'
 import { referrals } from './skills-data/referrals'
+import { relevanceCoarseFilter } from './skills-data/relevance-coarse-filter'
 import { review } from './skills-data/review'
 import { revops } from './skills-data/revops'
 import { salesEnablement } from './skills-data/sales-enablement'
@@ -225,6 +241,7 @@ import { sports } from './skills-data/sports'
 import { staticAnalysis } from './skills-data/static-analysis'
 import { staybasedColdOutreach } from './skills-data/staybased-cold-outreach'
 import { stitchSkill } from './skills-data/stitch-skill'
+import { storyOriginCheck } from './skills-data/story-origin-check'
 import { strategicCompact } from './skills-data/strategic-compact'
 import { superpowersBrainstorming } from './skills-data/superpowers-brainstorming'
 import { superpowersDispatchingParallelAgents } from './skills-data/superpowers-dispatching-parallel-agents'
@@ -258,6 +275,7 @@ import { variantAnalysis } from './skills-data/variant-analysis'
 import { verificationLoop } from './skills-data/verification-loop'
 import { video } from './skills-data/video'
 import { videoEditing } from './skills-data/video-editing'
+import { voiceExtractor } from './skills-data/voice-extractor'
 import { wazaCheck } from './skills-data/waza-check'
 import { wazaDesign } from './skills-data/waza-design'
 import { wazaHealth } from './skills-data/waza-health'
@@ -332,6 +350,7 @@ export const SKILLS: SkillListing[] = [
   aiasisbot614chanReader,
   algorithmicArt,
   analytics,
+  angleGenerator,
   apiDesign,
   articleWriting,
   askQuestionsIfUnderspecified,
@@ -391,7 +410,10 @@ export const SKILLS: SkillListing[] = [
   contentStrategy,
   copyEditing,
   copywriting,
+  coverageTracker,
+  coverageTrackerSetup,
   creativeDesign,
+  crisisHolding,
   cro,
   crosspost,
   cultureIndex,
@@ -422,8 +444,10 @@ export const SKILLS: SkillListing[] = [
   evalHarness,
   everythingClaudeCode,
   exaSearch,
+  factCheck,
   falAiMedia,
   findCommunity,
+  findJournalists,
   firebaseApkScanner,
   firstCustomers,
   followBuilders,
@@ -451,6 +475,7 @@ export const SKILLS: SkillListing[] = [
   internalComms,
   investorMaterials,
   investorOutreach,
+  journalistFitCheck,
   launch,
   leadMagnets,
   letFateDecide,
@@ -463,6 +488,7 @@ export const SKILLS: SkillListing[] = [
   marketingPsychology,
   mcpBuilder,
   mcpServerPatterns,
+  meanestEditor,
   media,
   microNicheYoutube,
   migrateToShoehorn,
@@ -472,6 +498,11 @@ export const SKILLS: SkillListing[] = [
   modernPython,
   mutationTesting,
   mvp,
+  newsSearch,
+  newsjackDetector,
+  newsjackMonitorSetup,
+  newsjackTriage,
+  newsworthinessCheck,
   nextjsTurbopack,
   noMistakes,
   nutrition,
@@ -500,6 +531,7 @@ export const SKILLS: SkillListing[] = [
   pocketbase,
   popups,
   pptx,
+  prStrategist,
   pricing,
   processize,
   productCapability,
@@ -510,8 +542,10 @@ export const SKILLS: SkillListing[] = [
   prospecting,
   prototype,
   railway,
+  reactiveComment,
   redesignSkill,
   referrals,
+  relevanceCoarseFilter,
   review,
   revops,
   salesEnablement,
@@ -544,6 +578,7 @@ export const SKILLS: SkillListing[] = [
   staticAnalysis,
   staybasedColdOutreach,
   stitchSkill,
+  storyOriginCheck,
   strategicCompact,
   superpowersBrainstorming,
   superpowersDispatchingParallelAgents,
@@ -577,6 +612,7 @@ export const SKILLS: SkillListing[] = [
   verificationLoop,
   video,
   videoEditing,
+  voiceExtractor,
   wazaCheck,
   wazaDesign,
   wazaHealth,

@@ -562,7 +562,13 @@ function generatePreviewHtml(title, slug) {
 }
 
 // Maps new skill slugs to author and fileUrl, prioritizing existing TS definitions
-function getAuthorAndFileUrl(slug, existingMeta) {
+function getAuthorAndFileUrl(slug, existingMeta, metadata = {}) {
+  if (metadata.author) {
+    return {
+      author: metadata.author,
+      fileUrl: metadata.fileUrl || `https://github.com/krlan/leverbrain/tree/main/skills/${slug}`
+    }
+  }
   if (existingMeta && existingMeta.author && existingMeta.fileUrl) {
     let fileUrl = existingMeta.fileUrl
     if (fileUrl.includes('github.com/leverbrain/leverbrain')) {
@@ -679,7 +685,7 @@ function compileSkill(slug, folderPath) {
   // Load existing metadata to maintain stats/authorship
   const destFile = path.join(outDir, `${slug}.ts`)
   const existingMeta = getExistingMetadata(destFile)
-  const { author, fileUrl } = getAuthorAndFileUrl(slug, existingMeta)
+  const { author, fileUrl } = getAuthorAndFileUrl(slug, existingMeta, metadata)
 
   const tags = [author + '-skills', slug]
   if (slug.includes('image') || slug.includes('design') || slug.includes('art')) {

@@ -154,6 +154,7 @@ import { modernPython } from './skills-data/modern-python'
 import { mutationTesting } from './skills-data/mutation-testing'
 import { mvp } from './skills-data/mvp'
 import { nextjsTurbopack } from './skills-data/nextjs-turbopack'
+import { noMistakes } from './skills-data/no-mistakes'
 import { nutrition } from './skills-data/nutrition'
 import { obsidianVault } from './skills-data/obsidian-vault'
 import { onboarding } from './skills-data/onboarding'
@@ -472,6 +473,7 @@ export const SKILLS: SkillListing[] = [
   mutationTesting,
   mvp,
   nextjsTurbopack,
+  noMistakes,
   nutrition,
   obsidianVault,
   onboarding,

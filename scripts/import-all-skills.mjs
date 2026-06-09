@@ -72,6 +72,13 @@ const repos = [
     localSubdir: 'ouroboros-skills',
     skillsPath: 'skills',
     getFileUrl: (slug) => `https://github.com/ourostack/ouroboros-skills/tree/main/skills/${slug}`
+  },
+  {
+    author: 'kunchenguid',
+    gitUrl: 'https://github.com/kunchenguid/no-mistakes.git',
+    localSubdir: 'kunchenguid-no-mistakes',
+    skillsPath: 'skills',
+    getFileUrl: (slug) => `https://github.com/kunchenguid/no-mistakes/tree/main/skills/${slug}`
   }
 ]
 
@@ -1127,7 +1134,24 @@ async function main() {
       fs.writeFileSync(path.join(outDir, `${outFilename}.ts`), customResult, 'utf8')
       importedSkills.push({ author: 'ourostack', slug, variableName: varName, filename: outFilename })
     }
-  }  // Physical cleanup of deleted / untracked files in src/lib/skills-data/
+  }
+
+  // Process kunchenguid (no-mistakes) skills
+  const kunchenRepo = repos.find(r => r.author === 'kunchenguid')
+  const kunchenLocalDir = path.resolve(scratchDir, kunchenRepo.localSubdir, kunchenRepo.skillsPath)
+  if (fs.existsSync(kunchenLocalDir)) {
+    const kunchenDirs = fs.readdirSync(kunchenLocalDir).filter(f => fs.statSync(path.join(kunchenLocalDir, f)).isDirectory())
+    console.log(`Processing ${kunchenDirs.length} kunchenguid skills...`)
+    for (const slug of kunchenDirs) {
+      const folder = path.join(kunchenLocalDir, slug)
+      const fileUrl = kunchenRepo.getFileUrl(slug)
+      const result = processSkillDir('kunchenguid', slug, folder, fileUrl)
+      fs.writeFileSync(path.join(outDir, `${slug}.ts`), result.content, 'utf8')
+      importedSkills.push({ author: 'kunchenguid', slug, variableName: result.variableName })
+    }
+  }
+
+  // Physical cleanup of deleted / untracked files in src/lib/skills-data/
   console.log('\n--- Cleaning up untracked skill files ---')
   const activeFilenames = new Set(importedSkills.map(skill => (skill.filename || skill.slug) + '.ts'))
   // Ensure excluded skills are not deleted from the system

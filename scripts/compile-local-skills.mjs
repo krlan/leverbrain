@@ -618,6 +618,12 @@ function getAuthorAndFileUrl(slug, existingMeta, metadata = {}) {
       fileUrl: 'https://github.com/zarazhangrui/skillify-skill/tree/main/skills/skillify'
     }
   }
+  if (slug === 'kami') {
+    return {
+      author: 'tw93',
+      fileUrl: 'https://github.com/tw93/kami'
+    }
+  }
 
   return {
     author: 'leverbrain',

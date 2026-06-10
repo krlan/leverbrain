@@ -139,6 +139,7 @@ import { internalComms } from './skills-data/internal-comms'
 import { investorMaterials } from './skills-data/investor-materials'
 import { investorOutreach } from './skills-data/investor-outreach'
 import { journalistFitCheck } from './skills-data/journalist-fit-check'
+import { kami } from './skills-data/kami'
 import { launch } from './skills-data/launch'
 import { leadMagnets } from './skills-data/lead-magnets'
 import { letFateDecide } from './skills-data/let-fate-decide'
@@ -476,6 +477,7 @@ export const SKILLS: SkillListing[] = [
   investorMaterials,
   investorOutreach,
   journalistFitCheck,
+  kami,
   launch,
   leadMagnets,
   letFateDecide,

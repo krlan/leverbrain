@@ -36,9 +36,12 @@ export const listSkills = query({
 export const listCustomSkills = query({
   args: {},
   handler: async (ctx) => {
-    const skills = await ctx.db.query("skills").collect();
+    const skills = await ctx.db
+      .query("skills")
+      .withIndex("by_is_seeded", (q) => q.eq("isSeeded", false))
+      .collect();
     return skills
-      .filter((s) => s.isPrivate !== true && s.isSeeded !== true)
+      .filter((s) => s.isPrivate !== true)
       .map(stripHeavyFields);
   },
 });

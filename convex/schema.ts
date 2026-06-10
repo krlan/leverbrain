@@ -35,7 +35,8 @@ export default defineSchema({
     .index("by_author", ["author"])
     .index("by_author_slug", ["author", "slug"])
     .index("by_category", ["category"])
-    .index("by_creator_wallet", ["creatorWallet"]),
+    .index("by_creator_wallet", ["creatorWallet"])
+    .index("by_is_seeded", ["isSeeded"]),
 
   purchases: defineTable({
     skillId: v.string(),

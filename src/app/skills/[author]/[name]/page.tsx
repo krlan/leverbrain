@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import { ArrowLeft, Bookmark, BookmarkCheck, BookOpen, Check, Download, ExternalLink, ShoppingCart, TrendingUp, Zap, Copy, Loader2, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Bookmark, BookmarkCheck, BookOpen, Check, Download, ExternalLink, ShoppingCart, TrendingUp, Zap, Copy, Loader2, ChevronLeft, ChevronRight, X, Maximize2 } from 'lucide-react'
 import { useMutation, useQuery } from 'convex/react'
 import { getSkillByAuthorSlug, type SkillListing } from '@/lib/skills-data'
 import { useSolanaWallet } from '@/contexts/SolanaWalletContext'
@@ -92,20 +92,69 @@ function PresetGallery({ groups }: { groups: { title: string; items: { name: str
   const [activeItemIdx, setActiveItemIdx] = useState(0)
   const [isAutoplay, setIsAutoplay] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
+  const [hoveredTabIdx, setHoveredTabIdx] = useState<number | null>(null)
+  
+  // Lightbox and touch gestures states
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false)
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+
+  // Transition states
+  const activeItem = activeGroup?.items[activeItemIdx]
+  const [displayedUrl, setDisplayedUrl] = useState(activeItem?.url)
+  const [fadeState, setFadeState] = useState<'idle' | 'fading-out' | 'fading-in'>('idle')
 
   useEffect(() => {
     setActiveItemIdx(0)
   }, [activeGroupIdx])
 
   useEffect(() => {
+    if (!activeItem) return
+    if (activeItem.url === displayedUrl) return
+    setFadeState('fading-out')
+    
+    let timeoutIn: NodeJS.Timeout
+    const timeoutOut = setTimeout(() => {
+      setDisplayedUrl(activeItem.url)
+      setFadeState('fading-in')
+      timeoutIn = setTimeout(() => {
+        setFadeState('idle')
+      }, 150)
+    }, 150)
+    
+    return () => {
+      clearTimeout(timeoutOut)
+      if (timeoutIn) clearTimeout(timeoutIn)
+    }
+  }, [activeItem?.url])
+
+  useEffect(() => {
     if (!isAutoplay || !activeGroup || activeGroup.items.length <= 1) return
 
     const interval = setInterval(() => {
       setActiveItemIdx((prev) => (prev + 1) % activeGroup.items.length)
-    }, 4000)
+    }, 5000)
 
     return () => clearInterval(interval)
   }, [activeGroup, isAutoplay])
+
+  // Keydown listener for lightbox
+  useEffect(() => {
+    if (!isLightboxOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false)
+      } else if (e.key === 'ArrowRight') {
+        handleNext()
+      } else if (e.key === 'ArrowLeft') {
+        handlePrev()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isLightboxOpen, activeGroupIdx, activeItemIdx])
 
   const handleNext = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation()
@@ -128,30 +177,66 @@ function PresetGallery({ groups }: { groups: { title: string; items: { name: str
     setActiveGroupIdx(idx)
   }
 
-  const activeItem = activeGroup?.items[activeItemIdx]
+  // Swipe detection handlers
+  const minSwipeDistance = 50
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+    if (isLeftSwipe) {
+      handleNext()
+    } else if (isRightSwipe) {
+      handlePrev()
+    }
+  }
 
   if (!activeGroup || !activeItem) return null
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
+      {/* Apple segmented control style tabs */}
       {groups.length > 1 && (
-        <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid rgba(255, 196, 129, 0.08)', paddingBottom: '8px' }}>
+        <div style={{ 
+          display: 'inline-flex', 
+          background: 'rgba(255, 196, 129, 0.02)', 
+          border: '1px solid rgba(255, 196, 129, 0.08)',
+          borderRadius: '24px',
+          padding: '4px',
+          gap: '4px',
+          width: 'fit-content',
+          backdropFilter: 'blur(8px)',
+          alignSelf: 'flex-start'
+        }}>
           {groups.map((group, idx) => (
             <button
               key={group.title}
               type="button"
               onClick={() => handleSelectTab(idx)}
+              onMouseEnter={() => setHoveredTabIdx(idx)}
+              onMouseLeave={() => setHoveredTabIdx(null)}
               style={{
-                background: 'none',
+                background: activeGroupIdx === idx ? 'rgba(255, 196, 129, 0.08)' : 'transparent',
                 border: 'none',
-                color: activeGroupIdx === idx ? 'var(--color-accent-warm-light)' : 'var(--color-text-tertiary)',
-                fontWeight: activeGroupIdx === idx ? '600' : 'normal',
-                fontSize: '0.82rem',
+                color: activeGroupIdx === idx 
+                  ? 'var(--color-accent-warm-light)' 
+                  : (hoveredTabIdx === idx ? 'var(--color-text-secondary)' : 'var(--color-text-tertiary)'),
+                fontWeight: activeGroupIdx === idx ? '600' : '500',
+                fontSize: '0.8rem',
                 cursor: 'pointer',
                 padding: '6px 16px',
-                borderBottom: activeGroupIdx === idx ? '2px solid var(--color-accent-warm-light)' : '2px solid transparent',
-                marginBottom: '-9px',
-                transition: 'all 0.2s ease',
+                borderRadius: '20px',
+                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
                 outline: 'none'
               }}
             >
@@ -161,49 +246,64 @@ function PresetGallery({ groups }: { groups: { title: string; items: { name: str
         </div>
       )}
 
+      {/* Main Image Box: No border, blends into background */}
       <div
-        onClick={() => handleNext()}
+        onClick={() => setIsLightboxOpen(true)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
         style={{
           position: 'relative',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           overflow: 'hidden',
-          borderRadius: '12px',
-          cursor: 'pointer',
-          background: 'rgba(5, 12, 18, 0.2)',
-          border: '1px solid rgba(255, 196, 129, 0.05)',
-          padding: '16px',
-          minHeight: '340px',
-          transition: 'all 0.3s ease'
+          borderRadius: '16px',
+          cursor: 'zoom-in',
+          background: 'rgba(5, 12, 18, 0.1)',
+          border: 'none',
+          width: '100%',
+          height: '480px',
+          transition: 'transform 0.3s ease',
+          boxShadow: 'none'
         }}
       >
-        {/* Subtle Navigation Chevrons on Hover */}
+        {/* Navigation Chevrons */}
         <button
           onClick={handlePrev}
           type="button"
           style={{
             position: 'absolute',
-            left: '16px',
-            zIndex: 10,
-            background: 'rgba(5, 12, 18, 0.65)',
+            left: '20px',
+            zIndex: 20,
+            background: 'rgba(5, 12, 18, 0.85)',
+            backdropFilter: 'blur(12px)',
             border: '1px solid rgba(255, 196, 129, 0.15)',
             color: 'var(--color-text-secondary)',
-            width: '36px',
-            height: '36px',
+            width: '40px',
+            height: '40px',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
             opacity: isHovered ? 1 : 0,
-            transition: 'opacity 0.2s ease, background-color 0.2s ease',
+            transform: isHovered ? 'translateX(0)' : 'translateX(-8px)',
+            transition: 'opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease',
             outline: 'none'
           }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(5, 12, 18, 0.95)'
+            e.currentTarget.style.color = 'var(--color-text-primary)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(5, 12, 18, 0.85)'
+            e.currentTarget.style.color = 'var(--color-text-secondary)'
+          }}
         >
-          <ChevronLeft size={18} />
+          <ChevronLeft size={20} />
         </button>
 
         <button
@@ -211,86 +311,334 @@ function PresetGallery({ groups }: { groups: { title: string; items: { name: str
           type="button"
           style={{
             position: 'absolute',
-            right: '16px',
-            zIndex: 10,
-            background: 'rgba(5, 12, 18, 0.65)',
+            right: '20px',
+            zIndex: 20,
+            background: 'rgba(5, 12, 18, 0.85)',
+            backdropFilter: 'blur(12px)',
             border: '1px solid rgba(255, 196, 129, 0.15)',
             color: 'var(--color-text-secondary)',
-            width: '36px',
-            height: '36px',
+            width: '40px',
+            height: '40px',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
             opacity: isHovered ? 1 : 0,
-            transition: 'opacity 0.2s ease, background-color 0.2s ease',
+            transform: isHovered ? 'translateX(0)' : 'translateX(8px)',
+            transition: 'opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease',
             outline: 'none'
           }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(5, 12, 18, 0.95)'
+            e.currentTarget.style.color = 'var(--color-text-primary)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(5, 12, 18, 0.85)'
+            e.currentTarget.style.color = 'var(--color-text-secondary)'
+          }}
         >
-          <ChevronRight size={18} />
+          <ChevronRight size={20} />
         </button>
 
-        {/* Image */}
+        {/* Floating Zoom button */}
+        <div style={{
+          position: 'absolute',
+          top: '24px',
+          right: '24px',
+          background: 'rgba(5, 12, 18, 0.85)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid rgba(255, 196, 129, 0.15)',
+          color: 'var(--color-text-secondary)',
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          opacity: isHovered ? 1 : 0,
+          transform: isHovered ? 'scale(1)' : 'scale(0.9)',
+          transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+          pointerEvents: 'none',
+          zIndex: 15
+        }}>
+          <Maximize2 size={18} />
+        </div>
+
+        {/* Full-bleed cover image with fade transition */}
         <img
-          src={activeItem.url}
+          src={displayedUrl || activeItem.url}
           alt={`${activeGroup.title} - ${activeItem.name}`}
           style={{
-            maxWidth: '100%',
-            maxHeight: '380px',
-            borderRadius: '8px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
-            border: '1px solid rgba(255, 255, 255, 0.04)',
-            objectFit: 'contain'
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'top',
+            opacity: fadeState === 'fading-out' ? 0 : 1,
+            transition: 'opacity 150ms ease-in-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+            transform: isHovered ? 'scale(1.025)' : 'scale(1)'
           }}
         />
 
-        {/* Style tag on top of the image */}
+        {/* Premium Glassmorphic Memo Card */}
         <div style={{
           position: 'absolute',
-          bottom: '12px',
-          right: '12px',
-          background: 'rgba(5, 12, 18, 0.8)',
-          backdropFilter: 'blur(4px)',
-          border: '1px solid rgba(255, 196, 129, 0.15)',
-          padding: '4px 10px',
-          borderRadius: '6px',
-          fontSize: '0.68rem',
-          color: 'var(--color-accent-warm-light)',
-          fontFamily: 'var(--font-mono)',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-          pointerEvents: 'none'
+          bottom: '24px',
+          left: '24px',
+          background: 'rgba(18, 14, 10, 0.75)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 196, 129, 0.12)',
+          padding: '10px 20px',
+          borderRadius: '12px',
+          boxShadow: '0 12px 32px rgba(0,0,0,0.5)',
+          pointerEvents: 'none',
+          zIndex: 15,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '2px',
+          transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+          transform: isHovered ? 'translateY(-2px)' : 'translateY(0)'
         }}>
-          {activeGroup.title}: {activeItem.name}
+          <span style={{
+            fontSize: '0.65rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.12em',
+            color: 'var(--color-text-tertiary)',
+            fontFamily: 'var(--font-mono)'
+          }}>
+            {activeGroup.title}
+          </span>
+          <span style={{
+            fontSize: '1.05rem',
+            fontWeight: '600',
+            letterSpacing: '0.01em',
+            color: 'var(--color-accent-warm-light)',
+            fontFamily: 'var(--font-display)'
+          }}>
+            {activeItem.name}
+          </span>
         </div>
 
-        {/* Pagination indicator dots */}
+        {/* Interactive Pagination indicator dots */}
         {activeGroup.items.length > 1 && (
           <div style={{
             position: 'absolute',
-            bottom: '12px',
-            left: '50%',
-            transform: 'translateX(-50%)',
+            bottom: '24px',
+            right: '24px',
             display: 'flex',
-            gap: '6px',
-            zIndex: 10,
-            pointerEvents: 'none'
+            gap: '2px',
+            zIndex: 15
           }}>
             {activeGroup.items.map((_, idx) => (
-              <span
+              <button
                 key={idx}
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: activeItemIdx === idx ? 'var(--color-accent-warm-light)' : 'rgba(255, 255, 255, 0.2)',
-                  transition: 'background-color 0.2s ease'
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsAutoplay(false)
+                  setActiveItemIdx(idx)
                 }}
-              />
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: '4px',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <span
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: activeItemIdx === idx ? 'var(--color-accent-warm-light)' : 'rgba(255, 255, 255, 0.25)',
+                    transition: 'all 0.25s ease',
+                    transform: activeItemIdx === idx ? 'scale(1.2)' : 'scale(1)'
+                  }}
+                />
+              </button>
             ))}
           </div>
         )}
       </div>
+
+      {/* Lightbox / Fullscreen Modal */}
+      {isLightboxOpen && (
+        <div 
+          onClick={() => setIsLightboxOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 99999,
+            backgroundColor: 'rgba(10, 8, 7, 0.95)',
+            backdropFilter: 'blur(24px)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            animation: 'fadeIn 0.2s ease-out'
+          }}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setIsLightboxOpen(false)}
+            style={{
+              position: 'absolute',
+              top: '24px',
+              right: '24px',
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              color: 'var(--color-text-secondary)',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              outline: 'none',
+              zIndex: 100
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+              e.currentTarget.style.color = 'var(--color-text-primary)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+              e.currentTarget.style.color = 'var(--color-text-secondary)'
+            }}
+          >
+            <X size={22} />
+          </button>
+
+          {/* Lightbox Navigation - Prev */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handlePrev()
+            }}
+            style={{
+              position: 'absolute',
+              left: '32px',
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              color: 'var(--color-text-secondary)',
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              outline: 'none',
+              zIndex: 100
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+              e.currentTarget.style.color = 'var(--color-text-primary)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+              e.currentTarget.style.color = 'var(--color-text-secondary)'
+            }}
+          >
+            <ChevronLeft size={28} />
+          </button>
+
+          {/* Lightbox Navigation - Next */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleNext()
+            }}
+            style={{
+              position: 'absolute',
+              right: '32px',
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              color: 'var(--color-text-secondary)',
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              outline: 'none',
+              zIndex: 100
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+              e.currentTarget.style.color = 'var(--color-text-primary)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+              e.currentTarget.style.color = 'var(--color-text-secondary)'
+            }}
+          >
+            <ChevronRight size={28} />
+          </button>
+
+          {/* Image container in lightbox */}
+          <div 
+            onClick={(e) => e.stopPropagation()} 
+            style={{ 
+              position: 'relative', 
+              maxWidth: '85vw', 
+              maxHeight: '80vh', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center' 
+            }}
+          >
+            <img
+              src={activeItem.url}
+              alt={activeItem.name}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '80vh',
+                objectFit: 'contain',
+                borderRadius: '12px',
+                boxShadow: '0 24px 64px rgba(0, 0, 0, 0.8)',
+                border: '1px solid rgba(255, 255, 255, 0.05)'
+              }}
+            />
+            
+            {/* Memo inside lightbox */}
+            <div style={{
+              marginTop: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '4px'
+            }}>
+              <span style={{
+                fontSize: '0.75rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                color: 'var(--color-text-tertiary)',
+                fontFamily: 'var(--font-mono)'
+              }}>
+                {activeGroup.title}
+              </span>
+              <span style={{
+                fontSize: '1.25rem',
+                fontWeight: '600',
+                letterSpacing: '0.01em',
+                color: 'var(--color-accent-warm-light)',
+                fontFamily: 'var(--font-display)'
+              }}>
+                {activeItem.name}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -652,11 +1000,12 @@ export default function SkillDetailPage() {
                   {/* Visual Presets Gallery */}
                   {skill.screenshots && skill.screenshots.length > 0 && (
                     <section className="sd-gallery-section" style={{
-                      background: 'rgba(255, 196, 129, 0.02)',
-                      border: '1px solid rgba(255, 196, 129, 0.12)',
-                      borderRadius: '12px',
-                      padding: 'var(--gallery-padding, 24px)',
-                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)'
+                      background: 'none',
+                      border: 'none',
+                      padding: '0',
+                      boxShadow: 'none',
+                      marginTop: '8px',
+                      marginBottom: '24px'
                     }}>
                       <h3 style={{
                         fontSize: '0.72rem',

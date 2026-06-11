@@ -69,7 +69,7 @@ interface LeverbrainClientConfig {
   timeoutMs?: number
 }
 
-const DEFAULT_CONVEX_URL = 'https://exciting-mallard-6.eu-west-1.convex.cloud'
+const DEFAULT_CONVEX_URL = 'https://vibrant-eagle-170.convex.cloud'
 
 export class LeverbrainClient {
   private readonly convex: AxiosInstance

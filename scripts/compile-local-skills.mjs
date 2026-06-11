@@ -76,6 +76,30 @@ function getExistingMetadata(filePath) {
   return metadata;
 }
 
+function extractExistingScreenshots(filePath) {
+  if (!fs.existsSync(filePath)) return null
+  const content = fs.readFileSync(filePath, 'utf8')
+  const startIdx = content.indexOf('  screenshots: [')
+  if (startIdx === -1) return null
+  
+  let bracketCount = 1
+  let currentIdx = startIdx + '  screenshots: ['.length
+  while (bracketCount > 0 && currentIdx < content.length) {
+    const char = content[currentIdx]
+    if (char === '[') {
+      bracketCount++
+    } else if (char === ']') {
+      bracketCount--
+    }
+    currentIdx++
+  }
+  
+  if (bracketCount === 0) {
+    return content.slice(startIdx, currentIdx)
+  }
+  return null
+}
+
 // Parse markdown frontmatter
 function parseFrontmatter(source) {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/)
@@ -744,6 +768,8 @@ function compileSkill(slug, folderPath) {
   const createdAt = existingMeta?.createdAt || new Date().toISOString().slice(0, 10)
 
 
+  const screenshotsBlock = extractExistingScreenshots(destFile)
+
   const tsContent = `import { SkillListing } from '../skills-data'
  
 export const ${variableName}: SkillListing = {
@@ -769,7 +795,7 @@ export const ${variableName}: SkillListing = {
   useCases: ${JSON.stringify(useCases)},
   exampleUsage: ${JSON.stringify(exampleUsage)},
   overviewHtml: \`${escapeForTemplateLiteral(overviewHtml)}\`,
-  previewHtml: \`${escapeForTemplateLiteral(previewHtml)}\`
+  previewHtml: \`${escapeForTemplateLiteral(previewHtml)}\`${screenshotsBlock ? ',\n  ' + screenshotsBlock : ''}
 }
 `
   return {

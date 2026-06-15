@@ -1,9 +1,10 @@
 "use client";
 
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useEffect, useMemo } from 'react';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { getSolanaRuntimeConfig, type RpcProvider, type SolanaNetwork } from '@/config/solana';
+import posthog from 'posthog-js';
 
 interface SolanaWalletContextValue {
   connected: boolean;
@@ -47,8 +48,20 @@ export function SolanaWalletProvider({ children }: { children: React.ReactNode }
   };
 
   const disconnectWallet = async () => {
+    posthog.capture('wallet_disconnected', {
+      wallet_name: wallet?.adapter.name,
+    });
+    posthog.reset();
     await disconnect();
   };
+
+  useEffect(() => {
+    if (connected && publicKey) {
+      const address = publicKey.toBase58();
+      posthog.identify(address, { wallet_name: wallet?.adapter.name });
+      posthog.capture('wallet_connected', { wallet_name: wallet?.adapter.name });
+    }
+  }, [connected, publicKey, wallet?.adapter.name]);
 
   const value = useMemo<SolanaWalletContextValue>(() => ({
     connected,

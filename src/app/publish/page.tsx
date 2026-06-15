@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { FormEvent, useMemo, useState } from 'react'
 import { ArrowRight, ExternalLink, Wallet } from 'lucide-react'
 import { useMutation, useQuery } from 'convex/react'
+import posthog from 'posthog-js'
 import { useSolanaWallet } from '@/contexts/SolanaWalletContext'
 import { api } from '../../../convex/_generated/api'
 
@@ -253,6 +254,15 @@ export default function PublishPage() {
 
       const nextPath = `/skills/${result.author}/${result.slug}`
       setPublishedSkillPath(nextPath)
+      posthog.capture('skill_published', {
+        skill_id: trimmedSlug,
+        skill_name: trimmedName,
+        category: category,
+        price_usdc: parsedPrice,
+        is_free: parsedPrice === 0,
+        source_type: sourceType,
+        tag_count: tags.length,
+      })
       setForm(INITIAL_FORM)
       setGithubUrl('')
       setUploadStatus(null)

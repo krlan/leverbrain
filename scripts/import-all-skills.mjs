@@ -86,6 +86,27 @@ const repos = [
     localSubdir: 'elvisun-newsjack',
     skillsPath: 'skills',
     getFileUrl: (slug) => `https://github.com/elvisun/newsjack/tree/main/skills/${slug}`
+  },
+  {
+    author: 'mvanhorn',
+    gitUrl: 'https://github.com/mvanhorn/last30days-skill.git',
+    localSubdir: 'last30days-skill',
+    skillsPath: 'skills',
+    getFileUrl: (slug) => `https://github.com/mvanhorn/last30days-skill/tree/main/skills/${slug}`
+  },
+  {
+    author: 'mvanhorn',
+    gitUrl: 'https://github.com/mvanhorn/agentcookie.git',
+    localSubdir: 'agentcookie',
+    skillsPath: '',
+    getFileUrl: (slug) => `https://github.com/mvanhorn/agentcookie/tree/main/skill`
+  },
+  {
+    author: 'kk-r',
+    gitUrl: 'https://github.com/kk-r/skillify-skill.git',
+    localSubdir: 'skillify-skill',
+    skillsPath: 'skills',
+    getFileUrl: (slug) => `https://github.com/kk-r/skillify-skill/tree/main/skills/${slug}`
   }
 ]
 
@@ -1191,6 +1212,57 @@ async function main() {
       const result = processSkillDir('elvisun', slug, folder, fileUrl, appendRefs)
       fs.writeFileSync(path.join(outDir, `${slug}.ts`), result.content, 'utf8')
       importedSkills.push({ author: 'elvisun', slug, variableName: result.variableName })
+    }
+  }
+
+  // Process mvanhorn last30days skill
+  const last30daysRepo = repos.find(r => r.author === 'mvanhorn' && r.localSubdir === 'last30days-skill')
+  const last30daysLocalDir = path.resolve(scratchDir, last30daysRepo.localSubdir, last30daysRepo.skillsPath)
+  if (fs.existsSync(last30daysLocalDir)) {
+    const dirs = fs.readdirSync(last30daysLocalDir).filter(f => fs.statSync(path.join(last30daysLocalDir, f)).isDirectory())
+    console.log(`Processing ${dirs.length} last30days skills...`)
+    for (const slug of dirs) {
+      const folder = path.join(last30daysLocalDir, slug)
+      const fileUrl = last30daysRepo.getFileUrl(slug)
+      const result = processSkillDir('mvanhorn', slug, folder, fileUrl)
+      const outFilename = `mvanhorn-${slug}`
+      const varName = `mvanhorn${result.variableName.charAt(0).toUpperCase()}${result.variableName.slice(1)}`
+      const customResult = result.content.replace(`export const ${result.variableName}`, `export const ${varName}`)
+      fs.writeFileSync(path.join(outDir, `${outFilename}.ts`), customResult, 'utf8')
+      importedSkills.push({ author: 'mvanhorn', slug, variableName: varName, filename: outFilename })
+    }
+  }
+
+  // Process mvanhorn agentcookie skill
+  const cookieRepo = repos.find(r => r.author === 'mvanhorn' && r.localSubdir === 'agentcookie')
+  const cookieFolder = path.resolve(scratchDir, cookieRepo.localSubdir, 'skill')
+  if (fs.existsSync(cookieFolder)) {
+    const slug = 'agentcookie'
+    console.log(`Processing agentcookie skill...`)
+    const fileUrl = cookieRepo.getFileUrl(slug)
+    const result = processSkillDir('mvanhorn', slug, cookieFolder, fileUrl)
+    const outFilename = `mvanhorn-${slug}`
+    const varName = `mvanhorn${result.variableName.charAt(0).toUpperCase()}${result.variableName.slice(1)}`
+    const customResult = result.content.replace(`export const ${result.variableName}`, `export const ${varName}`)
+    fs.writeFileSync(path.join(outDir, `${outFilename}.ts`), customResult, 'utf8')
+    importedSkills.push({ author: 'mvanhorn', slug, variableName: varName, filename: outFilename })
+  }
+
+  // Process kk-r skillify skill
+  const skillifyRepo = repos.find(r => r.author === 'kk-r')
+  const skillifyLocalDir = path.resolve(scratchDir, skillifyRepo.localSubdir, skillifyRepo.skillsPath)
+  if (fs.existsSync(skillifyLocalDir)) {
+    const dirs = fs.readdirSync(skillifyLocalDir).filter(f => fs.statSync(path.join(skillifyLocalDir, f)).isDirectory())
+    console.log(`Processing ${dirs.length} skillify skills...`)
+    for (const slug of dirs) {
+      const folder = path.join(skillifyLocalDir, slug)
+      const fileUrl = skillifyRepo.getFileUrl(slug)
+      const result = processSkillDir('kk-r', slug, folder, fileUrl)
+      const outFilename = `kkr-${slug}`
+      const varName = `kkr${result.variableName.charAt(0).toUpperCase()}${result.variableName.slice(1)}`
+      const customResult = result.content.replace(`export const ${result.variableName}`, `export const ${varName}`)
+      fs.writeFileSync(path.join(outDir, `${outFilename}.ts`), customResult, 'utf8')
+      importedSkills.push({ author: 'kk-r', slug, variableName: varName, filename: outFilename })
     }
   }
 

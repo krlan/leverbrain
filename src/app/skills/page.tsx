@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Search, X, ChevronDown, LayoutGrid, List, ArrowRight } from 'lucide-react'
 import { useQuery } from 'convex/react'
+import posthog from 'posthog-js'
 import { type SkillCategory } from '@/lib/skills-data'
 import { mergeSkillPool } from '@/lib/skill-pool'
 import { api } from '../../../convex/_generated/api'
@@ -199,6 +200,19 @@ function SkillsContent() {
     })
     return list
   }, [categoryFilter, marketType, priceFilter, search, skillPool, sortBy])
+
+  useEffect(() => {
+    if (!search.trim()) return
+    const timer = setTimeout(() => {
+      posthog.capture('marketplace_searched', {
+        query: search.trim(),
+        result_count: filtered.length,
+        market_type: marketType,
+        price_filter: priceFilter,
+      })
+    }, 600)
+    return () => clearTimeout(timer)
+  }, [search])
 
   return (
     <div className="sk-page">

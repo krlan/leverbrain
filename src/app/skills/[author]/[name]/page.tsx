@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { ArrowLeft, Bookmark, BookmarkCheck, BookOpen, Check, Download, ExternalLink, ShoppingCart, TrendingUp, Zap, Copy, Loader2, ChevronLeft, ChevronRight, X, Maximize2 } from 'lucide-react'
 import { useMutation, useQuery } from 'convex/react'
+import posthog from 'posthog-js'
 import { getSkillByAuthorSlug, type SkillListing } from '@/lib/skills-data'
 import { useSolanaWallet } from '@/contexts/SolanaWalletContext'
 import { getExplorerTransactionUrl } from '@/lib/solanaRpc'
@@ -771,6 +772,13 @@ export default function SkillDetailPage() {
         skillName: skill.name,
         skillCategory: skill.category,
       })
+      posthog.capture('skill_bookmarked', {
+        skill_id: skill.id,
+        skill_name: skill.name,
+        skill_author: skill.author,
+        skill_category: skill.category,
+        action: isSaved ? 'removed' : 'added',
+      })
     } catch (err) {
       console.error('Failed to toggle save:', err)
     } finally {
@@ -789,6 +797,18 @@ export default function SkillDetailPage() {
       pdaAddress: existingPurchase.pdaAddress,
     })
   }, [existingPurchase])
+
+  useEffect(() => {
+    if (!skill) return
+    posthog.capture('skill_detail_viewed', {
+      skill_id: skill.id,
+      skill_name: skill.name,
+      skill_author: skill.author,
+      skill_category: skill.category,
+      skill_price_usdc: skill.priceUsdc,
+      is_free: skill.priceUsdc === 0,
+    })
+  }, [skill?.id])
 
   useEffect(() => {
     if (!skill) {
@@ -844,6 +864,14 @@ export default function SkillDetailPage() {
     }
     try {
       setPurchaseError(null)
+      posthog.capture('skill_purchase_initiated', {
+        skill_id: skill.id,
+        skill_name: skill.name,
+        skill_author: skill.author,
+        skill_category: skill.category,
+        price_usdc: skill.priceUsdc,
+        is_free: skill.priceUsdc === 0,
+      })
       const proof = await purchaseSkill(skill.id, skill.priceUsdc, skill.creatorWallet)
       setPurchaseProof(proof)
       setIsPurchased(true)

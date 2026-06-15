@@ -1,4 +1,5 @@
 import { useCallback, useState, useMemo } from 'react';
+import posthog from 'posthog-js';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import {
   LAMPORTS_PER_SOL,
@@ -117,6 +118,11 @@ export function usePurchaseSkill() {
             priceLamports: 0,
           });
           setPurchaseStatus('success');
+          posthog.capture('skill_purchased', {
+            skill_id: skillId,
+            price_usdc: 0,
+            is_free: true,
+          });
           return {
             txSignature: 'free_skill',
             pdaAddress: 'free_skill_pda',
@@ -179,6 +185,12 @@ export function usePurchaseSkill() {
             priceLamports: totalLamports,
           });
           setPurchaseStatus('success');
+          posthog.capture('skill_purchased', {
+            skill_id: skillId,
+            price_usdc: priceUsdc,
+            is_free: false,
+            already_on_chain: true,
+          });
           return {
             txSignature: 'pre_purchased_on_chain',
             pdaAddress: receiptPda.toBase58(),
@@ -344,6 +356,14 @@ export function usePurchaseSkill() {
         });
 
         setPurchaseStatus('success');
+        posthog.capture('skill_purchased', {
+          skill_id: skillId,
+          price_usdc: priceUsdc,
+          price_lamports: totalLamports,
+          is_free: false,
+          tx_signature: signature,
+          creator_wallet: creatorWalletStr,
+        });
 
         return {
           txSignature: signature,
@@ -356,6 +376,12 @@ export function usePurchaseSkill() {
         }
         setPurchaseStatus('error');
         setPurchaseError(err.message || String(err));
+        posthog.capture('skill_purchase_failed', {
+          skill_id: skillId,
+          price_usdc: priceUsdc,
+          error_message: err.message || String(err),
+        });
+        posthog.captureException(err, { skill_id: skillId });
         throw err;
       } finally {
         setIsPurchasing(false);

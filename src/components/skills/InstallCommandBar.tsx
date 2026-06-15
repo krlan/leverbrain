@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Copy, Check } from 'lucide-react'
+import posthog from 'posthog-js'
 
 export function InstallCommandBar({ author, slug }: { author: string; slug: string }) {
   const command = `npx -y leverbrain get ${author}/${slug}`
@@ -10,6 +11,11 @@ export function InstallCommandBar({ author, slug }: { author: string; slug: stri
       await navigator.clipboard.writeText(command)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
+      posthog.capture('skill_install_command_copied', {
+        skill_author: author,
+        skill_slug: slug,
+        command,
+      })
     } catch (err) {
       console.error('Failed to copy', err)
     }

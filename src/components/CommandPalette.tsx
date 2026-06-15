@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowRight, BookOpen, Layers, Search, X, Zap } from 'lucide-react'
 import { useQuery } from 'convex/react'
+import posthog from 'posthog-js'
 import { type SkillListing } from '@/lib/skills-data'
 import { mergeSkillPool } from '@/lib/skill-pool'
 import { api } from '../../convex/_generated/api'
@@ -68,6 +69,14 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
 
   const navigateTo = useCallback(
     (item: typeof QUICK_ACTIONS[0] | SkillListing) => {
+      if (query.trim() && !('href' in item)) {
+        posthog.capture('command_palette_searched', {
+          query: query.trim(),
+          result_count: results.length,
+          selected_skill: (item as SkillListing).id,
+          selected_skill_name: (item as SkillListing).name,
+        })
+      }
       onClose()
       if ('href' in item) {
         router.push(item.href)
@@ -75,7 +84,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
         router.push(`/skills/${item.author}/${item.slug}`)
       }
     },
-    [router, onClose]
+    [router, onClose, query, results.length]
   )
 
   const handleKey = useCallback(

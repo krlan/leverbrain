@@ -23,31 +23,57 @@ interface ConvexSkillRecord {
 }
 
 export function mergeSkillPool(convexSkills?: ConvexSkillRecord[] | null): SkillListing[] {
-  if (!convexSkills) {
-    return SKILLS
-  }
+  const DELETED_SKILLS = new Set([
+    'baoyu/baoyu-danger-gemini-web',
+    'baoyu/baoyu-electron-extract',
+    'baoyu/baoyu-image-gen',
+    'baoyu/baoyu-post-to-wechat',
+    'baoyu/baoyu-post-to-weibo',
+    'baoyu/baoyu-translate',
+    'baoyu/baoyu-wechat-summary',
+    'ourostack/skill-management',
+    'ourostack/word-docs',
+    'ourostack/workbench-operator',
+    'anthropics/doc-coauthoring',
+    'anthropics/docx',
+    'anthropics/claude-api',
+    'anthropics/pdf',
+    'anthropics/pptx',
+    'anthropics/xlsx'
+  ])
 
-  const mappedConvex: SkillListing[] = convexSkills.map((skill) => ({
-    id: skill.skillId,
-    author: skill.author,
-    slug: skill.slug,
-    name: skill.name,
-    tagline: skill.tagline,
-    description: skill.description,
-    readme: skill.readme ?? '',
-    whenToUse: skill.whenToUse ?? '',
-    price: skill.price,
-    priceUsdc: skill.priceUsdc,
-    category: skill.category as SkillCategory,
-    tags: skill.tags,
-    stars: skill.stars ?? 0,
-    weeklyInstalls: skill.weeklyInstalls ?? 0,
-    totalPurchases: skill.totalPurchases ?? 0,
-    featured: skill.featured ?? false,
-    createdAt: skill.createdAt ?? '',
-    creatorWallet: skill.creatorWallet ?? undefined,
-    fileUrl: skill.fileUrl ?? undefined,
-  }))
+  const sourceSkills = convexSkills ?? []
+
+  const mappedConvex: SkillListing[] = sourceSkills
+    .filter((skill) => {
+      const author = skill.author.toLowerCase()
+      const slug = skill.slug.toLowerCase()
+      if (author === 'trailofbits') return false
+      const key = `${author}/${slug}`
+      if (DELETED_SKILLS.has(key)) return false
+      return true
+    })
+    .map((skill) => ({
+      id: skill.skillId,
+      author: skill.author,
+      slug: skill.slug,
+      name: skill.name,
+      tagline: skill.tagline,
+      description: skill.description,
+      readme: skill.readme ?? '',
+      whenToUse: skill.whenToUse ?? '',
+      price: skill.price,
+      priceUsdc: skill.priceUsdc,
+      category: skill.category as SkillCategory,
+      tags: skill.tags,
+      stars: skill.stars ?? 0,
+      weeklyInstalls: skill.weeklyInstalls ?? 0,
+      totalPurchases: skill.totalPurchases ?? 0,
+      featured: skill.featured ?? false,
+      createdAt: skill.createdAt ?? '',
+      creatorWallet: skill.creatorWallet ?? undefined,
+      fileUrl: skill.fileUrl ?? undefined,
+    }))
 
   const byAuthorSlug = new Map<string, SkillListing>(
     mappedConvex.map((skill) => [`${skill.author}/${skill.slug}`, skill] as const)
@@ -55,6 +81,11 @@ export function mergeSkillPool(convexSkills?: ConvexSkillRecord[] | null): Skill
 
   for (const fallbackSkill of SKILLS) {
     const key = `${fallbackSkill.author}/${fallbackSkill.slug}`
+    const author = fallbackSkill.author.toLowerCase()
+    const slug = fallbackSkill.slug.toLowerCase()
+    if (author === 'trailofbits') continue
+    if (DELETED_SKILLS.has(`${author}/${slug}`)) continue
+
     if (!byAuthorSlug.has(key)) {
       byAuthorSlug.set(key, fallbackSkill)
     }

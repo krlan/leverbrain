@@ -39,13 +39,6 @@ const repos = [
     getFileUrl: (slug) => `https://github.com/anthropics/skills/tree/main/skills/${slug}`
   },
   {
-    author: 'trailofbits',
-    gitUrl: 'https://github.com/trailofbits/skills.git',
-    localSubdir: 'trailofbits-skills',
-    skillsPath: 'plugins',
-    getFileUrl: (slug) => `https://github.com/trailofbits/skills/tree/main/plugins/${slug}`
-  },
-  {
     author: 'mattpocock',
     gitUrl: 'https://github.com/mattpocock/skills.git',
     localSubdir: 'mattpocock-skills',
@@ -997,6 +990,28 @@ const EXCLUDED_SLUGS = new Set([
   'white-page-empire'
 ])
 
+const DELETED_SLUGS = new Set([
+  // baoyu
+  'baoyu-danger-gemini-web',
+  'baoyu-electron-extract',
+  'baoyu-image-gen',
+  'baoyu-post-to-wechat',
+  'baoyu-post-to-weibo',
+  'baoyu-translate',
+  'baoyu-wechat-summary',
+  // ourostack
+  'skill-management',
+  'word-docs',
+  'workbench-operator',
+  // anthropics
+  'doc-coauthoring',
+  'docx',
+  'claude-api',
+  'pdf',
+  'pptx',
+  'xlsx'
+])
+
 async function main() {
   console.log('--- Cloning target skill repositories ---')
   for (const repo of repos) {
@@ -1016,6 +1031,10 @@ async function main() {
   const baoyuFiles = files.filter(f => f.startsWith('baoyu-') && f.endsWith('.ts'))
   for (const file of baoyuFiles) {
     const slug = file.slice(0, -3)
+    if (DELETED_SLUGS.has(slug)) {
+      console.log(`Skipping deleted baoyu skill: ${slug}`)
+      continue
+    }
     const varName = slug.replace(/-([a-z0-9])/g, g => g[1].toUpperCase())
     importedSkills.push({ author: 'baoyu', slug, variableName: varName })
   }
@@ -1079,6 +1098,10 @@ async function main() {
   const anthroDirs = fs.readdirSync(anthroLocalDir).filter(f => fs.statSync(path.join(anthroLocalDir, f)).isDirectory())
   console.log(`Processing ${anthroDirs.length} anthropics skills...`)
   for (const slug of anthroDirs) {
+    if (DELETED_SLUGS.has(slug)) {
+      console.log(`Skipping deleted anthropics skill: ${slug}`)
+      continue
+    }
     const folder = path.join(anthroLocalDir, slug)
     const fileUrl = anthroRepo.getFileUrl(slug)
     const result = processSkillDir('anthropics', slug, folder, fileUrl)
@@ -1086,18 +1109,7 @@ async function main() {
     importedSkills.push({ author: 'anthropics', slug, variableName: result.variableName })
   }
 
-  // Process trailofbits plugins skills
-  const tobRepo = repos.find(r => r.author === 'trailofbits')
-  const tobLocalDir = path.resolve(scratchDir, tobRepo.localSubdir, tobRepo.skillsPath)
-  const tobDirs = fs.readdirSync(tobLocalDir).filter(f => fs.statSync(path.join(tobLocalDir, f)).isDirectory())
-  console.log(`Processing ${tobDirs.length} trailofbits skills...`)
-  for (const slug of tobDirs) {
-    const folder = path.join(tobLocalDir, slug)
-    const fileUrl = tobRepo.getFileUrl(slug)
-    const result = processSkillDir('trailofbits', slug, folder, fileUrl)
-    fs.writeFileSync(path.join(outDir, `${slug}.ts`), result.content, 'utf8')
-    importedSkills.push({ author: 'trailofbits', slug, variableName: result.variableName })
-  }
+  // (trailofbits processing deleted)
 
   // Process mattpocock skills
   const mattRepo = repos.find(r => r.author === 'mattpocock')
@@ -1160,6 +1172,10 @@ async function main() {
     const ouroDirs = fs.readdirSync(ouroLocalDir).filter(f => fs.statSync(path.join(ouroLocalDir, f)).isDirectory())
     console.log(`Processing ${ouroDirs.length} Ouroboros skills...`)
     for (const slug of ouroDirs) {
+      if (DELETED_SLUGS.has(slug)) {
+        console.log(`Skipping deleted Ouroboros skill: ${slug}`)
+        continue
+      }
       const folder = path.join(ouroLocalDir, slug)
       const fileUrl = ouroRepo.getFileUrl(slug)
       const result = processSkillDir('ourostack', slug, folder, fileUrl)

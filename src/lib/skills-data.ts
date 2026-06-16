@@ -6,7 +6,6 @@ import { adCreative } from './skills-data/ad-creative'
 import { ads } from './skills-data/ads'
 import { agentIntrospectionDebugging } from './skills-data/agent-introspection-debugging'
 import { agentSort } from './skills-data/agent-sort'
-import { agenticActionsAuditor } from './skills-data/agentic-actions-auditor'
 import { aiMaestro } from './skills-data/ai-maestro'
 import { aiResearch } from './skills-data/ai-research'
 import { aiSeo } from './skills-data/ai-seo'
@@ -16,49 +15,37 @@ import { analytics } from './skills-data/analytics'
 import { angleGenerator } from './skills-data/angle-generator'
 import { apiDesign } from './skills-data/api-design'
 import { articleWriting } from './skills-data/article-writing'
-import { askQuestionsIfUnderspecified } from './skills-data/ask-questions-if-underspecified'
 import { aso } from './skills-data/aso'
-import { auditContextBuilding } from './skills-data/audit-context-building'
 import { backendPatterns } from './skills-data/backend-patterns'
 import { baoyuArticleIllustrator } from './skills-data/baoyu-article-illustrator'
 import { baoyuComic } from './skills-data/baoyu-comic'
 import { baoyuCompressImage } from './skills-data/baoyu-compress-image'
 import { baoyuCoverImage } from './skills-data/baoyu-cover-image'
-import { baoyuDangerGeminiWeb } from './skills-data/baoyu-danger-gemini-web'
 import { baoyuDangerXToMarkdown } from './skills-data/baoyu-danger-x-to-markdown'
 import { baoyuDiagram } from './skills-data/baoyu-diagram'
-import { baoyuElectronExtract } from './skills-data/baoyu-electron-extract'
 import { baoyuFormatMarkdown } from './skills-data/baoyu-format-markdown'
-import { baoyuImageGen } from './skills-data/baoyu-image-gen'
 import { baoyuInfographic } from './skills-data/baoyu-infographic'
 import { baoyuMarkdownToHtml } from './skills-data/baoyu-markdown-to-html'
-import { baoyuPostToWechat } from './skills-data/baoyu-post-to-wechat'
-import { baoyuPostToWeibo } from './skills-data/baoyu-post-to-weibo'
 import { baoyuPostToX } from './skills-data/baoyu-post-to-x'
 import { baoyuSlideDeck } from './skills-data/baoyu-slide-deck'
-import { baoyuTranslate } from './skills-data/baoyu-translate'
 import { baoyuUrlToMarkdown } from './skills-data/baoyu-url-to-markdown'
-import { baoyuWechatSummary } from './skills-data/baoyu-wechat-summary'
 import { baoyuXhsImages } from './skills-data/baoyu-xhs-images'
 import { baoyuYoutubeTranscript } from './skills-data/baoyu-youtube-transcript'
 import { beautifulHtmlTemplates } from './skills-data/beautiful-html-templates'
+import { benchmarkMethodology } from './skills-data/benchmark-methodology'
+import { brandDiscovery } from './skills-data/brand-discovery'
 import { brandGuidelines } from './skills-data/brand-guidelines'
 import { brandStrategy } from './skills-data/brand-strategy'
 import { brandVoice } from './skills-data/brand-voice'
 import { brandkit } from './skills-data/brandkit'
 import { brutalistSkill } from './skills-data/brutalist-skill'
-import { buildingSecureContracts } from './skills-data/building-secure-contracts'
 import { bunRuntime } from './skills-data/bun-runtime'
-import { burpsuiteProjectParser } from './skills-data/burpsuite-project-parser'
 import { businessMarketing } from './skills-data/business-marketing'
-import { cReview } from './skills-data/c-review'
 import { canvasDesign } from './skills-data/canvas-design'
 import { career } from './skills-data/career'
 import { caveman } from './skills-data/caveman'
 import { churnPrevention } from './skills-data/churn-prevention'
-import { claudeApi } from './skills-data/claude-api'
 import { claudeDesign } from './skills-data/claude-design'
-import { claudeInChromeTroubleshooting } from './skills-data/claude-in-chrome-troubleshooting'
 import { cloneWritingStyle } from './skills-data/clone-writing-style'
 import { coMarketing } from './skills-data/co-marketing'
 import { codebaseToCourse } from './skills-data/codebase-to-course'
@@ -66,9 +53,10 @@ import { codingStandards } from './skills-data/coding-standards'
 import { coldEmail } from './skills-data/cold-email'
 import { communityMarketing } from './skills-data/community-marketing'
 import { companyValues } from './skills-data/company-values'
+import { competitivePlatformAnalysis } from './skills-data/competitive-platform-analysis'
+import { competitiveReportStructure } from './skills-data/competitive-report-structure'
 import { competitorProfiling } from './skills-data/competitor-profiling'
 import { competitors } from './skills-data/competitors'
-import { constantTimeAnalysis } from './skills-data/constant-time-analysis'
 import { contentEngine } from './skills-data/content-engine'
 import { contentStrategy } from './skills-data/content-strategy'
 import { copyEditing } from './skills-data/copy-editing'
@@ -79,31 +67,22 @@ import { creativeDesign } from './skills-data/creative-design'
 import { crisisHolding } from './skills-data/crisis-holding'
 import { cro } from './skills-data/cro'
 import { crosspost } from './skills-data/crosspost'
-import { cultureIndex } from './skills-data/culture-index'
 import { customerResearch } from './skills-data/customer-research'
 import { database } from './skills-data/database'
-import { debugButtercup } from './skills-data/debug-buttercup'
 import { designToCode } from './skills-data/design-to-code'
-import { devcontainerSetup } from './skills-data/devcontainer-setup'
 import { development } from './skills-data/development'
 import { diagnose } from './skills-data/diagnose'
-import { differentialReview } from './skills-data/differential-review'
-import { dimensionalAnalysis } from './skills-data/dimensional-analysis'
 import { dimitryvinVideoDl } from './skills-data/dimitryvin-video-dl'
 import { directorySubmissions } from './skills-data/directory-submissions'
 import { distillMe } from './skills-data/distill-me'
 import { dmuxWorkflows } from './skills-data/dmux-workflows'
-import { docCoauthoring } from './skills-data/doc-coauthoring'
 import { documentProcessing } from './skills-data/document-processing'
 import { documentationLookup } from './skills-data/documentation-lookup'
-import { docx } from './skills-data/docx'
-import { dwarfExpert } from './skills-data/dwarf-expert'
 import { e2eTesting } from './skills-data/e2e-testing'
 import { eccDeepResearch } from './skills-data/ecc-deep-research'
 import { editArticle } from './skills-data/edit-article'
 import { emails } from './skills-data/emails'
 import { enterpriseCommunication } from './skills-data/enterprise-communication'
-import { entryPointAnalyzer } from './skills-data/entry-point-analyzer'
 import { evalHarness } from './skills-data/eval-harness'
 import { everythingClaudeCode } from './skills-data/everything-claude-code'
 import { exaSearch } from './skills-data/exa-search'
@@ -111,17 +90,13 @@ import { factCheck } from './skills-data/fact-check'
 import { falAiMedia } from './skills-data/fal-ai-media'
 import { findCommunity } from './skills-data/find-community'
 import { findJournalists } from './skills-data/find-journalists'
-import { firebaseApkScanner } from './skills-data/firebase-apk-scanner'
 import { firstCustomers } from './skills-data/first-customers'
 import { followBuilders } from './skills-data/follow-builders'
-import { fpCheck } from './skills-data/fp-check'
 import { freeTools } from './skills-data/free-tools'
 import { frontendDesign } from './skills-data/frontend-design'
 import { frontendPatterns } from './skills-data/frontend-patterns'
 import { frontendSlides } from './skills-data/frontend-slides'
-import { ghCli } from './skills-data/gh-cli'
 import { git } from './skills-data/git'
-import { gitCleanup } from './skills-data/git-cleanup'
 import { gitGuardrailsClaudeCode } from './skills-data/git-guardrails-claude-code'
 import { gmodAddonMaker } from './skills-data/gmod-addon-maker'
 import { gptTasteskill } from './skills-data/gpt-tasteskill'
@@ -129,20 +104,20 @@ import { grillMe } from './skills-data/grill-me'
 import { grillWithDocs } from './skills-data/grill-with-docs'
 import { growSustainably } from './skills-data/grow-sustainably'
 import { handoff } from './skills-data/handoff'
+import { headlineGenerator } from './skills-data/headline-generator'
 import { image } from './skills-data/image'
 import { imageToCodeSkill } from './skills-data/image-to-code-skill'
 import { imagegenFrontendMobile } from './skills-data/imagegen-frontend-mobile'
 import { imagegenFrontendWeb } from './skills-data/imagegen-frontend-web'
 import { improveCodebaseArchitecture } from './skills-data/improve-codebase-architecture'
-import { insecureDefaults } from './skills-data/insecure-defaults'
 import { internalComms } from './skills-data/internal-comms'
 import { investorMaterials } from './skills-data/investor-materials'
 import { investorOutreach } from './skills-data/investor-outreach'
 import { journalistFitCheck } from './skills-data/journalist-fit-check'
 import { kami } from './skills-data/kami'
+import { kkrSkillify } from './skills-data/kkr-skillify'
 import { launch } from './skills-data/launch'
 import { leadMagnets } from './skills-data/lead-magnets'
-import { letFateDecide } from './skills-data/let-fate-decide'
 import { leverbrain } from './skills-data/leverbrain'
 import { lockIn } from './skills-data/lock-in'
 import { marketResearch } from './skills-data/market-research'
@@ -159,8 +134,8 @@ import { migrateToShoehorn } from './skills-data/migrate-to-shoehorn'
 import { minimalistReview } from './skills-data/minimalist-review'
 import { minimalistSkill } from './skills-data/minimalist-skill'
 import { mleWorkflow } from './skills-data/mle-workflow'
-import { modernPython } from './skills-data/modern-python'
-import { mutationTesting } from './skills-data/mutation-testing'
+import { mvanhornAgentcookie } from './skills-data/mvanhorn-agentcookie'
+import { mvanhornLast30days } from './skills-data/mvanhorn-last30days'
 import { mvp } from './skills-data/mvp'
 import { newsSearch } from './skills-data/news-search'
 import { newsjackDetector } from './skills-data/newsjack-detector'
@@ -174,27 +149,23 @@ import { obsidianVault } from './skills-data/obsidian-vault'
 import { onboarding } from './skills-data/onboarding'
 import { ouroAutopilot } from './skills-data/ouro-autopilot'
 import { ouroBookFetch } from './skills-data/ouro-book-fetch'
+import { ouroBuildNativeAppleApp } from './skills-data/ouro-build-native-apple-app'
 import { ouroDesign } from './skills-data/ouro-design'
 import { ouroDragonHunt } from './skills-data/ouro-dragon-hunt'
 import { ouroFrontendDesign } from './skills-data/ouro-frontend-design'
 import { ouroFullSystemsAudit } from './skills-data/ouro-full-systems-audit'
 import { ouroInchWorm } from './skills-data/ouro-inch-worm'
 import { ouroSeoTitles } from './skills-data/ouro-seo-titles'
-import { ouroSkillManagement } from './skills-data/ouro-skill-management'
 import { ouroStayInTurn } from './skills-data/ouro-stay-in-turn'
 import { ouroVideoEditing } from './skills-data/ouro-video-editing'
-import { ouroWordDocs } from './skills-data/ouro-word-docs'
 import { ouroWorkDoer } from './skills-data/ouro-work-doer'
 import { ouroWorkIdeator } from './skills-data/ouro-work-ideator'
 import { ouroWorkMerger } from './skills-data/ouro-work-merger'
 import { ouroWorkPlanner } from './skills-data/ouro-work-planner'
-import { ouroWorkbenchOperator } from './skills-data/ouro-workbench-operator'
 import { outputSkill } from './skills-data/output-skill'
 import { paywalls } from './skills-data/paywalls'
-import { pdf } from './skills-data/pdf'
 import { pocketbase } from './skills-data/pocketbase'
 import { popups } from './skills-data/popups'
-import { pptx } from './skills-data/pptx'
 import { prStrategist } from './skills-data/pr-strategist'
 import { pricing } from './skills-data/pricing'
 import { processize } from './skills-data/processize'
@@ -202,7 +173,6 @@ import { productCapability } from './skills-data/product-capability'
 import { productMarketing } from './skills-data/product-marketing'
 import { productivity } from './skills-data/productivity'
 import { programmaticSeo } from './skills-data/programmatic-seo'
-import { propertyBasedTesting } from './skills-data/property-based-testing'
 import { prospecting } from './skills-data/prospecting'
 import { prototype } from './skills-data/prototype'
 import { railway } from './skills-data/railway'
@@ -216,30 +186,22 @@ import { salesEnablement } from './skills-data/sales-enablement'
 import { scaffoldExercises } from './skills-data/scaffold-exercises'
 import { schema } from './skills-data/schema'
 import { scientific } from './skills-data/scientific'
-import { seatbeltSandboxer } from './skills-data/seatbelt-sandboxer'
-import { secondOpinion } from './skills-data/second-opinion'
 import { security } from './skills-data/security'
 import { securityReview } from './skills-data/security-review'
-import { semgrepRuleCreator } from './skills-data/semgrep-rule-creator'
-import { semgrepRuleVariantCreator } from './skills-data/semgrep-rule-variant-creator'
 import { sentry } from './skills-data/sentry'
 import { seoAudit } from './skills-data/seo-audit'
 import { setupMattPocockSkills } from './skills-data/setup-matt-pocock-skills'
 import { setupPreCommit } from './skills-data/setup-pre-commit'
-import { sharpEdges } from './skills-data/sharp-edges'
 import { signup } from './skills-data/signup'
 import { siteArchitecture } from './skills-data/site-architecture'
 import { skillCreator } from './skills-data/skill-creator'
-import { skillImprover } from './skills-data/skill-improver'
 import { skillify } from './skills-data/skillify'
 import { slackGifCreator } from './skills-data/slack-gif-creator'
 import { sms } from './skills-data/sms'
 import { social } from './skills-data/social'
 import { softSkill } from './skills-data/soft-skill'
 import { soul } from './skills-data/soul'
-import { specToCodeCompliance } from './skills-data/spec-to-code-compliance'
 import { sports } from './skills-data/sports'
-import { staticAnalysis } from './skills-data/static-analysis'
 import { staybasedColdOutreach } from './skills-data/staybased-cold-outreach'
 import { stitchSkill } from './skills-data/stitch-skill'
 import { storyOriginCheck } from './skills-data/story-origin-check'
@@ -258,21 +220,17 @@ import { superpowersUsingSuperpowers } from './skills-data/superpowers-using-sup
 import { superpowersVerificationBeforeCompletion } from './skills-data/superpowers-verification-before-completion'
 import { superpowersWritingPlans } from './skills-data/superpowers-writing-plans'
 import { superpowersWritingSkills } from './skills-data/superpowers-writing-skills'
-import { supplyChainRiskAuditor } from './skills-data/supply-chain-risk-auditor'
 import { tasteSkill } from './skills-data/taste-skill'
 import { tasteSkillV1 } from './skills-data/taste-skill-v1'
 import { tdd } from './skills-data/tdd'
 import { tddWorkflow } from './skills-data/tdd-workflow'
 import { teach } from './skills-data/teach'
-import { testingHandbookSkills } from './skills-data/testing-handbook-skills'
 import { themeFactory } from './skills-data/theme-factory'
 import { toIssues } from './skills-data/to-issues'
 import { toPrd } from './skills-data/to-prd'
-import { trailmark } from './skills-data/trailmark'
 import { triage } from './skills-data/triage'
 import { utilities } from './skills-data/utilities'
 import { validateIdea } from './skills-data/validate-idea'
-import { variantAnalysis } from './skills-data/variant-analysis'
 import { verificationLoop } from './skills-data/verification-loop'
 import { video } from './skills-data/video'
 import { videoEditing } from './skills-data/video-editing'
@@ -292,7 +250,6 @@ import { webappTesting } from './skills-data/webapp-testing'
 import { wells1137YtVideoDownloader } from './skills-data/wells1137-yt-video-downloader'
 import { wmantlyPorkbunSkill } from './skills-data/wmantly-porkbun-skill'
 import { workflowAutomation } from './skills-data/workflow-automation'
-import { workflowSkillDesign } from './skills-data/workflow-skill-design'
 import { writeASkill } from './skills-data/write-a-skill'
 import { writingBeats } from './skills-data/writing-beats'
 import { writingFragments } from './skills-data/writing-fragments'
@@ -300,9 +257,6 @@ import { writingShape } from './skills-data/writing-shape'
 import { xAlgo } from './skills-data/x-algo'
 import { xApi } from './skills-data/x-api'
 import { xBookmarks } from './skills-data/x-bookmarks'
-import { xlsx } from './skills-data/xlsx'
-import { yaraAuthoring } from './skills-data/yara-authoring'
-import { zeroizeAudit } from './skills-data/zeroize-audit'
 import { zoomOut } from './skills-data/zoom-out'
 
 export type SkillCategory = 'skill' | 'strategy' | 'blueprint' | (string & {})
@@ -344,7 +298,6 @@ export const SKILLS: SkillListing[] = [
   ads,
   agentIntrospectionDebugging,
   agentSort,
-  agenticActionsAuditor,
   aiMaestro,
   aiResearch,
   aiSeo,
@@ -354,49 +307,37 @@ export const SKILLS: SkillListing[] = [
   angleGenerator,
   apiDesign,
   articleWriting,
-  askQuestionsIfUnderspecified,
   aso,
-  auditContextBuilding,
   backendPatterns,
   baoyuArticleIllustrator,
   baoyuComic,
   baoyuCompressImage,
   baoyuCoverImage,
-  baoyuDangerGeminiWeb,
   baoyuDangerXToMarkdown,
   baoyuDiagram,
-  baoyuElectronExtract,
   baoyuFormatMarkdown,
-  baoyuImageGen,
   baoyuInfographic,
   baoyuMarkdownToHtml,
-  baoyuPostToWechat,
-  baoyuPostToWeibo,
   baoyuPostToX,
   baoyuSlideDeck,
-  baoyuTranslate,
   baoyuUrlToMarkdown,
-  baoyuWechatSummary,
   baoyuXhsImages,
   baoyuYoutubeTranscript,
   beautifulHtmlTemplates,
+  benchmarkMethodology,
+  brandDiscovery,
   brandGuidelines,
   brandStrategy,
   brandVoice,
   brandkit,
   brutalistSkill,
-  buildingSecureContracts,
   bunRuntime,
-  burpsuiteProjectParser,
   businessMarketing,
-  cReview,
   canvasDesign,
   career,
   caveman,
   churnPrevention,
-  claudeApi,
   claudeDesign,
-  claudeInChromeTroubleshooting,
   cloneWritingStyle,
   coMarketing,
   codebaseToCourse,
@@ -404,9 +345,10 @@ export const SKILLS: SkillListing[] = [
   coldEmail,
   communityMarketing,
   companyValues,
+  competitivePlatformAnalysis,
+  competitiveReportStructure,
   competitorProfiling,
   competitors,
-  constantTimeAnalysis,
   contentEngine,
   contentStrategy,
   copyEditing,
@@ -417,31 +359,22 @@ export const SKILLS: SkillListing[] = [
   crisisHolding,
   cro,
   crosspost,
-  cultureIndex,
   customerResearch,
   database,
-  debugButtercup,
   designToCode,
-  devcontainerSetup,
   development,
   diagnose,
-  differentialReview,
-  dimensionalAnalysis,
   dimitryvinVideoDl,
   directorySubmissions,
   distillMe,
   dmuxWorkflows,
-  docCoauthoring,
   documentProcessing,
   documentationLookup,
-  docx,
-  dwarfExpert,
   e2eTesting,
   eccDeepResearch,
   editArticle,
   emails,
   enterpriseCommunication,
-  entryPointAnalyzer,
   evalHarness,
   everythingClaudeCode,
   exaSearch,
@@ -449,17 +382,13 @@ export const SKILLS: SkillListing[] = [
   falAiMedia,
   findCommunity,
   findJournalists,
-  firebaseApkScanner,
   firstCustomers,
   followBuilders,
-  fpCheck,
   freeTools,
   frontendDesign,
   frontendPatterns,
   frontendSlides,
-  ghCli,
   git,
-  gitCleanup,
   gitGuardrailsClaudeCode,
   gmodAddonMaker,
   gptTasteskill,
@@ -467,20 +396,20 @@ export const SKILLS: SkillListing[] = [
   grillWithDocs,
   growSustainably,
   handoff,
+  headlineGenerator,
   image,
   imageToCodeSkill,
   imagegenFrontendMobile,
   imagegenFrontendWeb,
   improveCodebaseArchitecture,
-  insecureDefaults,
   internalComms,
   investorMaterials,
   investorOutreach,
   journalistFitCheck,
   kami,
+  kkrSkillify,
   launch,
   leadMagnets,
-  letFateDecide,
   leverbrain,
   lockIn,
   marketResearch,
@@ -497,8 +426,8 @@ export const SKILLS: SkillListing[] = [
   minimalistReview,
   minimalistSkill,
   mleWorkflow,
-  modernPython,
-  mutationTesting,
+  mvanhornAgentcookie,
+  mvanhornLast30days,
   mvp,
   newsSearch,
   newsjackDetector,
@@ -512,27 +441,23 @@ export const SKILLS: SkillListing[] = [
   onboarding,
   ouroAutopilot,
   ouroBookFetch,
+  ouroBuildNativeAppleApp,
   ouroDesign,
   ouroDragonHunt,
   ouroFrontendDesign,
   ouroFullSystemsAudit,
   ouroInchWorm,
   ouroSeoTitles,
-  ouroSkillManagement,
   ouroStayInTurn,
   ouroVideoEditing,
-  ouroWordDocs,
   ouroWorkDoer,
   ouroWorkIdeator,
   ouroWorkMerger,
   ouroWorkPlanner,
-  ouroWorkbenchOperator,
   outputSkill,
   paywalls,
-  pdf,
   pocketbase,
   popups,
-  pptx,
   prStrategist,
   pricing,
   processize,
@@ -540,7 +465,6 @@ export const SKILLS: SkillListing[] = [
   productMarketing,
   productivity,
   programmaticSeo,
-  propertyBasedTesting,
   prospecting,
   prototype,
   railway,
@@ -554,30 +478,22 @@ export const SKILLS: SkillListing[] = [
   scaffoldExercises,
   schema,
   scientific,
-  seatbeltSandboxer,
-  secondOpinion,
   security,
   securityReview,
-  semgrepRuleCreator,
-  semgrepRuleVariantCreator,
   sentry,
   seoAudit,
   setupMattPocockSkills,
   setupPreCommit,
-  sharpEdges,
   signup,
   siteArchitecture,
   skillCreator,
-  skillImprover,
   skillify,
   slackGifCreator,
   sms,
   social,
   softSkill,
   soul,
-  specToCodeCompliance,
   sports,
-  staticAnalysis,
   staybasedColdOutreach,
   stitchSkill,
   storyOriginCheck,
@@ -596,21 +512,17 @@ export const SKILLS: SkillListing[] = [
   superpowersVerificationBeforeCompletion,
   superpowersWritingPlans,
   superpowersWritingSkills,
-  supplyChainRiskAuditor,
   tasteSkill,
   tasteSkillV1,
   tdd,
   tddWorkflow,
   teach,
-  testingHandbookSkills,
   themeFactory,
   toIssues,
   toPrd,
-  trailmark,
   triage,
   utilities,
   validateIdea,
-  variantAnalysis,
   verificationLoop,
   video,
   videoEditing,
@@ -630,7 +542,6 @@ export const SKILLS: SkillListing[] = [
   wells1137YtVideoDownloader,
   wmantlyPorkbunSkill,
   workflowAutomation,
-  workflowSkillDesign,
   writeASkill,
   writingBeats,
   writingFragments,
@@ -638,9 +549,6 @@ export const SKILLS: SkillListing[] = [
   xAlgo,
   xApi,
   xBookmarks,
-  xlsx,
-  yaraAuthoring,
-  zeroizeAudit,
   zoomOut
 ]
 

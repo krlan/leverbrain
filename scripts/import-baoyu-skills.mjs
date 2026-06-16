@@ -388,8 +388,21 @@ async function main() {
   console.log(`Found ${skillDirs.length} skills in the repository.`)
 
   const importedSlugs = []
+  const skippedBaoyuSlugs = new Set([
+    'baoyu-danger-gemini-web',
+    'baoyu-electron-extract',
+    'baoyu-image-gen',
+    'baoyu-post-to-wechat',
+    'baoyu-post-to-weibo',
+    'baoyu-translate',
+    'baoyu-wechat-summary'
+  ])
 
   for (const skillName of skillDirs) {
+    if (skippedBaoyuSlugs.has(skillName)) {
+      console.log(`Skipping deleted baoyu skill: ${skillName}`)
+      continue
+    }
     const rawUrl = `https://raw.githubusercontent.com/JimLiu/baoyu-skills/main/skills/${skillName}/SKILL.md`
     console.log(`Importing ${skillName}...`)
     try {

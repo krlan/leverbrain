@@ -122,15 +122,7 @@ export const CONVERSATIONAL_METADATA: Record<string, SkillMetadata> = {
     ],
     presetsTip: 'Choose between various layouts and font sizes in the gallery. Apply them by passing `--layout` or setting your preference in the metadata.'
   },
-  'baoyu-danger-gemini-web': {
-    description: 'An advanced web browser routine that safely extracts information from modern web applications using headless browsers.',
-    useCases: [
-      'Fetch dynamic, client-side rendered page content securely.',
-      'Automate screenshot captures of live UI dashboards.',
-      'Scrape data from sites requiring heavy JavaScript execution.'
-    ],
-    presetsTip: 'Use this blueprint in your local agent sandbox to enable full-featured browser access.'
-  },
+
   'baoyu-danger-x-to-markdown': {
     description: 'A social data extractor that converts threads, replies, and tweets from X (formerly Twitter) into clean, structured Markdown logs.',
     useCases: [
@@ -149,15 +141,7 @@ export const CONVERSATIONAL_METADATA: Record<string, SkillMetadata> = {
     ],
     presetsTip: 'Choose a style preset from the gallery (e.g. Blueprint, Hand-drawn) by specifying the `--style` flag in your local execution.'
   },
-  'baoyu-electron-extract': {
-    description: 'A desktop content scraper that wraps electron-based interfaces to extract clean text data from desktop applications.',
-    useCases: [
-      'Extract local chat logs or notes from desktop applications.',
-      'Scrape internal documents from local knowledge management software.',
-      'Convert proprietary client formats to readable text streams.'
-    ],
-    presetsTip: 'This skill requires a local electron developer setup to run headless extraction tasks.'
-  },
+
   'baoyu-format-markdown': {
     description: 'A markdown linter and formatter that cleans up heading structures, checks code blocks, and fixes typographic spacing inconsistencies.',
     useCases: [
@@ -167,15 +151,7 @@ export const CONVERSATIONAL_METADATA: Record<string, SkillMetadata> = {
     ],
     presetsTip: 'Install this utility in your workspace to instantly prettify any markdown documents.'
   },
-  'baoyu-image-gen': {
-    description: 'A universal image generation wrapper that routes text prompts to various image APIs and manages aspect ratios, presets, and consistency workflows.',
-    useCases: [
-      'Generate high-quality illustrations using Midjourney, DALL-E, or local stable diffusion models.',
-      'Enforce strict aspect ratios (e.g. 16:9, 4:3, 9:16) on all image files.',
-      'Maintain prompt templates for reproducible UI assets.'
-    ],
-    presetsTip: 'Select presets like Vector, 3D, or Chalkboard from the gallery above to get pre-configured prompts.'
-  },
+
   'baoyu-infographic': {
     description: 'A data visualizer skill that extracts key metrics and concepts from reports and renders them into clear, visual infographic sheets.',
     useCases: [
@@ -194,24 +170,7 @@ export const CONVERSATIONAL_METADATA: Record<string, SkillMetadata> = {
     ],
     presetsTip: 'Pass your markdown files through this compiler to output production-ready HTML.'
   },
-  'baoyu-post-to-wechat': {
-    description: 'A publishing utility that formats articles with rich CSS styles and imports them directly into WeChat Official Accounts draft box.',
-    useCases: [
-      'Inject customized visual accents into WeChat posts.',
-      'Format headings, quotes, and highlights to match WeChat mobile app viewport.',
-      'Upload and sync article assets directly to the WeChat developer console.'
-    ],
-    presetsTip: 'Configure your WeChat developer app keys in your local environment variables to activate this skill.'
-  },
-  'baoyu-post-to-weibo': {
-    description: 'A social publisher that splits long-form articles into Weibo-optimized image cards and short posts with hashtags.',
-    useCases: [
-      'Generate eye-catching text-image grids optimized for Weibo feeds.',
-      'Draft promotional updates with appropriate topic hashtags.',
-      'Sync announcements across multiple social accounts automatically.'
-    ],
-    presetsTip: 'Run this workflow to convert longer articles into mobile-friendly visual micro-posts.'
-  },
+
   'baoyu-post-to-x': {
     description: 'A thread creator that decomposes long articles into highly engaging, readable X (Twitter) threads with optimized hook hooks.',
     useCases: [
@@ -230,15 +189,7 @@ export const CONVERSATIONAL_METADATA: Record<string, SkillMetadata> = {
     ],
     presetsTip: 'Select styles like Minimal, Retro, or Sci-Fi from the gallery above to style your deck components.'
   },
-  'baoyu-translate': {
-    description: 'A highly contextual translation tool that translates markdown documents between languages while preserving formatting, tone, and technical terminology.',
-    useCases: [
-      'Translate technical documentations without altering code blocks.',
-      'Localize blog articles while preserving nuances and idioms.',
-      'Convert marketing pages between English, Chinese, Japanese, and more.'
-    ],
-    presetsTip: 'Provide the target language and file path to execute high-fidelity document translation.'
-  },
+
   'baoyu-url-to-markdown': {
     description: 'A web page extractor that scrapes online articles, removes header navigation and ads, and saves clean body content as structured Markdown.',
     useCases: [
@@ -248,15 +199,7 @@ export const CONVERSATIONAL_METADATA: Record<string, SkillMetadata> = {
     ],
     presetsTip: 'Run `npx leverbrain get baoyu/baoyu-url-to-markdown` and pass the URL to extract a clean markdown file.'
   },
-  'baoyu-wechat-summary': {
-    description: 'A WeChat digest analyzer that parses links, extracts core messages, and generates clear bullet-point summaries and mind maps.',
-    useCases: [
-      'Summarize WeChat news and analysis articles in seconds.',
-      'Extract critical data points and interview quotes.',
-      'Generate mind maps outlining the article structure for quick study.'
-    ],
-    presetsTip: 'Send the WeChat Official Account URL to retrieve and summarize the full text.'
-  },
+
   'baoyu-xhs-images': {
     description: 'A visual designer tailored to generate beautiful, trendy image slides with custom typography layouts for Xiaohongshu (Red).',
     useCases: [

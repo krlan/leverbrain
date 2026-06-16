@@ -539,11 +539,11 @@ Next: **apply Step 3's tier table to decide what to read**, then copy the matchi
   priceUsdc: 0,
   category: "skill",
   tags: ["tw93-skills","kami"],
-  stars: 202,
-  weeklyInstalls: 198,
-  totalPurchases: 384,
+  stars: 556,
+  weeklyInstalls: 217,
+  totalPurchases: 1026,
   featured: false,
-  createdAt: '2026-06-10',
+  createdAt: '2026-06-16',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: 'https://github.com/tw93/kami',
   useCases: ["紙 · かみ - the paper your deliverables land on.","Locate the referenced project's style files:.","If the conversation already answered a dimension, skip it silently."],
@@ -622,62 +622,5 @@ Next: **apply Step 3's tier table to decide what to read**, then copy the matchi
 }</pre>
         </div>
       </div>
-    </div>`,
-    screenshots: [
-    {
-      title: "Documents",
-      items: [
-        {
-          name: "Equity Report",
-          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/demos/demo-tesla.png"
-        },
-        {
-          name: "Slides",
-          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/demos/demo-agent-slides.png"
-        },
-        {
-          name: "Resume",
-          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/demos/demo-resume-ko.png"
-        },
-        {
-          name: "Portfolio",
-          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/demos/demo-kaku.png"
-        }
-      ]
-    },
-    {
-      title: "Landing Pages",
-      items: [
-        {
-          name: "Kami Landing",
-          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/showcase/kami-landing.png"
-        },
-        {
-          name: "Luo Landing",
-          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/showcase/luo-landing.png"
-        },
-        {
-          name: "Mole Landing",
-          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/showcase/mole-landing.png"
-        }
-      ]
-    },
-    {
-      title: "Illustrations",
-      items: [
-        {
-          name: "Tesla Optimus Patent",
-          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/illustrations/travel-tesla-optimus.png"
-        },
-        {
-          name: "SpatialVLA Architecture",
-          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/illustrations/travel-spatialvla.png"
-        },
-        {
-          name: "3D Representation Tradeoffs",
-          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/illustrations/travel-3d-representations.png"
-        }
-      ]
-    }
-  ]
+    </div>`
 }

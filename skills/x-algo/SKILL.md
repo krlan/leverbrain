@@ -2,7 +2,7 @@
 name: X algorithm
 tagline: Optimize reach and feed placement using reverse-engineered code insights.
 description: Detailed content optimization playbook based on the open-source xAI algorithm. Maximize dwell time, reply ranking, and in-network score, while bypassing author diversity decay, OON discounts, and the min-traction gate.
-category: strategy
+category: skill
 tags:
   - marketing
   - social

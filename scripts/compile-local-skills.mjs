@@ -822,7 +822,27 @@ const EXCLUDED_SLUGS = new Set([
   'outbound-ecosystem',
   'reddit-mrr-playbook',
   'trendjacking-linkedin',
-  'white-page-empire'
+  'white-page-empire',
+
+  // baoyu
+  'baoyu-danger-gemini-web',
+  'baoyu-electron-extract',
+  'baoyu-image-gen',
+  'baoyu-post-to-wechat',
+  'baoyu-post-to-weibo',
+  'baoyu-translate',
+  'baoyu-wechat-summary',
+  // ourostack
+  'skill-management',
+  'word-docs',
+  'workbench-operator',
+  // anthropics
+  'doc-coauthoring',
+  'docx',
+  'claude-api',
+  'pdf',
+  'pptx',
+  'xlsx'
 ])
 
 function main() {

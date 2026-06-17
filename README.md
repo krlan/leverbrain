@@ -1,58 +1,115 @@
-<div align="center">
-  <img src="public/images/octo.png" width="120" alt="Leverbrain Logo" />
-  <h1>Leverbrain</h1>
-  <p><strong>The expertise stack for the agentic era.</strong></p>
-  <p>
-    <img src="https://img.shields.io/badge/Solana-Mainnet-9945FF?logo=solana&logoColor=white" alt="Solana" />
-    <img src="https://img.shields.io/badge/Next.js-15-black?logo=next.js" alt="Next.js" />
-    <img src="https://img.shields.io/badge/Convex-Backend-darkblue" alt="Convex" />
-  </p>
-</div>
+# Leverbrain
+**The expertise registry for the agentic era.**
 
----
-
-## ⚡ Overview
-Leverbrain is a high-fidelity marketplace for **AI Agent skills, strategies, and blueprints**. It allows operators to trade instruction sets, decision frameworks, and full-stack operational blueprints that can be deployed instantly to agentic workflows.
-
-Designed with a **tactical game-room aesthetic**, Leverbrain focuses on the premium "human-in-the-loop" experience, providing rich, interactive previews and on-chain verification via Solana.
-
-## 🏆 Hackathon Review Highlights
-This repository was prepared for hackathon submission with a focus on:
-- **Visual Excellence**: Custom tactical UI design system with rich glassmorphism and cinemagraphic effects.
-- **Enriched Listings**: Deep-metadata skills featuring stylized HTML previews and AI-generated hero visuals.
-- **On-Chain Logic**: Integration with Solana for verified ownership and expertise transactions.
-- **Real-Time Backend**: Powered by Convex for low-latency updates and state management.
-
-## 🛠 Tech Stack
-- **Frontend**: Next.js 15, Tailwind CSS, Framer Motion, Lucide
-- **Backend**: Convex (Real-time DB + Edge Functions)
-- **Blockchain**: Solana (Web3 Auth + Tokenized Skills)
-- **Hosting**: Vercel
-
-## 🚀 Getting Started
-
-### 1. Clone & Install
-```bash
-git clone https://github.com/krlan/leverbrain.git
-cd leverbrain
-npm install
-```
-
-### 2. Configure Environment
-Create a `.env.local` file with the following (see `.env.example`):
-```bash
-NEXT_PUBLIC_CONVEX_URL=
-NEXT_PUBLIC_SOLANA_NETWORK=
-# ... other required keys
-```
-
-### 3. Run Development
-```bash
-npm run dev
+```text
+┌────────────────────────────────────────────────────────────────────────┐
+│  $ npm install -g leverbrain                                           │
+│  $ leverbrain search deep-research                                     │
+│  $ leverbrain get santa/x-bookmarks                                    │
+│                                                                        │
+│  ✓ Loaded santa/x-bookmarks -> ./skills/x-bookmarks/                    │
+│  ✓ 752 local bookmarks synced & indexed.                               │
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
+## The Prompt Wrapper Fallacy
+
+When you watch people build AI agents today, you notice a recurring pattern. Most builders are setting up wrappers around generic prompts. An agent is instructed: *"You are a world-class copywriter. Write a viral launch campaign."* 
+
+The model does its best, but its best is a collection of commonplaces. It has never actually launched a product. It doesn't know the physical constraints of the X recommendation engine, how Kafka streams rank replies, or how to design hooks for 3-second retention cliffs.
+
+An agent shouldn't have to guess how to perform a task. It should ingest a verified blueprint authored by a human who has already done it. 
+
+Leverbrain is a high-fidelity registry and marketplace for AI agent skills, strategies, and blueprints. Instead of telling your agent *what to be*, you tell it *what to load*.
+
+---
+
+## How it Works
+
+The architecture is simple and local-first:
+
+```text
+       ┌──────────────┐         ┌──────────────┐
+       │   Developer  │ ──────> │  Solana (L1) │ (Verified Receipts)
+       └──────────────┘         └──────────────┘
+              │
+              ▼ (Publish / Buy via CLI)
+       ┌──────────────┐         ┌──────────────┐
+       │  Leverbrain  │ <─────> │   Convex DB  │ (Real-Time Registry)
+       │  Marketplace │         └──────────────┘
+       └──────────────┘
+              │
+              ▼ (Local Sync)
+       ┌──────────────┐
+       │ Local Agent  │ ──> [Ingests SKILL.md & runs local shims]
+       └──────────────┘
+```
+
+1. **Sovereign BLUEPRINTS (`SKILL.md`)**: Skills are defined in standard markdown files with structured YAML frontmatter (defining constraints, taglines, categories, and execution rules). 
+2. **On-Chain Licensing (Solana)**: Purchases are recorded as on-chain receipts (PDAs) on the Solana Mainnet. Devs monetize their execution files, and buyers have cryptographically verified ownership.
+3. **Low-Latency Sync (Convex)**: The Convex database acts as the high-speed registry, serving verified TypeScript modules and markdown guides directly to local terminal agent runtimes (like Claude Code, Cursor, or custom frameworks).
+
+---
+
+## Developer Quickstart
+
+Skip the web browser. Keep your hands on the keyboard.
+
+### 1. Install CLI
+Initialize the terminal tool:
+```bash
+npm install -g leverbrain
+```
+Or run directly without installing:
+```bash
+npx --yes leverbrain@latest --help
+```
+
+### 2. Search & Get Skills
+Browse the registry and download a package directly into your workspace:
+```bash
+leverbrain search x-algo
+leverbrain get santa/x-algo
+```
+
+### 3. Deploy Configuration
+Load a unified agent workspace setup:
+```bash
+leverbrain cfg santa/tactical-workspace
+```
+
+---
+
+## CLI Command Reference
+
+```bash
+leverbrain search <query>           # Search the marketplace
+leverbrain get <author/slug>        # Download a purchased skill package
+leverbrain cfg <handle/name>        # Download a saved configuration
+leverbrain purchases --wallet <pk>  # List receipts for a Solana wallet
+leverbrain publish ./my-skill \
+  --wallet <KEYPAIR_PATH> \
+  --author <HANDLE>                 # Sign & publish a new SKILL.md
+```
+
+---
+
+## Authentication
+
+Protected actions (downloads and publishing) require Solana signature authentication. The CLI automatically signs a short-lived message payload and attaches the following headers:
+
+```text
+X-Wallet-Address: <base58 public key>
+X-Wallet-Signature: <base58 signature of message>
+X-Wallet-Message: leverbrain-auth-<timestamp>
+```
+
+The Convex backend verifies the signature on-chain against ownership of the skill receipt before serving the code bundle. Everything is verified, localized, and secure.
+
+---
+
 <div align="center">
-  <p style="color: #9c7a52; font-size: 12px;">Built for the next generation of AI operators.</p>
+  <p style="color: #9c7a52; font-family: monospace; font-size: 11px;">// RUN LOCAL. STAY SOVEREIGN. HAVE FUN.</p>
 </div>

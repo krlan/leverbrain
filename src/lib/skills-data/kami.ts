@@ -622,5 +622,62 @@ Next: **apply Step 3's tier table to decide what to read**, then copy the matchi
 }</pre>
         </div>
       </div>
-    </div>`
+    </div>`,
+    screenshots: [
+    {
+      title: "Documents",
+      items: [
+        {
+          name: "Equity Report",
+          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/demos/demo-tesla.png"
+        },
+        {
+          name: "Slides",
+          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/demos/demo-agent-slides.png"
+        },
+        {
+          name: "Resume",
+          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/demos/demo-resume-ko.png"
+        },
+        {
+          name: "Portfolio",
+          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/demos/demo-kaku.png"
+        }
+      ]
+    },
+    {
+      title: "Landing Pages",
+      items: [
+        {
+          name: "Kami Landing",
+          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/showcase/kami-landing.png"
+        },
+        {
+          name: "Luo Landing",
+          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/showcase/luo-landing.png"
+        },
+        {
+          name: "Mole Landing",
+          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/showcase/mole-landing.png"
+        }
+      ]
+    },
+    {
+      title: "Illustrations",
+      items: [
+        {
+          name: "Tesla Optimus Patent",
+          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/illustrations/travel-tesla-optimus.png"
+        },
+        {
+          name: "SpatialVLA Architecture",
+          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/illustrations/travel-spatialvla.png"
+        },
+        {
+          name: "3D Representation Tradeoffs",
+          url: "https://raw.githubusercontent.com/tw93/kami/main/assets/illustrations/travel-3d-representations.png"
+        }
+      ]
+    }
+  ]
 }

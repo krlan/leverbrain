@@ -4,7 +4,7 @@ export const softSkill: SkillListing = {
   id: 'soft-skill',
   author: 'Leonxlnx',
   slug: 'soft-skill',
-  name: "High end visual design",
+  name: "Soft skill",
   tagline: "Teaches the AI to design like a high-end agency.",
   description: "Teaches the AI to design like a high-end agency. Defines the exact fonts, spacing, shadows, card structures, and animations that make a website feel expensive. Blocks all the common defaults that make AI designs look cheap or generic.",
   readme: `# Agent Skill: Principal UI/UX Architect & Motion Choreographer (Awwwards-Tier)
@@ -100,7 +100,7 @@ Evaluate your code against this matrix before delivering. This is the last filte
 - [ ] All animations use only \`transform\` and \`opacity\` — no layout-triggering properties
 - [ ] \`backdrop-blur\` is only applied to fixed/sticky elements, never to scrolling content
 - [ ] The overall impression reads as "$150k agency build", not "template with nice fonts"`,
-  whenToUse: "Use when you need to automate high end visual design processes.",
+  whenToUse: "Use when you need to automate soft skill processes.",
   price: "Free",
   priceUsdc: 0,
   category: "skill",
@@ -113,7 +113,7 @@ Evaluate your code against this matrix before delivering. This is the last filte
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: 'https://github.com/Leonxlnx/taste-skill/tree/main/skills/soft-skill',
   useCases: ["Persona: Vanguard_UI_Architect.","Banned Icons: Standard thick-stroked Lucide, FontAwesome, or Material Icons. Use only ultra-light, precise lines (e.g., Phosphor Light, Remix Line).","Banned Borders & Shadows: Generic 1px solid gray borders. Harsh, dark drop shadows (shadow-md, rgba(0,0,0,0.3))."],
-  exampleUsage: "Apply high end visual design for my project",
+  exampleUsage: "Apply soft skill for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 196, 129, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);">
         <div style="width: 100%; aspect-ratio: 16/6; background: linear-gradient(135deg, #13110f 0%, #17181c 100%); display: flex; align-items: center; justify-content: center; color: var(--color-accent-warm-light);">
@@ -121,7 +121,7 @@ Evaluate your code against this matrix before delivering. This is the last filte
         </div>
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
         <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
-          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">High end visual design</h2>
+          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Soft skill</h2>
           <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">Teaches the AI to design like a high-end agency.</p>
         </div>
       </div>

@@ -77,6 +77,14 @@ const STATIC_PROFILES: Record<string, {
     twitter: 'affaanmustafa',
     verified: true,
     background: 'linear-gradient(135deg, rgba(230, 53, 162, 0.22) 0%, rgba(20, 15, 12, 0.98) 100%)',
+  },
+  santa: {
+    displayName: 'santa',
+    bio: 'Developer on the Leverbrain network.',
+    avatarUrl: 'https://github.com/Leonxlnx.png',
+    github: 'https://github.com/santa',
+    verified: false,
+    background: 'linear-gradient(135deg, rgba(255, 188, 104, 0.12) 0%, rgba(20, 15, 12, 0.98) 100%)',
   }
 }
 

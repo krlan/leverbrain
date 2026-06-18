@@ -4,7 +4,7 @@ export const stitchSkill: SkillListing = {
   id: 'stitch-skill',
   author: 'Leonxlnx',
   slug: 'stitch-skill',
-  name: "Stitch design taste",
+  name: "Stitch",
   tagline: "Semantic Design System Skill for Google Stitch.",
   description: "Semantic Design System Skill for Google Stitch. Generates agent-friendly DESIGN.md files that enforce premium, anti-generic UI standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, and hardware-accelerated performance.",
   readme: `# Stitch Design Taste — Semantic Design System Skill
@@ -186,7 +186,7 @@ no generic placeholder names, no broken image links.)
 - Being too vague in atmosphere descriptions
 - Ignoring the anti-pattern list — these are what make the output premium
 - Defaulting to generic "safe" designs instead of enforcing the curated aesthetic`,
-  whenToUse: "Use when you need to automate stitch design taste processes.",
+  whenToUse: "Use when you need to automate stitch processes.",
   price: "Free",
   priceUsdc: 0,
   category: "skill",
@@ -199,7 +199,7 @@ no generic placeholder names, no broken image links.)
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: 'https://github.com/Leonxlnx/taste-skill/tree/main/skills/stitch-skill',
   useCases: ["Visual atmosphere — the mood, density, and design philosophy.","Color calibration — neutrals, accents, and banned patterns with hex codes.","Typographic architecture — font stacks, scale hierarchy, and anti-patterns."],
-  exampleUsage: "Generate stitch design taste for my project",
+  exampleUsage: "Generate stitch for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 196, 129, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);">
         <div style="width: 100%; aspect-ratio: 16/6; background: linear-gradient(135deg, #13110f 0%, #17181c 100%); display: flex; align-items: center; justify-content: center; color: var(--color-accent-warm-light);">
@@ -207,7 +207,7 @@ no generic placeholder names, no broken image links.)
         </div>
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
         <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
-          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Stitch design taste</h2>
+          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Stitch</h2>
           <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">Semantic Design System Skill for Google Stitch.</p>
         </div>
       </div>

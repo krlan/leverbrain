@@ -4,7 +4,7 @@ export const redesignSkill: SkillListing = {
   id: 'redesign-skill',
   author: 'Leonxlnx',
   slug: 'redesign-skill',
-  name: "Redesign existing projects",
+  name: "Redesign",
   tagline: "Upgrades existing websites and apps to premium quality.",
   description: "Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla CSS.",
   readme: `# Redesign Skill
@@ -180,7 +180,7 @@ Apply changes in this order for maximum visual impact with minimum risk:
 - If the project uses Tailwind, check the version (v3 vs v4) before modifying config.
 - If the project has no framework, use vanilla CSS.
 - Keep changes reviewable and focused. Small, targeted improvements over big rewrites.`,
-  whenToUse: "Use when you need to automate redesign existing projects processes.",
+  whenToUse: "Use when you need to automate redesign processes.",
   price: "Free",
   priceUsdc: 0,
   category: "skill",
@@ -201,7 +201,7 @@ Apply changes in this order for maximum visual impact with minimum risk:
         </div>
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
         <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
-          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Redesign existing projects</h2>
+          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Redesign</h2>
           <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">Upgrades existing websites and apps to premium quality.</p>
         </div>
       </div>

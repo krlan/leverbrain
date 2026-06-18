@@ -4,7 +4,7 @@ export const tasteSkill: SkillListing = {
   id: 'taste-skill',
   author: 'Leonxlnx',
   slug: 'taste-skill',
-  name: "Design taste frontend",
+  name: "Taste skill",
   tagline: "Anti-slop frontend skill for landing pages, portfolios, and redesigns.",
   description: "Anti-slop frontend skill for landing pages, portfolios, and redesigns. The agent reads the brief, infers the right design direction, and ships interfaces that do not look templated. Real design systems when applicable, audit-first on redesigns, strict pre-flight check.",
   readme: `# tasteskill: Anti-Slop Frontend Skill
@@ -1208,7 +1208,7 @@ But that is **web glassmorphism / frosted-glass approximation**, not official Ap
 ---
 
 **End of appendices.** Install commands above are reality anchors. The Apple Liquid Glass skeleton is a labeled approximation, not an Apple-issued package. For canonical docs per design system, consult the system's official docs (links in Section 2 plus Appendix B).`,
-  whenToUse: "Use when you need to automate design taste frontend processes.",
+  whenToUse: "Use when you need to automate taste skill processes.",
   price: "Free",
   priceUsdc: 0,
   category: "skill",
@@ -1221,7 +1221,7 @@ But that is **web glassmorphism / frosted-glass approximation**, not official Ap
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: 'https://github.com/Leonxlnx/taste-skill/tree/main/skills/taste-skill',
   useCases: ["Reference signals - URLs they linked, screenshots they pasted, products they named, brands they're competing with.","Audience - B2B procurement panel vs. design-conscious consumer vs. recruiter scanning a portfolio. The audience picks the aesthetic, not your taste.","Brand assets that already exist - logo, color, type, photography. For redesigns, these are starting material, not optional input (see Section 11)."],
-  exampleUsage: "Apply design taste frontend for my project",
+  exampleUsage: "Apply taste skill for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 196, 129, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);">
         <div style="width: 100%; aspect-ratio: 16/6; background: linear-gradient(135deg, #13110f 0%, #17181c 100%); display: flex; align-items: center; justify-content: center; color: var(--color-accent-warm-light);">
@@ -1229,7 +1229,7 @@ But that is **web glassmorphism / frosted-glass approximation**, not official Ap
         </div>
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
         <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
-          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Design taste frontend</h2>
+          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Taste skill</h2>
           <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">Anti-slop frontend skill for landing pages, portfolios, and redesigns.</p>
         </div>
       </div>

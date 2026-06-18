@@ -106,6 +106,7 @@ function getAuthorAvatarUrl(author: string) {
   if (cleanAuthor === '199-biotechnologies') return 'https://avatars.githubusercontent.com/u/81938501?v=4'
   if (cleanAuthor === 'leverbrain') return '/images/octo.png'
   if (cleanAuthor === 'baoyu') return 'https://avatars.githubusercontent.com/u/648674?v=4'
+  if (cleanAuthor === 'santa') return 'https://github.com/Leonxlnx.png'
   return `https://github.com/${cleanAuthor}.png`
 }
 

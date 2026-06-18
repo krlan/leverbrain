@@ -5,10 +5,8 @@
 ┌────────────────────────────────────────────────────────────────────────┐
 │  $ npm install -g leverbrain                                           │
 │  $ leverbrain search deep-research                                     │
-│  $ leverbrain get santa/x-bookmarks                                    │
+│  $ leverbrain get leverbrain/leverbrain                                │
 │                                                                        │
-│  ✓ Loaded santa/x-bookmarks -> ./skills/x-bookmarks/                    │
-│  ✓ 752 local bookmarks synced & indexed.                               │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -58,11 +56,7 @@ The architecture is simple and local-first:
 Skip the web browser. Keep your hands on the keyboard.
 
 ### 1. Install CLI
-Initialize the terminal tool:
-```bash
-npm install -g leverbrain
-```
-Or run directly without installing:
+Run directly without installing:
 ```bash
 npx --yes leverbrain@latest --help
 ```
@@ -77,7 +71,7 @@ leverbrain get santa/x-algo
 ### 3. Deploy Configuration
 Load a unified agent workspace setup:
 ```bash
-leverbrain cfg santa/tactical-workspace
+leverbrain cfg name/cfg
 ```
 
 ---
@@ -87,7 +81,7 @@ leverbrain cfg santa/tactical-workspace
 ```bash
 leverbrain search <query>           # Search the marketplace
 leverbrain get <author/slug>        # Download a purchased skill package
-leverbrain cfg <handle/name>        # Download a saved configuration
+leverbrain cfg <name/cfg>        # Download a saved configuration
 leverbrain purchases --wallet <pk>  # List receipts for a Solana wallet
 leverbrain publish ./my-skill \
   --wallet <KEYPAIR_PATH> \
@@ -110,6 +104,3 @@ The Convex backend verifies the signature on-chain against ownership of the skil
 
 ---
 
-<div align="center">
-  <p style="color: #9c7a52; font-family: monospace; font-size: 11px;">// RUN LOCAL. STAY SOVEREIGN. HAVE FUN.</p>
-</div>

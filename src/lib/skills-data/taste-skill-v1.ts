@@ -4,7 +4,7 @@ export const tasteSkillV1: SkillListing = {
   id: 'taste-skill-v1',
   author: 'Leonxlnx',
   slug: 'taste-skill-v1',
-  name: "Design taste frontend v1",
+  name: "Taste skill v1",
   tagline: "The original v1 taste-skill, preserved for projects depending on its exact behavior.",
   description: "The original v1 taste-skill, preserved for projects depending on its exact behavior. The current default is `design-taste-frontend` (v2 experimental), which is a substantial rewrite. Use this v1 install name only if you need exact backward compatibility.",
   readme: `# High-Agency Frontend Skill
@@ -228,7 +228,7 @@ Evaluate your code against this matrix before outputting. This is the **last** f
 - [ ] Are empty, loading, and error states provided?
 - [ ] Are cards omitted in favor of spacing where possible?
 - [ ] Did you strictly isolate CPU-heavy perpetual animations in their own Client Components?`,
-  whenToUse: "Use when you need to automate design taste frontend v1 processes.",
+  whenToUse: "Use when you need to automate taste skill v1 processes.",
   price: "Free",
   priceUsdc: 0,
   category: "skill",
@@ -241,7 +241,7 @@ Evaluate your code against this matrix before outputting. This is the **last** f
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: 'https://github.com/Leonxlnx/taste-skill/tree/main/skills/taste-skill-v1',
   useCases: ["Framework & Interactivity: React or Next.js. Default to Server Components (RSC).","RSC SAFETY: Global state works ONLY in Client Components. In Next.js, wrap providers in a \"use client\" component.","TAILWIND VERSION LOCK: Check package.json first. Do not use v4 syntax in v3 projects."],
-  exampleUsage: "Apply design taste frontend v1 for my project",
+  exampleUsage: "Apply taste skill v1 for my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 196, 129, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);">
         <div style="width: 100%; aspect-ratio: 16/6; background: linear-gradient(135deg, #13110f 0%, #17181c 100%); display: flex; align-items: center; justify-content: center; color: var(--color-accent-warm-light);">
@@ -249,7 +249,7 @@ Evaluate your code against this matrix before outputting. This is the **last** f
         </div>
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
         <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
-          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Design taste frontend v1</h2>
+          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Taste skill v1</h2>
           <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">The original v1 taste-skill, preserved for projects depending on its exact behavior.</p>
         </div>
       </div>

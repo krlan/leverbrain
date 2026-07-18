@@ -24,7 +24,12 @@ const CURATED_DESIGN_SLUGS = new Set([
   'stitch-skill',
   'brutalist-skill',
   'minimalist-skill',
-  'gpt-tasteskill'
+  'gpt-tasteskill',
+  'awwwards-hero',
+  'awwwards-motion',
+  'imagegen-frontend',
+  'pixel-perfect',
+  'visual-redesign'
 ])
 
 function getAuthorAvatarUrl(author: string) {

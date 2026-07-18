@@ -17,6 +17,8 @@ import { apiDesign } from './skills-data/api-design'
 import { appleDesign } from './skills-data/apple-design'
 import { articleWriting } from './skills-data/article-writing'
 import { aso } from './skills-data/aso'
+import { awwwardsHero } from './skills-data/awwwards-hero'
+import { awwwardsMotion } from './skills-data/awwwards-motion'
 import { backendPatterns } from './skills-data/backend-patterns'
 import { baoyuArticleIllustrator } from './skills-data/baoyu-article-illustrator'
 import { baoyuComic } from './skills-data/baoyu-comic'
@@ -109,6 +111,7 @@ import { handoff } from './skills-data/handoff'
 import { headlineGenerator } from './skills-data/headline-generator'
 import { image } from './skills-data/image'
 import { imageToCodeSkill } from './skills-data/image-to-code-skill'
+import { imagegenFrontend } from './skills-data/imagegen-frontend'
 import { imagegenFrontendMobile } from './skills-data/imagegen-frontend-mobile'
 import { imagegenFrontendWeb } from './skills-data/imagegen-frontend-web'
 import { impeccable } from './skills-data/impeccable'
@@ -167,6 +170,7 @@ import { ouroWorkMerger } from './skills-data/ouro-work-merger'
 import { ouroWorkPlanner } from './skills-data/ouro-work-planner'
 import { outputSkill } from './skills-data/output-skill'
 import { paywalls } from './skills-data/paywalls'
+import { pixelPerfect } from './skills-data/pixel-perfect'
 import { pocketbase } from './skills-data/pocketbase'
 import { popups } from './skills-data/popups'
 import { prStrategist } from './skills-data/pr-strategist'
@@ -239,6 +243,7 @@ import { validateIdea } from './skills-data/validate-idea'
 import { verificationLoop } from './skills-data/verification-loop'
 import { video } from './skills-data/video'
 import { videoEditing } from './skills-data/video-editing'
+import { visualRedesign } from './skills-data/visual-redesign'
 import { voiceExtractor } from './skills-data/voice-extractor'
 import { wazaCheck } from './skills-data/waza-check'
 import { wazaDesign } from './skills-data/waza-design'
@@ -315,6 +320,8 @@ export const SKILLS: SkillListing[] = [
   appleDesign,
   articleWriting,
   aso,
+  awwwardsHero,
+  awwwardsMotion,
   backendPatterns,
   baoyuArticleIllustrator,
   baoyuComic,
@@ -407,6 +414,7 @@ export const SKILLS: SkillListing[] = [
   headlineGenerator,
   image,
   imageToCodeSkill,
+  imagegenFrontend,
   imagegenFrontendMobile,
   imagegenFrontendWeb,
   impeccable,
@@ -465,6 +473,7 @@ export const SKILLS: SkillListing[] = [
   ouroWorkPlanner,
   outputSkill,
   paywalls,
+  pixelPerfect,
   pocketbase,
   popups,
   prStrategist,
@@ -537,6 +546,7 @@ export const SKILLS: SkillListing[] = [
   verificationLoop,
   video,
   videoEditing,
+  visualRedesign,
   voiceExtractor,
   wazaCheck,
   wazaDesign,

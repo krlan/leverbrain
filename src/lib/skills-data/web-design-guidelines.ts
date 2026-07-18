@@ -1,55 +1,43 @@
 import { SkillListing } from '../skills-data'
  
-export const frontendDesign: SkillListing = {
-  id: 'frontend-design',
-  author: 'anthropics',
-  slug: 'frontend-design',
-  name: "Frontend design",
-  tagline: "name: frontend-design description: Guidance for distinctive, intentional visual design when building new UI or reshap...",
-  description: "name: frontend-design description: Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults. license: Complete terms in LICENSE.txt ---",
-  readme: `name: frontend-design
-description: Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults.
-license: Complete terms in LICENSE.txt
+export const webDesignGuidelines: SkillListing = {
+  id: 'web-design-guidelines',
+  author: 'vercel-labs',
+  slug: 'web-design-guidelines',
+  name: "Web design guidelines",
+  tagline: "name: web-design-guidelines description: Review UI code for Web Interface Guidelines compliance.",
+  description: "name: web-design-guidelines description: Review UI code for Web Interface Guidelines compliance. Use when asked to \"review my UI\", \"check accessibility\", \"audit design\", \"review UX\", or \"check my site against best practices\". metadata: author: vercel version: \"1.0.0\" argument-hint: <file-or-pattern> ---",
+  readme: `name: web-design-guidelines
+description: Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against best practices".
+metadata:
+  author: vercel
+  version: "1.0.0"
+  argument-hint: <file-or-pattern>
 ---
 
-# Frontend Design
+# Web Interface Guidelines
 
-Approach this as the design lead at a small studio known for giving every client a visual identity that could not be mistaken for anyone else's. This client has already rejected proposals that felt templated, and is paying for a distinctive point of view: make deliberate, opinionated choices about palette, typography, and layout that are specific to this brief, and take one real aesthetic risk you can justify.
+Review files for compliance with Web Interface Guidelines.
 
-## Ground it in the subject
+## How It Works
 
-If the brief does not pin down what the product or subject is, pin it yourself before designing: name one concrete subject, its audience, and the page's single job, and state your choice. If there's any information in your memory about the human's preferences, context about what they're building, or designs you've made before – use that as a hint. The subject's own world, its materials, instruments, artifacts, and vernacular, is where distinctive choices come from. Build with the brief's real content and subject matter throughout.
-
-## Design principles
-
-For web designs, the hero is a thesis. Open with the most characteristic thing in the subject's world, in whatever form makes sense for it: a headline, an image, an animation, a live demo, an interactive moment. Be deliberate with your choice: a big number with a small label, supporting stats, and a gradient accent is the template answer, only use if that's truly the best option.
-
-Typography carries the personality of the page. Pair the display and body faces deliberately, not the same families you would reach for on any other project, and set a clear type scale with intentional weights, widths, and spacing. Make the type treatment itself a memorable part of the design, not a neutral delivery vehicle for the content.
-
-Structure is information. Structural devices, numbering, eyebrows, dividers, labels, should encode something true about the content, not decorate it. Many generic designs use numbered markers (01 / 02 / 03), but that's only appropriate if the content actually is a sequence - like a real process or a typed timeline where order carries information the reader needs. Question if choices like numbered markers actually make sense before incorporating them.
-
-Leverage motion deliberately. Think about where and if animation can serve the subject: a page-load sequence, a scroll-triggered reveal, hover micro-interactions, ambient atmosphere. An orchestrated moment usually lands harder than scattered effects; choose what the direction calls for. However, sometimes less is more, and extra animation contributes to the feeling that the design is AI-generated.
-
-Match complexity to the vision. Maximalist directions need elaborate execution; minimal directions need precision in spacing, type, and detail. Elegance is executing the chosen vision well.
-
-Consider written content carefully. Often a design brief may not contain real content, and it's up to you to come up with copy. Copy can make a design feel as templated as the design itself. See the below section on writing for more guidance.
-
-## Process: brainstorm, explore, plan, critique, build, critique again
-
-For calibration: AI-generated design right now clusters around three looks: (1) a warm cream background (near #F4F1EA) with a high-contrast serif display and a terracotta accent; (2) a near-black background with a single bright acid-green or vermilion accent; (3) a broadsheet-style layout with hairline rules, zero border-radius, and dense newspaper-like columns. All three are legitimate for some briefs`,
-  whenToUse: "Use when you need to automate frontend design processes.",
+1. Fetch the latest guidelines from the source URL below
+2. Read the specified files (or prompt user for files/pattern)
+3. Check against all rules in the fetched guidelines
+4. Output findin`,
+  whenToUse: "Use when you need to automate web design guidelines processes.",
   price: "Free",
   priceUsdc: 0,
   category: "skill",
-  tags: ["anthropics-skills","frontend-design","image","design"],
-  stars: 475,
-  weeklyInstalls: 59,
-  totalPurchases: 791,
+  tags: ["vercel-labs-skills","web-design-guidelines","image","design"],
+  stars: 247,
+  weeklyInstalls: 20,
+  totalPurchases: 170,
   featured: false,
-  createdAt: '2026-06-16',
+  createdAt: '2026-07-18',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
-  fileUrl: 'https://github.com/anthropics/claude-code/blob/main/plugins/frontend-design/skills/frontend-design/SKILL.md',
-  useCases: ["Name: frontend-design description: Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.","Helps with aesthetic direction, typography, and making choices that don't read as templated defaults.","License: Complete terms in LICENSE.txt ---."],
+  fileUrl: 'https://github.com/vercel-labs/agent-skills/blob/main/skills/web-design-guidelines/SKILL.md',
+  useCases: ["Fetch the latest guidelines from the source URL below.","Check against all rules in the fetched guidelines.","Use when asked to \"review my UI\", \"check accessibility\", \"audit design\", \"review UX\", or \"check my site against best practices\"."],
   exampleUsage: "Improve the design of my project",
   overviewHtml: `<div class="skill-enrichment" style="display: flex; flex-direction: column; gap: 32px;">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 196, 129, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);">
@@ -58,15 +46,15 @@ For calibration: AI-generated design right now clusters around three looks: (1) 
         </div>
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #0a0806 95%);"></div>
         <div style="position: absolute; bottom: 20px; left: 24px; right: 24px;">
-          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Frontend design</h2>
-          <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">name: frontend-design description: Guidance for distinctive, intentional visual design when building new UI or reshap...</p>
+          <h2 style="font-family: var(--font-display); color: var(--color-accent-warm-light); margin: 0; font-size: 28px; font-weight: 500; letter-spacing: 0.02em;">Web design guidelines</h2>
+          <p style="margin: 6px 0 0; color: var(--color-text-secondary); font-size: 14px; max-width: 600px;">name: web-design-guidelines description: Review UI code for Web Interface Guidelines compliance.</p>
         </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1.2fr 1.0fr; gap: 32px; align-items: start;">
         <div>
           <h3 style="color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;">SKILL CAPABILITIES</h3>
-          <p style="margin-bottom: 24px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);">name: frontend-design description: Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults. license: Complete terms in LICENSE.txt ---</p>
+          <p style="margin-bottom: 24px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);">name: web-design-guidelines description: Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against best practices". metadata: author: vercel version: "1.0.0" argument-hint: <file-or-pattern> ---</p>
           
           <h3 style="color: var(--color-text-primary); margin-bottom: 16px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em;">KEY FEATURES</h3>
           <ul style="list-style: none; padding: 0; margin: 0;">

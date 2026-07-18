@@ -430,6 +430,21 @@ function SkillsContent() {
 
         {priceFilter === 'paid' && (
           <section className="land-showcase config-showcase animate-fade-in-up" style={{ marginTop: '48px', paddingBottom: '32px' }}>
+            <div className="land-ui-card" style={{ marginBottom: '24px' }}>
+              <div className="land-red-card-content">
+                <p className="land-agent-headline land-agent-headline--ui" style={{ marginBottom: '16px' }}>
+                  Curated Collections
+                </p>
+                <h3>UI & Craft Skills</h3>
+                <p style={{ marginBottom: '20px' }}>
+                  Master the frontend with verified skills from top design engineers, Apple interface guidelines, and Anthropic craft standards.
+                </p>
+                <Link href="/skills/design" className="btn btn-ui">
+                  Explore UI Skills <ArrowRight size={14} />
+                </Link>
+              </div>
+            </div>
+
             <div className="land-red-card">
               <div className="land-red-card-content">
                 <h3>Share your edge</h3>

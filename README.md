@@ -29,15 +29,15 @@ Leverbrain is a high-fidelity registry and marketplace for AI agent skills, stra
 The architecture is simple and local-first:
 
 ```text
-       ┌──────────────┐         ┌──────────────┐
-       │   Developer  │ ──────> │  Solana (L1) │ (Verified Receipts)
-       └──────────────┘         └──────────────┘
-              │
-              ▼ (Publish / Buy via CLI)
-       ┌──────────────┐         ┌──────────────┐
-       │  Leverbrain  │ <─────> │   Convex DB  │ (Real-Time Registry)
-       │  Marketplace │         └──────────────┘
+       ┌──────────────┐
+       │   Developer  │
        └──────────────┘
+              │
+              ▼ (Publish / Share via CLI)
+       ┌──────────────┐         ┌──────────────┐
+       │  Leverbrain  │ <─────> │  Capabilities│
+       │  Registry    │         │  Storage     │ (Convex backend)
+       └──────────────┘         └──────────────┘
               │
               ▼ (Local Sync)
        ┌──────────────┐
@@ -45,9 +45,9 @@ The architecture is simple and local-first:
        └──────────────┘
 ```
 
-1. **Sovereign BLUEPRINTS (`SKILL.md`)**: Skills are defined in standard markdown files with structured YAML frontmatter (defining constraints, taglines, categories, and execution rules). 
-2. **On-Chain Licensing (Solana)**: Purchases are recorded as on-chain receipts (PDAs) on the Solana Mainnet. Devs monetize their execution files, and buyers have cryptographically verified ownership.
-3. **Low-Latency Sync (Convex)**: The Convex database acts as the high-speed registry, serving verified TypeScript modules and markdown guides directly to local terminal agent runtimes (like Claude Code, Cursor, or custom frameworks).
+1. **Sovereign Blueprints (`SKILL.md`)**: Skills are defined in standard markdown files with structured YAML frontmatter. These define execution rules, taglines, categories, and constraints.
+2. **Modular Registry**: The system uses a modular backend to serve verified TypeScript modules and markdown files directly to local agent runtimes. The default implementation runs on Convex.
+3. **Pluggable Licensing**: Builders can monetize or restrict access to their strategies. The default engine settles licensing receipts in USDC on the Solana mainnet.
 
 ---
 
@@ -90,17 +90,17 @@ leverbrain publish ./my-skill \
 
 ---
 
-## Authentication
+## Authentication & Verification
 
-Protected actions (downloads and publishing) require Solana signature authentication. The CLI automatically signs a short-lived message payload and attaches the following headers:
+Protected actions require signature authentication. The default client uses Solana wallets to verify ownership and sign payloads, attaching verification headers to the request:
 
 ```text
-X-Wallet-Address: <base58 public key>
-X-Wallet-Signature: <base58 signature of message>
+X-Wallet-Address: <wallet address>
+X-Wallet-Signature: <cryptographic signature>
 X-Wallet-Message: leverbrain-auth-<timestamp>
 ```
 
-The Convex backend verifies the signature on-chain against ownership of the skill receipt before serving the code bundle. Everything is verified, localized, and secure.
+The registry verifies the signature before serving the code bundle. This layer is pluggable and adapts to other identity providers.
 
 ---
 

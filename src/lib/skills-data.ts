@@ -14,6 +14,7 @@ import { algorithmicArt } from './skills-data/algorithmic-art'
 import { analytics } from './skills-data/analytics'
 import { angleGenerator } from './skills-data/angle-generator'
 import { apiDesign } from './skills-data/api-design'
+import { appleDesign } from './skills-data/apple-design'
 import { articleWriting } from './skills-data/article-writing'
 import { aso } from './skills-data/aso'
 import { backendPatterns } from './skills-data/backend-patterns'
@@ -82,6 +83,7 @@ import { e2eTesting } from './skills-data/e2e-testing'
 import { eccDeepResearch } from './skills-data/ecc-deep-research'
 import { editArticle } from './skills-data/edit-article'
 import { emails } from './skills-data/emails'
+import { emilDesignEng } from './skills-data/emil-design-eng'
 import { enterpriseCommunication } from './skills-data/enterprise-communication'
 import { evalHarness } from './skills-data/eval-harness'
 import { everythingClaudeCode } from './skills-data/everything-claude-code'
@@ -109,6 +111,7 @@ import { image } from './skills-data/image'
 import { imageToCodeSkill } from './skills-data/image-to-code-skill'
 import { imagegenFrontendMobile } from './skills-data/imagegen-frontend-mobile'
 import { imagegenFrontendWeb } from './skills-data/imagegen-frontend-web'
+import { impeccable } from './skills-data/impeccable'
 import { improveCodebaseArchitecture } from './skills-data/improve-codebase-architecture'
 import { internalComms } from './skills-data/internal-comms'
 import { investorMaterials } from './skills-data/investor-materials'
@@ -175,6 +178,7 @@ import { productivity } from './skills-data/productivity'
 import { programmaticSeo } from './skills-data/programmatic-seo'
 import { prospecting } from './skills-data/prospecting'
 import { prototype } from './skills-data/prototype'
+import { qiaomuDesign } from './skills-data/qiaomu-design'
 import { railway } from './skills-data/railway'
 import { reactiveComment } from './skills-data/reactive-comment'
 import { redesignSkill } from './skills-data/redesign-skill'
@@ -229,6 +233,7 @@ import { themeFactory } from './skills-data/theme-factory'
 import { toIssues } from './skills-data/to-issues'
 import { toPrd } from './skills-data/to-prd'
 import { triage } from './skills-data/triage'
+import { uiUxProMax } from './skills-data/ui-ux-pro-max'
 import { utilities } from './skills-data/utilities'
 import { validateIdea } from './skills-data/validate-idea'
 import { verificationLoop } from './skills-data/verification-loop'
@@ -245,6 +250,7 @@ import { wazaThink } from './skills-data/waza-think'
 import { wazaWrite } from './skills-data/waza-write'
 import { webArtifactsBuilder } from './skills-data/web-artifacts-builder'
 import { webData } from './skills-data/web-data'
+import { webDesignGuidelines } from './skills-data/web-design-guidelines'
 import { webDevelopment } from './skills-data/web-development'
 import { webappTesting } from './skills-data/webapp-testing'
 import { wells1137YtVideoDownloader } from './skills-data/wells1137-yt-video-downloader'
@@ -306,6 +312,7 @@ export const SKILLS: SkillListing[] = [
   analytics,
   angleGenerator,
   apiDesign,
+  appleDesign,
   articleWriting,
   aso,
   backendPatterns,
@@ -374,6 +381,7 @@ export const SKILLS: SkillListing[] = [
   eccDeepResearch,
   editArticle,
   emails,
+  emilDesignEng,
   enterpriseCommunication,
   evalHarness,
   everythingClaudeCode,
@@ -401,6 +409,7 @@ export const SKILLS: SkillListing[] = [
   imageToCodeSkill,
   imagegenFrontendMobile,
   imagegenFrontendWeb,
+  impeccable,
   improveCodebaseArchitecture,
   internalComms,
   investorMaterials,
@@ -467,6 +476,7 @@ export const SKILLS: SkillListing[] = [
   programmaticSeo,
   prospecting,
   prototype,
+  qiaomuDesign,
   railway,
   reactiveComment,
   redesignSkill,
@@ -521,6 +531,7 @@ export const SKILLS: SkillListing[] = [
   toIssues,
   toPrd,
   triage,
+  uiUxProMax,
   utilities,
   validateIdea,
   verificationLoop,
@@ -537,6 +548,7 @@ export const SKILLS: SkillListing[] = [
   wazaWrite,
   webArtifactsBuilder,
   webData,
+  webDesignGuidelines,
   webDevelopment,
   webappTesting,
   wells1137YtVideoDownloader,

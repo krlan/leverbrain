@@ -488,4 +488,45 @@
   }
   .land-cat-grid { grid-template-columns: 1fr; }
   .land-red-card { padding: var(--space-xl); }
+  .land-ui-card { padding: var(--space-xl); }
+}
+
+/* ─── UI Card Styles ─── */
+.land-ui-card {
+  margin-top: 0;
+  background: linear-gradient(145deg, rgba(29, 38, 113, 0.45) 0%, rgba(9, 10, 15, 0.95) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.24);
+  border-radius: var(--radius-xl);
+  padding: var(--space-3xl);
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.land-ui-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(99, 102, 241, 0.25);
+  border-color: rgba(99, 102, 241, 0.48);
+}
+.land-ui-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: var(--space-xs);
+}
+.land-ui-card p {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+.land-agent-headline--ui {
+  color: #818cf8 !important;
+}
+.btn-ui {
+  background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%) !important;
+  color: #fff !important;
+  border: none !important;
+}
+.btn-ui:hover {
+  background: linear-gradient(90deg, #4338ca 0%, #4f46e5 100%) !important;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4) !important;
 }

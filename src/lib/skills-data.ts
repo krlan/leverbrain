@@ -149,6 +149,7 @@ import { newsjackMonitorSetup } from './skills-data/newsjack-monitor-setup'
 import { newsjackTriage } from './skills-data/newsjack-triage'
 import { newsworthinessCheck } from './skills-data/newsworthiness-check'
 import { nextjsTurbopack } from './skills-data/nextjs-turbopack'
+import { noAiSlop } from './skills-data/no-ai-slop'
 import { noMistakes } from './skills-data/no-mistakes'
 import { nutrition } from './skills-data/nutrition'
 import { obsidianVault } from './skills-data/obsidian-vault'
@@ -452,6 +453,7 @@ export const SKILLS: SkillListing[] = [
   newsjackTriage,
   newsworthinessCheck,
   nextjsTurbopack,
+  noAiSlop,
   noMistakes,
   nutrition,
   obsidianVault,

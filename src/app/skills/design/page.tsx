@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Sparkles } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { useQuery } from 'convex/react'
 import { api } from '../../../../convex/_generated/api'
 import { mergeSkillPool } from '@/lib/skill-pool'
@@ -37,7 +37,7 @@ function getAuthorAvatarUrl(author: string) {
   if (cleanAuthor === 'anthropics') return '/images/claude.png'
   if (cleanAuthor === 'composiohq') return 'https://avatars.githubusercontent.com/u/105432322?v=4'
   if (cleanAuthor === '199-biotechnologies') return 'https://avatars.githubusercontent.com/u/81938501?v=4'
-  if (cleanAuthor === 'leverbrain') return '/images/octo.png'
+  if (cleanAuthor === 'leverbrain') return '/images/levie.png'
   if (cleanAuthor === 'baoyu') return 'https://avatars.githubusercontent.com/u/648674?v=4'
   if (cleanAuthor === 'santa') return 'https://github.com/Leonxlnx.png'
   return `https://github.com/${cleanAuthor}.png`
@@ -123,21 +123,6 @@ export default function CuratedDesignSkillsPage() {
           </Link>
 
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <div style={{ 
-              display: 'inline-flex', 
-              alignItems: 'center', 
-              gap: '6px', 
-              background: 'rgba(99, 102, 241, 0.12)', 
-              border: '1px solid rgba(99, 102, 241, 0.3)', 
-              borderRadius: '9999px', 
-              padding: '6px 14px', 
-              fontSize: '0.75rem', 
-              fontWeight: 600, 
-              color: '#818cf8', 
-              marginBottom: '16px' 
-            }}>
-              <Sparkles size={12} /> Curated Collection
-            </div>
             <h1 style={{
               fontFamily: 'var(--font-display)',
               fontSize: '2.5rem',

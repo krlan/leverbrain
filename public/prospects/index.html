@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LeverBrain — 40 Live AI-Build Prospects</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Saira:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #120e0a; --bg2: #1a1410; --bg3: #241c15; --panel: #1c1611;
+      --border: #3a2e22; --border-hot: #5c4030;
+      --amber: #ff9a3d; --amber2: #ffbc68; --text: #ffe3be;
+      --muted: #a89278; --dim: #6e5a48;
+      --green: #6dce8a; --red: #e07a5f; --blue: #7eb8ff; --yellow: #e8c547;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.5;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255,154,61,.12), transparent),
+        radial-gradient(ellipse 40% 30% at 90% 80%, rgba(255,154,61,.05), transparent);
+    }
+    a { color: var(--amber2); text-decoration: none; }
+    a:hover { color: var(--amber); text-decoration: underline; }
+    header {
+      border-bottom: 1px solid var(--border); background: rgba(18,14,10,.92);
+      backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 50;
+    }
+    .header-inner {
+      max-width: 1280px; margin: 0 auto; padding: 1rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .brand { font-family: Saira, sans-serif; font-weight: 700; font-size: 1.15rem; display: flex; align-items: center; gap: .6rem; }
+    .brand span { color: var(--amber); }
+    .badge {
+      font-family: "JetBrains Mono", monospace; font-size: .65rem; letter-spacing: .08em;
+      text-transform: uppercase; border: 1px solid var(--border-hot); color: var(--amber2);
+      padding: .2rem .5rem; border-radius: 3px; background: rgba(255,154,61,.08);
+    }
+    .header-meta { font-size: .85rem; color: var(--muted); font-family: "JetBrains Mono", monospace; }
+    main { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .hero { margin-bottom: 1.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .hero h1 {
+      font-family: Saira, sans-serif; font-size: clamp(1.6rem, 4vw, 2.35rem);
+      font-weight: 700; line-height: 1.15; margin-bottom: .75rem;
+    }
+    .hero h1 em { font-style: normal; color: var(--amber); }
+    .hero p { color: var(--muted); max-width: 70ch; font-size: 1.02rem; }
+    .hero-stats { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+    .stat {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+      padding: .75rem 1.1rem; min-width: 110px;
+    }
+    .stat strong { display: block; font-family: Saira, sans-serif; font-size: 1.35rem; color: var(--amber); line-height: 1.1; }
+    .stat span { font-size: .72rem; color: var(--dim); text-transform: uppercase; letter-spacing: .06em; font-family: "JetBrains Mono", monospace; }
+
+    .method {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.15rem 1.35rem; margin-bottom: 1.5rem;
+    }
+    .method h2 { font-family: Saira, sans-serif; font-size: 1rem; color: var(--amber2); margin-bottom: .6rem; }
+    .method p, .method li { color: var(--muted); font-size: .9rem; }
+    .method ol { padding-left: 1.2rem; margin: .4rem 0 .6rem; }
+    .method li { margin-bottom: .3rem; }
+    .method strong { color: var(--text); }
+    .warn {
+      margin-top: .75rem; padding: .65rem .85rem; border-left: 3px solid var(--yellow);
+      background: rgba(232,197,71,.08); color: var(--muted); font-size: .85rem; border-radius: 0 6px 6px 0;
+    }
+
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: .75rem; align-items: center;
+      margin-bottom: 1.1rem; justify-content: space-between;
+    }
+    .filters { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .filter-btn {
+      font-family: "JetBrains Mono", monospace; font-size: .7rem; padding: .38rem .65rem;
+      border-radius: 6px; border: 1px solid var(--border); background: transparent;
+      color: var(--muted); cursor: pointer; transition: .15s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--amber); color: var(--amber); background: rgba(255,154,61,.1);
+    }
+    .search {
+      font-family: "IBM Plex Sans", sans-serif; background: var(--panel);
+      border: 1px solid var(--border); color: var(--text); padding: .5rem .85rem;
+      border-radius: 6px; min-width: 200px; font-size: .9rem;
+    }
+    .search:focus { outline: none; border-color: var(--amber); }
+    .count-label { font-family: "JetBrains Mono", monospace; font-size: .75rem; color: var(--dim); width: 100%; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.1rem 1.15rem; display: flex; flex-direction: column; gap: .65rem;
+      transition: border-color .15s, transform .15s; position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--amber), transparent); opacity: .45;
+    }
+    .card:hover { border-color: var(--border-hot); transform: translateY(-2px); }
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; }
+    .rank {
+      font-family: "JetBrains Mono", monospace; font-size: .68rem; color: var(--dim);
+      background: var(--bg3); border: 1px solid var(--border); width: 1.75rem; height: 1.75rem;
+      display: grid; place-items: center; border-radius: 6px; flex-shrink: 0;
+    }
+    .card h3 { font-family: Saira, sans-serif; font-size: 1.02rem; font-weight: 600; line-height: 1.25; flex: 1; }
+    .conf {
+      font-family: "JetBrains Mono", monospace; font-size: .65rem; padding: .2rem .45rem;
+      border-radius: 4px; white-space: nowrap; flex-shrink: 0; text-transform: uppercase;
+    }
+    .conf.high { background: rgba(109,206,138,.15); color: var(--green); border: 1px solid rgba(109,206,138,.3); }
+    .conf.med { background: rgba(232,197,71,.12); color: var(--yellow); border: 1px solid rgba(232,197,71,.3); }
+    .conf.low { background: rgba(224,122,95,.12); color: var(--red); border: 1px solid rgba(224,122,95,.3); }
+
+    .meta-row { display: flex; flex-wrap: wrap; gap: .3rem; }
+    .tag {
+      font-size: .66rem; font-family: "JetBrains Mono", monospace; padding: .16rem .42rem;
+      border-radius: 4px; background: var(--bg3); border: 1px solid var(--border); color: var(--muted);
+    }
+    .tag.trade { color: var(--blue); border-color: rgba(126,184,255,.25); }
+    .tag.weak { color: var(--red); border-color: rgba(224,122,95,.3); }
+    .tag.live { color: var(--green); border-color: rgba(109,206,138,.25); }
+
+    .detail { font-size: .86rem; color: var(--muted); }
+    .detail dt {
+      font-family: "JetBrains Mono", monospace; font-size: .62rem; text-transform: uppercase;
+      letter-spacing: .06em; color: var(--dim); margin-top: .4rem;
+    }
+    .detail dd { color: var(--text); font-size: .86rem; }
+    .detail dd a { word-break: break-all; }
+    .why {
+      font-size: .8rem; color: var(--muted); background: var(--bg);
+      border-left: 2px solid var(--amber); padding: .45rem .7rem; border-radius: 0 6px 6px 0;
+    }
+    .actions {
+      display: flex; flex-wrap: wrap; gap: .4rem; margin-top: auto; padding-top: .4rem;
+    }
+    .btn {
+      font-family: "JetBrains Mono", monospace; font-size: .7rem; padding: .42rem .65rem;
+      border-radius: 6px; border: 1px solid var(--border); background: var(--bg3);
+      color: var(--text); cursor: pointer; text-decoration: none; display: inline-flex; transition: .15s;
+    }
+    .btn:hover { border-color: var(--amber); color: var(--amber); text-decoration: none; }
+    .btn.primary { background: rgba(255,154,61,.15); border-color: var(--border-hot); color: var(--amber2); }
+    .btn.primary:hover { background: rgba(255,154,61,.25); color: var(--amber); }
+
+    .pitch {
+      margin-top: 2.25rem; background: linear-gradient(145deg, var(--bg2), var(--bg3));
+      border: 1px solid var(--border-hot); border-radius: 12px; padding: 1.4rem;
+    }
+    .pitch h2 { font-family: Saira, sans-serif; color: var(--amber); margin-bottom: .7rem; font-size: 1.1rem; }
+    .pitch pre {
+      font-family: "JetBrains Mono", monospace; font-size: .76rem; color: var(--muted);
+      white-space: pre-wrap; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem; line-height: 1.55;
+    }
+    .pitch .copy-row { display: flex; justify-content: flex-end; margin-top: .5rem; }
+    footer {
+      max-width: 1280px; margin: 0 auto; padding: 1.5rem; border-top: 1px solid var(--border);
+      color: var(--dim); font-size: .78rem; font-family: "JetBrains Mono", monospace;
+    }
+    .hidden { display: none !important; }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .search { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">Lever<span>Brain</span> <span class="badge">v2 · Live prospects</span></div>
+      <div class="header-meta">40 businesses · activity-first · 2026-07-17</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>40 prospects: <em>open businesses</em> with weak websites</h1>
+      <p>
+        Rebuilt methodology. First list hunted fossil HTML (Trellix zombies). This list requires
+        <strong style="color:var(--text)">recent activity signals</strong> (Yelp updated 2026, Google/BirdEye reviews,
+        Facebook posts 2025–26, Reddit mentions) <em>and</em> a website worth replacing or upgrading.
+      </p>
+      <div class="hero-stats">
+        <div class="stat"><strong>40</strong><span>Prospects</span></div>
+        <div class="stat"><strong id="high-count">—</strong><span>High confidence</span></div>
+        <div class="stat"><strong id="med-count">—</strong><span>Medium</span></div>
+        <div class="stat"><strong>Call first</strong><span>Before demos</span></div>
+      </div>
+    </section>
+
+    <section class="method">
+      <h2>How this list was built (v2)</h2>
+      <ol>
+        <li><strong>Start from activity</strong> — Yelp “Updated July 2026”, BirdEye/Google review aggregates, Facebook posts 2025–26, Reddit, chamber/BBB still listed.</li>
+        <li><strong>Then check the website</strong> — Weebly/Wix free, no viewport, template/placeholder, Comcast/AOL email, missing quote UX, dated layout.</li>
+        <li><strong>Skip pure zombies</strong> — No recent reviews + abandoned free host = out (that was v1’s failure mode).</li>
+        <li><strong>Confidence tag</strong> — HIGH = multiple live signals; MED = some live signals, call before building a full demo; LOW = thin evidence, phone-screen only.</li>
+      </ol>
+      <div class="warn">
+        <strong style="color:var(--yellow)">Still not perfect.</strong> I cannot open Google Maps review dates for every listing from here.
+        Before you spend a day on a demo: (1) open their Google Business Profile, (2) check a review from the last 6–12 months, (3) call once. If the line is dead, kill the lead.
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <div class="filters" id="filters-trade">
+        <button class="filter-btn active" data-filter="all">All trades</button>
+        <button class="filter-btn" data-filter="Roofing">Roofing</button>
+        <button class="filter-btn" data-filter="Plumbing">Plumbing</button>
+        <button class="filter-btn" data-filter="HVAC">HVAC</button>
+        <button class="filter-btn" data-filter="Electrical">Electrical</button>
+        <button class="filter-btn" data-filter="Landscaping">Landscaping</button>
+      </div>
+      <div class="filters" id="filters-conf">
+        <button class="filter-btn active" data-conf="all">All conf</button>
+        <button class="filter-btn" data-conf="high">High only</button>
+        <button class="filter-btn" data-conf="med">Med+</button>
+      </div>
+      <input class="search" id="search" type="search" placeholder="Search name, city, phone…" />
+      <div class="count-label" id="visible-count"></div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <section class="pitch">
+      <h2>Outreach email (for HIGH confidence only)</h2>
+      <pre id="pitch-text">Subject: Quick site preview for [Company] — based on your recent reviews
+
+Hi [Owner],
+
+Homeowners are clearly finding you (saw recent activity / reviews for [Company] in [City]). Your work reputation looks solid — the website is the weak link.
+
+I built a simple modern version as a free demo: mobile-ready, estimate form, review highlights, click-to-call. No obligation.
+
+Happy to send the link + a 2-min Loom. If it's not useful, ignore me.
+
+— [Your name]
+LeverBrain · leverbrain.com</pre>
+      <div class="copy-row"><button class="btn primary" type="button" id="copy-pitch">Copy pitch</button></div>
+    </section>
+  </main>
+
+  <footer>
+    Internal sales sheet · v2 activity-first · Not public · Verify GBP + call before demo builds · Compiled 2026-07-17
+  </footer>
+
+  <script>
+    /**
+     * conf: high | med | low
+     * live: short evidence string
+     * weak: why the site is a rebuild/upgrade target
+     * pitch: rebuild | upgrade | ai  (primary offer angle)
+     */
+    const PROSPECTS = [
+      {
+        id: 1, name: "Donald L. Lowe & Sons HVAC",
+        trades: ["HVAC"], location: "Monrovia / Frederick area, MD",
+        phone: "301-865-4490", email: "Info@Donloweandsons.com",
+        url: "https://donloweandsons.weebly.com/",
+        conf: "high", pitch: "rebuild",
+        live: "Reddit rec Apr 2025; BirdEye ~4.7 / 29 reviews; Yelp listing; FB active; Rheem partner",
+        weak: "Weebly free-builder site — looks DIY vs 50-year company",
+        why: "Real multi-gen HVAC with community trust. Site undercuts the brand. Perfect rebuild → missed-call AI.",
+        size: "10–40 est."
+      },
+      {
+        id: 2, name: "Baio Landscaping LLC",
+        trades: ["Landscaping"], location: "Waunakee, WI",
+        phone: "608-513-2692", email: "baiolandscaping@gmail.com",
+        url: "https://baiolandscaping.weebly.com/",
+        conf: "high", pitch: "rebuild",
+        live: "Yelp Updated July 2026; owner posts claiming 5★ Google; FB/Nextdoor 2026; Instagram project posts May 2026",
+        weak: "Weebly brochure site",
+        why: "Owner actively marketing; site is a free template. Easy photo-heavy rebuild + seasonal lead forms.",
+        size: "1–10 est."
+      },
+      {
+        id: 3, name: "HG Roof Repair",
+        trades: ["Roofing"], location: "San Antonio, TX",
+        phone: "210-396-0922", email: "",
+        url: "https://hugoroofer8888.wixsite.com/hgroofrepair",
+        conf: "high", pitch: "rebuild",
+        live: "Yelp Updated July 2026 w/ photos; FB posts Jul 2025–2026; public review dated Aug 2025; Google Guaranteed claims",
+        weak: "Wix free subdomain (hugoroofer8888.wixsite.com) — screams solo op",
+        why: "Active repair specialist, not a dead site. Demo a proper domain + estimate flow + review widgets.",
+        size: "1–8 est."
+      },
+      {
+        id: 4, name: "Arrowhead Roofing",
+        trades: ["Roofing"], location: "Tulsa, OK",
+        phone: "918-743-9257", email: "admin@arrowheadroofing.com",
+        url: "https://www.arrowheadroofing.com/",
+        conf: "high", pitch: "rebuild",
+        live: "Yelp Updated July 2026; since 1987; real address/phone on site",
+        weak: "No mobile viewport; dated multi-page layout",
+        why: "Long-running Tulsa roofer still on a desktop-era site. Storm-season funnel opportunity.",
+        size: "10–40 est."
+      },
+      {
+        id: 5, name: "RJ Heating & Air Conditioning",
+        trades: ["HVAC"], location: "Milwaukee, WI",
+        phone: "414-463-1140", email: "",
+        url: "https://rjheatingair.com/",
+        conf: "high", pitch: "upgrade",
+        live: "BirdEye ~194 reviews; Yelp Updated July 2026; BBB since 1987; FB page; family-owned",
+        weak: "Dated template; weak conversion vs review volume",
+        why: "Hundreds of reviews + oldish site = money left on the table. Pitch conversion + AI review/scheduling layer.",
+        size: "15–50 est."
+      },
+      {
+        id: 6, name: "M&M Heating & Cooling",
+        trades: ["HVAC"], location: "Toledo, OH",
+        phone: "419-243-3005", email: "",
+        url: "https://mandmheating.com/",
+        conf: "high", pitch: "upgrade",
+        live: "Yelp Updated July 2026; Reddit r/toledo Mar 2026 rec; Consumer Choice Award 2026; FB Apr 2026",
+        weak: "Generic contractor site; typos in testimonials; limited booking UX",
+        why: "Clearly busy and local. Not a fossil — upgrade site + AI dispatch/text-back.",
+        size: "15–50 est."
+      },
+      {
+        id: 7, name: "Senter Roofing",
+        trades: ["Roofing"], location: "Fort Wayne, IN",
+        phone: "260-615-2439", email: "",
+        url: "https://www.senterroofing.com/",
+        conf: "high", pitch: "upgrade",
+        live: "Claimed 76–120 Google reviews; Yelp Updated July 2026; BBB accredited; FB active",
+        weak: "Basic site vs review strength — under-monetized trust",
+        why: "Google social proof is the asset; site should convert it. Good AI review-request + estimate demo.",
+        size: "5–25 est."
+      },
+      {
+        id: 8, name: "Best Plumbing & Heating Inc.",
+        trades: ["Plumbing", "HVAC"], location: "Chattanooga, TN",
+        phone: "423-624-1620", email: "bestplbgheat@comcast.net",
+        url: "https://www.bestplumbingchattanooga.com/",
+        conf: "high", pitch: "rebuild",
+        live: "FB post Apr 2026 (60th anniversary); BBB A+; still operating same building; ~86 reviews on local aggregators",
+        weak: "Comcast email + dated brochure site for a 60-year company",
+        why: "Legacy brand with amateur digital presence. Strong emotional pitch: ‘match the reputation online’.",
+        size: "5–25 est."
+      },
+      {
+        id: 9, name: "Good Guys Roofing LLC",
+        trades: ["Roofing"], location: "Maumee / NW Ohio",
+        phone: "419-439-3430", email: "",
+        url: "https://www.goodguysroofingllc.com/",
+        conf: "high", pitch: "upgrade",
+        live: "FB post Jul 13 2026; Owens Corning Platinum (~76 reviews on OC); Yelp; Reader’s Choice finalist 2025",
+        weak: "Wix template footprint; stock contractor look",
+        why: "Hot local brand on a template. Differentiate with premium rebuild + AI lead routing.",
+        size: "10–35 est."
+      },
+      {
+        id: 10, name: "Johnson Roofing & Restoration",
+        trades: ["Roofing"], location: "Toledo, OH",
+        phone: "419-548-8699", email: "",
+        url: "https://www.johnsonroofs.com/",
+        conf: "high", pitch: "upgrade",
+        live: "Yelp Updated July 2026; GAF profile 4.7 (67); BBB; Owens Corning listing",
+        weak: "Wix-class marketing site — fine but not conversion-maxed",
+        why: "Active certified roofer. Pitch better UX + AI estimate/follow-up, not ‘you look dead’.",
+        size: "5–25 est."
+      },
+      {
+        id: 11, name: "Rock Roofing Co.",
+        trades: ["Roofing"], location: "Toledo / Delta, OH",
+        phone: "419-346-9749", email: "",
+        url: "https://www.rockroofingohio.com/",
+        conf: "high", pitch: "upgrade",
+        live: "Yelp Updated July 2026 (14+); Owens Corning 4.75 (~169 reviews); BBB 23 yrs; FB active",
+        weak: "Template Wix-style presentation",
+        why: "Strong manufacturer reviews. Site should show portfolio + financing + storm funnel.",
+        size: "10–40 est."
+      },
+      {
+        id: 12, name: "Allways Roofing",
+        trades: ["Roofing"], location: "Snohomish, WA",
+        phone: "425-345-5863", email: "info@allwaysroofing.com",
+        url: "http://www.allwaysroofing.com/",
+        conf: "high", pitch: "rebuild",
+        live: "Yelp Updated July 2026 (~43 reviews, photos); Nextdoor; BBB listing; real street address",
+        weak: "XHTML + IE6/IE7 CSS hacks; no viewport; classic ga.js Analytics",
+        why: "Actually open AND site looks ~2010. Best of both worlds for a cold demo rebuild.",
+        size: "1–15 est."
+      },
+      {
+        id: 13, name: "Reliable Roofing (TGY)",
+        trades: ["Roofing"], location: "Palm Desert, CA",
+        phone: "760-568-1673", email: "",
+        url: "http://reliableroofingbytgy.com/",
+        conf: "high", pitch: "upgrade",
+        live: "Yelp Updated July 2026 — 267 reviews, 53 photos",
+        weak: "Thin custom site vs huge review count",
+        why: "Massive social proof, mediocre web. Conversion + AI booking is the sell.",
+        size: "15–50 est."
+      },
+      {
+        id: 14, name: "ATR Plumbing & HVAC",
+        trades: ["Plumbing", "HVAC"], location: "Ingleside / Lake County, IL",
+        phone: "847-404-6070", email: "INFO@ATRPLUMBINGANDHVAC.COM",
+        url: "http://www.atrplumbingandhvac.com/",
+        conf: "med", pitch: "rebuild",
+        live: "Yelp listing; Chain O’Lakes Chamber member; Bradford White contractor finder; real address",
+        weak: "Trellix/Web.com fossil (guestbook, IE4 JS) — verify recent Google reviews before demo",
+        why: "May still be open; site is a museum. Call first — if they answer, easy demo win.",
+        size: "2–15 est."
+      },
+      {
+        id: 15, name: "Allan's Plumbing Services",
+        trades: ["Plumbing"], location: "Atlanta, GA",
+        phone: "678-600-7801", email: "",
+        url: "https://alanplumber.weebly.com/",
+        conf: "med", pitch: "rebuild",
+        live: "Yelp Updated Apr 2026 (small review count); FB page; 24/7 claim; 40+ yrs experience claim",
+        weak: "Weebly; no viewport; sparse pages",
+        why: "Solo/small shop with live listing. Low demo cost; pitch simple lead site + SMS.",
+        size: "1–5 est."
+      },
+      {
+        id: 16, name: "Uzzi Plumbing (Michael Fusaro)",
+        trades: ["Plumbing"], location: "Westerly, RI",
+        phone: "401-596-7097", email: "uzziplg@gmail.com",
+        url: "https://uzziplumbing.weebly.com/",
+        conf: "med", pitch: "rebuild",
+        live: "FB group rec May 2025 (‘great for 10+ years’); YellowPages reviews; Clean Heat RI list",
+        weak: "Weebly; no viewport; hobby-site layout",
+        why: "Licensed local plumber still on free host. Call to confirm still taking jobs.",
+        size: "1–5 est."
+      },
+      {
+        id: 17, name: "Shuman's Electric LLC",
+        trades: ["Electrical"], location: "Washington, PA",
+        phone: "724-328-1359", email: "",
+        url: "https://shumanelectric.wixsite.com/shumanelectricllc",
+        conf: "med", pitch: "rebuild",
+        live: "Claims #1 electrician 2024–2026 (BusinessRate); FB posts; MapQuest; Google reviews quoted on site",
+        weak: "Wix free subdomain site",
+        why: "Note: one Yelp listing marked closed — verify GBP open status before outreach.",
+        size: "1–10 est."
+      },
+      {
+        id: 18, name: "TruChoice Roofing",
+        trades: ["Roofing"], location: "Fort Wayne / New Haven, IN",
+        phone: "260-222-8812", email: "",
+        url: "https://www.truchoiceroofing.com/",
+        conf: "med", pitch: "upgrade",
+        live: "Yelp Updated July 2026; Reddit r/fortwayne May 2026 discussion; FB recent testimonials",
+        weak: "Generic template; mixed BBB complaint history — reputation-sensitive pitch",
+        why: "Active sales motion. Offer conversion + review automation carefully (not ‘you’re bad online’).",
+        size: "10–40 est."
+      },
+      {
+        id: 19, name: "A-J Roofing & Waterproofing",
+        trades: ["Roofing"], location: "Lincoln / Omaha area, NE",
+        phone: "402-476-7905", email: "",
+        url: "https://www.a-jroofing.com/",
+        conf: "med", pitch: "rebuild",
+        live: "BBB profile; family co founded 1983; commercial project history listed",
+        weak: "Dated brochure design; weak mobile polish; sparse modern CTAs",
+        why: "Old-school commercial/residential roofer. Call to confirm residential volume before demo.",
+        size: "10–40 est."
+      },
+      {
+        id: 20, name: "Jackson Home Appliance Heating & Cooling",
+        trades: ["HVAC"], location: "Omaha, NE",
+        phone: "402-391-4287", email: "",
+        url: "https://www.jackson-omaha.com/",
+        conf: "med", pitch: "upgrade",
+        live: "Family since 1946; Yelp listing; Instagram Mar 2026; BBB appliance history",
+        weak: "Generic service site; mixed review sentiment — needs trust redesign",
+        why: "Third-generation brand. Pitch modern trust UX + service booking, not a vanity redesign.",
+        size: "15–50 est."
+      },
+      {
+        id: 21, name: "R Turley Roofing",
+        trades: ["Roofing"], location: "Jenks / Tulsa, OK",
+        phone: "918-813-1334", email: "",
+        url: "https://rturleyroofing.com/",
+        conf: "med", pitch: "upgrade",
+        live: "Yelp Updated July 2026; claims 25+ years; active marketing site",
+        weak: "Marketing site present but mixed Yelp experiences — improve proof + process UX",
+        why: "Operating company. Better fit for ops dashboard + review response AI than full rebuild.",
+        size: "10–40 est."
+      },
+      {
+        id: 22, name: "Conrad's Roofing",
+        trades: ["Roofing"], location: "Tulsa / Edmond, OK",
+        phone: "918-955-6722", email: "",
+        url: "https://conradsroofing.com/",
+        conf: "med", pitch: "upgrade",
+        live: "FB post Jul 5 2026; Yelp Updated July 2026; large-volume claims; Instagram",
+        weak: "Polished-ish marketing site; reputation is polarizing online",
+        why: "High volume = high ops pain. Pitch multi-agent lead/job board carefully after phone screen.",
+        size: "25–50+ est."
+      },
+      {
+        id: 23, name: "Pyramid Contractors (Roofing)",
+        trades: ["Roofing"], location: "Omaha, NE",
+        phone: "402-502-9300", email: "",
+        url: "https://pyramidroof.com/",
+        conf: "med", pitch: "upgrade",
+        live: "Active commercial-style site; phone live on homepage; local Omaha focus",
+        weak: "Functional but not elite conversion; room for estimate + project gallery AI",
+        why: "Good for package: site polish + lead qualification agents.",
+        size: "10–40 est."
+      },
+      {
+        id: 24, name: "Reign Roofing",
+        trades: ["Roofing"], location: "Sugar Land / Richmond, TX",
+        phone: "281-301-5477", email: "",
+        url: "https://reignroof.com/",
+        conf: "med", pitch: "upgrade",
+        live: "Active Houston-suburb marketing presence; dedicated domain",
+        weak: "Template contractor marketing — can be outcompeted by sharper local sites",
+        why: "Competitive TX storm market. AI storm-lead intake is the hook.",
+        size: "5–25 est."
+      },
+      {
+        id: 25, name: "Gordon Plumbing Service",
+        trades: ["Plumbing"], location: "Chattanooga, TN",
+        phone: "423-777-6155", email: "",
+        url: "https://www.gordonplumbingservices.com/",
+        conf: "med", pitch: "upgrade",
+        live: "Family-owned positioning; active website; local service area pages",
+        weak: "Standard plumber template; limited differentiation",
+        why: "Solid mid-tier ICP: working shop, upgradeable funnel + AI text-back.",
+        size: "5–20 est."
+      },
+      {
+        id: 26, name: "Kenney's Plumbing & Heating",
+        trades: ["Plumbing"], location: "Havertown, PA",
+        phone: "610-446-3013", email: "info@kenneysplumbing.com",
+        url: "http://www.kenneysplumbing.com/",
+        conf: "med", pitch: "rebuild",
+        live: "Yelp Updated July 2026; MapQuest hours; BBB profile; since 1952 claim",
+        weak: "Trellix/Web.com fossil template",
+        why: "Likely still open (Yelp not dead). Call before investing in a full redesign demo.",
+        size: "5–20 est."
+      },
+      {
+        id: 27, name: "Quality Construction & Roofing",
+        trades: ["Roofing", "Construction"], location: "Portsmouth / Middletown, RI",
+        phone: "401-446-0282", email: "",
+        url: "https://www.qualityconstructionandroofing.com/",
+        conf: "med", pitch: "rebuild",
+        live: "Site live Jul 2026 crawl; free estimate CTAs; licensed/insured claims",
+        weak: "Page has ‘Request Lorem Epsom’ placeholder text — unfinished template",
+        why: "Placeholder copy is an icebreaker. Verify reviews, then send fixed demo.",
+        size: "5–25 est."
+      },
+      {
+        id: 28, name: "Haus Roofing",
+        trades: ["Roofing"], location: "Indianola / Des Moines, IA",
+        phone: "515-961-7180", email: "",
+        url: "https://hausroofing.com/",
+        conf: "med", pitch: "upgrade",
+        live: "Active Des Moines market site; phone prominent; family-owned language",
+        weak: "Standard local SEO site — not broken, not winning",
+        why: "Competitive metro. Pitch differentiation + AI estimate speed.",
+        size: "5–25 est."
+      },
+      {
+        id: 29, name: "A-Best Roofing",
+        trades: ["Roofing"], location: "Tulsa, OK",
+        phone: "918-587-1426", email: "friends@abestroofing.com",
+        url: "https://abestroofing.com/",
+        conf: "high", pitch: "ai",
+        live: "GAF 4.7 (~1092 reviews); Yelp Updated July 2026; BBB since 2002; FB",
+        weak: "Site is already marketing-grade — not a rebuild primary",
+        why: "Too sophisticated for ‘your site is old’. Pitch multi-agent ops dashboard / lead SLA.",
+        size: "25–50+ est."
+      },
+      {
+        id: 30, name: "Fox Heating and Cooling",
+        trades: ["HVAC"], location: "Boise, ID",
+        phone: "", email: "",
+        url: "https://www.foxhvacpro.com/",
+        conf: "high", pitch: "ai",
+        live: "Claims 4.9 from 192+ Google reviews; Reddit r/Boise Jun 2026 recommendation; Carrier dealer",
+        weak: "Site already solid — opportunity is ops/AI not redesign",
+        why: "Use as AI-layer target: maintenance plans, review automation, dispatch.",
+        size: "15–50 est."
+      },
+      {
+        id: 31, name: "SOS Heating & Cooling",
+        trades: ["HVAC"], location: "Omaha, NE",
+        phone: "", email: "",
+        url: "https://soshvac.com/",
+        conf: "high", pitch: "ai",
+        live: "BirdEye 4.8 / 666 reviews; third-gen since 1950; active brand site",
+        weak: "Not a weak site — large operator",
+        why: "Enterprise-ish local. Only pitch agent platform / internal tools, not website rebuild.",
+        size: "40–100+ est."
+      },
+      {
+        id: 32, name: "Lewis Roofing & Construction",
+        trades: ["Roofing"], location: "Tulsa, OK",
+        phone: "918-394-0306", email: "",
+        url: "https://lewisroofing.com/",
+        conf: "med", pitch: "upgrade",
+        live: "FB active; Yelp Updated July 2026; BBB since 2008; multi-state commercial claim",
+        weak: "Cloudflare-protected / dual web presence (webflow variant) — inconsistent brand web",
+        why: "Commercial-leaning. Pitch lead ops + site consistency.",
+        size: "15–50 est."
+      },
+      {
+        id: 33, name: "Scenic City Plumbing",
+        trades: ["Plumbing"], location: "Chattanooga, TN",
+        phone: "423-220-3302", email: "",
+        url: "https://www.sceniccityplumbing.com/",
+        conf: "high", pitch: "ai",
+        live: "Claims #1 plumber 15 years running; active site Jul 2026; strong local brand",
+        weak: "Marketing site exists — compete on AI speed/ops not aesthetics alone",
+        why: "Winner brand. Sell agents that protect #1 status (review velocity, call handling).",
+        size: "15–50 est."
+      },
+      {
+        id: 34, name: "Keefe Plumbing Company",
+        trades: ["Plumbing"], location: "Chattanooga, TN",
+        phone: "", email: "",
+        url: "https://www.keefeplumbing.com/",
+        conf: "med", pitch: "upgrade",
+        live: "Family-owned since 1950 claim; active crawl Jul 2026",
+        weak: "Cloudflare front; traditional family plumber web presence",
+        why: "Legacy shop. Phone-verify, then offer modern booking + AI.",
+        size: "10–40 est."
+      },
+      {
+        id: 35, name: "Piper's Plumbing",
+        trades: ["Plumbing"], location: "Chattanooga, TN / N. GA",
+        phone: "", email: "",
+        url: "https://pipersplumbing.com/",
+        conf: "med", pitch: "upgrade",
+        live: "Active 24/7 emergency positioning; modernish marketing site",
+        weak: "Template emergency-plumber pattern — improve trust + booking",
+        why: "Emergency vertical loves missed-call text-back AI.",
+        size: "5–25 est."
+      },
+      {
+        id: 36, name: "Story Roofing LLC",
+        trades: ["Roofing"], location: "Kissimmee, FL",
+        phone: "", email: "",
+        url: "http://www.storyroofingllc.com/",
+        conf: "med", pitch: "rebuild",
+        live: "Yelp Updated June 2026 listing with website",
+        weak: "Wix-class site / placeholder signals in scrape",
+        why: "FL storm market. Verify Google reviews then demo storm funnel.",
+        size: "5–20 est."
+      },
+      {
+        id: 37, name: "Roofing Pros Company",
+        trades: ["Roofing"], location: "Los Angeles, CA",
+        phone: "323-797-8849", email: "",
+        url: "https://roofingproscompany.wixsite.com/roofing",
+        conf: "med", pitch: "rebuild",
+        live: "Yelp Updated July 2026; Mid-City LA address listed",
+        weak: "Wix free subdomain",
+        why: "LA competitive market — site quality is table stakes. Easy visual before/after demo.",
+        size: "1–15 est."
+      },
+      {
+        id: 38, name: "Sol Roofing",
+        trades: ["Roofing"], location: "San Fernando Valley, CA",
+        phone: "818-441-3354", email: "",
+        url: "http://www.sol-roofing.com/",
+        conf: "med", pitch: "upgrade",
+        live: "Yelp Updated Apr 2026 — 43 reviews, 82 photos",
+        weak: "Marketing site exists; can still improve conversion & speed",
+        why: "Visual portfolio company — AI quote + photo intake is natural.",
+        size: "5–25 est."
+      },
+      {
+        id: 39, name: "Complete Care Plumbing Electric & AC",
+        trades: ["Plumbing", "HVAC", "Electrical"], location: "Marble Falls, TX",
+        phone: "325-240-6446", email: "",
+        url: "https://hillcountryplumber.com/",
+        conf: "high", pitch: "ai",
+        live: "Yelp Updated July 2026; FB videos Dec 2025 & Jun 2026; active content marketing",
+        weak: "Site is relatively modern (they upgraded off Weebly) — AI/ops pitch not redesign",
+        why: "Multi-trade Hill Country shop. Great for agent dashboard: plumbing+HVAC+electric leads.",
+        size: "5–25 est."
+      },
+      {
+        id: 40, name: "Bartlett Homes & Roofing",
+        trades: ["Roofing", "Construction"], location: "Boise, ID (+ multi-state)",
+        phone: "208-286-4187", email: "",
+        url: "https://bartlettroofs.com/",
+        conf: "high", pitch: "ai",
+        live: "Yelp Updated July 2026; GuildQuality ~398 reviews; FB Mar 2026 Best of SLC nomination",
+        weak: "Large sophisticated operator — site not the problem",
+        why: "Only pitch high-end agent/ops stack. May be past 50 ppl — qualify headcount first.",
+        size: "50–200? qualify"
+      }
+    ];
+
+    const grid = document.getElementById("grid");
+    const search = document.getElementById("search");
+    let activeTrade = "all";
+    let activeConf = "all";
+
+    function displayUrl(url) {
+      return String(url || "").replace(/^https?:\/\//i, "");
+    }
+    function telHref(phone) {
+      return "tel:" + String(phone || "").replace(/[^0-9+]/g, "");
+    }
+    function escapeAttr(v) {
+      return String(v || "").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+    }
+
+    function render(list) {
+      grid.innerHTML = list.map((p) => {
+        const searchBlob = [p.name, p.location, p.phone, p.email, p.trades.join(" "), p.live, p.weak]
+          .filter(Boolean).join(" ").toLowerCase();
+        const phoneHtml = p.phone
+          ? `<dt>Phone</dt><dd><a href="${telHref(p.phone)}">${p.phone}</a></dd>` : "";
+        const emailHtml = p.email
+          ? `<dt>Email</dt><dd><a href="mailto:${escapeAttr(p.email)}">${p.email}</a></dd>` : "";
+        const pitchLabel = p.pitch === "rebuild" ? "Rebuild" : p.pitch === "ai" ? "AI/ops" : "Upgrade";
+
+        return `
+        <article class="card" data-trades="${escapeAttr(p.trades.join(","))}" data-conf="${p.conf}" data-search="${escapeAttr(searchBlob)}">
+          <div class="card-top">
+            <div class="rank">${String(p.id).padStart(2,"0")}</div>
+            <h3>${p.name}</h3>
+            <div class="conf ${p.conf}">${p.conf}</div>
+          </div>
+          <div class="meta-row">
+            ${p.trades.map(t => `<span class="tag trade">${t}</span>`).join("")}
+            <span class="tag">${p.size}</span>
+            <span class="tag live">${pitchLabel}</span>
+            <span class="tag weak">${p.weak.split("—")[0].trim().slice(0,42)}</span>
+          </div>
+          <dl class="detail">
+            <dt>Location</dt><dd>${p.location}</dd>
+            ${phoneHtml}
+            ${emailHtml}
+            <dt>Website</dt><dd><a href="${escapeAttr(p.url)}" target="_blank" rel="noopener">${displayUrl(p.url)}</a></dd>
+            <dt>Live signals</dt><dd style="color:var(--muted);font-size:.82rem">${p.live}</dd>
+            <dt>Site weakness</dt><dd style="color:var(--muted);font-size:.82rem">${p.weak}</dd>
+          </dl>
+          <div class="why">${p.why}</div>
+          <div class="actions">
+            <a class="btn primary" href="${escapeAttr(p.url)}" target="_blank" rel="noopener">Open site ↗</a>
+            ${p.phone ? `<a class="btn" href="${telHref(p.phone)}">Call</a>` : ""}
+            ${p.email ? `<a class="btn" href="mailto:${escapeAttr(p.email)}">Email</a>` : ""}
+            <button class="btn" type="button"
+              data-copy-name="${escapeAttr(p.name)}"
+              data-copy-url="${escapeAttr(p.url)}"
+              data-copy-phone="${escapeAttr(p.phone||"")}"
+              data-copy-email="${escapeAttr(p.email||"")}"
+              data-copy-conf="${p.conf}">Copy</button>
+          </div>
+        </article>`;
+      }).join("");
+
+      grid.querySelectorAll("button[data-copy-name]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const text = [
+            btn.getAttribute("data-copy-name"),
+            "conf: " + btn.getAttribute("data-copy-conf"),
+            btn.getAttribute("data-copy-url"),
+            btn.getAttribute("data-copy-phone"),
+            btn.getAttribute("data-copy-email"),
+          ].filter(Boolean).join("\n");
+          navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = "Copied";
+            setTimeout(() => (btn.textContent = "Copy"), 1100);
+          });
+        });
+      });
+
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const q = (search.value || "").trim().toLowerCase();
+      let visible = 0;
+      grid.querySelectorAll(".card").forEach((card) => {
+        const trades = (card.dataset.trades || "").split(",").map(t => t.trim());
+        const conf = card.dataset.conf;
+        const matchTrade = activeTrade === "all" || trades.includes(activeTrade);
+        let matchConf = true;
+        if (activeConf === "high") matchConf = conf === "high";
+        if (activeConf === "med") matchConf = conf === "high" || conf === "med";
+        const matchSearch = !q || (card.dataset.search || "").includes(q);
+        const show = matchTrade && matchConf && matchSearch;
+        card.classList.toggle("hidden", !show);
+        if (show) visible++;
+      });
+      document.getElementById("visible-count").textContent = `Showing ${visible} of ${PROSPECTS.length}`;
+    }
+
+    document.getElementById("filters-trade").addEventListener("click", (e) => {
+      const btn = e.target.closest(".filter-btn");
+      if (!btn || !btn.dataset.filter) return;
+      document.querySelectorAll("#filters-trade .filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeTrade = btn.dataset.filter;
+      applyFilters();
+    });
+    document.getElementById("filters-conf").addEventListener("click", (e) => {
+      const btn = e.target.closest(".filter-btn");
+      if (!btn || !btn.dataset.conf) return;
+      document.querySelectorAll("#filters-conf .filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeConf = btn.dataset.conf;
+      applyFilters();
+    });
+    search.addEventListener("input", applyFilters);
+
+    document.getElementById("copy-pitch").addEventListener("click", () => {
+      navigator.clipboard.writeText(document.getElementById("pitch-text").textContent).then(() => {
+        const b = document.getElementById("copy-pitch");
+        b.textContent = "Copied";
+        setTimeout(() => (b.textContent = "Copy pitch"), 1100);
+      });
+    });
+
+    const highs = PROSPECTS.filter(p => p.conf === "high").length;
+    const meds = PROSPECTS.filter(p => p.conf === "med").length;
+    document.getElementById("high-count").textContent = highs;
+    document.getElementById("med-count").textContent = meds;
+
+    render(PROSPECTS);
+  </script>
+</body>
+</html>

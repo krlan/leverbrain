@@ -104,7 +104,7 @@ function getAuthorAvatarUrl(author: string) {
   if (cleanAuthor === 'anthropics') return '/images/claude.png'
   if (cleanAuthor === 'composiohq') return 'https://avatars.githubusercontent.com/u/105432322?v=4'
   if (cleanAuthor === '199-biotechnologies') return 'https://avatars.githubusercontent.com/u/81938501?v=4'
-  if (cleanAuthor === 'leverbrain') return '/images/octo.png'
+  if (cleanAuthor === 'leverbrain') return '/images/levie.png'
   if (cleanAuthor === 'baoyu') return 'https://avatars.githubusercontent.com/u/648674?v=4'
   if (cleanAuthor === 'santa') return 'https://github.com/Leonxlnx.png'
   return `https://github.com/${cleanAuthor}.png`
@@ -361,32 +361,26 @@ function SkillsContent() {
                   onMouseMove={handleMouseMove}
                 >
                   <div className="sk-card-top">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <img
-                        src={getAuthorAvatarUrl(skill.author)}
-                        alt={`${skill.author} avatar`}
-                        style={{
-                          width: '20px',
-                          height: '20px',
-                          borderRadius: '50%',
-                          objectFit: 'cover',
-                          border: '1px solid rgba(255, 196, 129, 0.2)'
-                        }}
-                      />
-                      <span className="sk-card-creator" style={{ margin: 0 }}>@{skill.author}</span>
+                    <div className="sk-card-title-row">
+                      <h2 className="sk-card-name">{skill.name}</h2>
+                      {skill.category !== 'skill' && (
+                        <span className={`sk-cat-pill sk-cat-pill--${skill.category}`}>
+                          {skill.category}
+                        </span>
+                      )}
                     </div>
-                    <h2 className="sk-card-name" style={{ marginTop: '6px' }}>{skill.name}</h2>
                     <p className="sk-card-tagline">{skill.tagline}</p>
                   </div>
 
                   <div className="sk-card-bottom">
-                    {skill.category !== 'skill' ? (
-                      <span className={`sk-cat-pill sk-cat-pill--${skill.category}`}>
-                        {skill.category}
-                      </span>
-                    ) : (
-                      <span />
-                    )}
+                    <div className="sk-card-author">
+                      <img
+                        src={getAuthorAvatarUrl(skill.author)}
+                        alt=""
+                        className="sk-card-avatar"
+                      />
+                      <span className="sk-card-creator">@{skill.author}</span>
+                    </div>
                     <PriceTag price={skill.price} />
                   </div>
                 </Link>
@@ -429,31 +423,30 @@ function SkillsContent() {
         </section>
 
         {priceFilter === 'paid' && (
-          <section className="land-showcase config-showcase animate-fade-in-up" style={{ marginTop: '48px', paddingBottom: '32px' }}>
-            <div className="land-ui-card" style={{ marginBottom: '24px' }}>
-              <div className="land-red-card-content">
-                <p className="land-agent-headline land-agent-headline--ui" style={{ marginBottom: '16px' }}>
-                  Curated Collections
-                </p>
-                <h3>UI & Craft Skills</h3>
-                <p style={{ marginBottom: '20px' }}>
-                  Master the frontend with verified skills from top design engineers, Apple interface guidelines, and Anthropic craft standards.
-                </p>
-                <Link href="/skills/design" className="btn btn-ui">
-                  Explore UI Skills <ArrowRight size={14} />
-                </Link>
+          <section className="land-showcase config-showcase sk-paid-promos animate-fade-in-up">
+            <div className="sk-paid-promos-grid">
+              <div className="land-ui-card">
+                <div className="land-red-card-content">
+                  <h3>UI & Craft Skills</h3>
+                  <p>
+                    Master the frontend with verified skills from top design engineers, Apple interface guidelines, and Anthropic craft standards.
+                  </p>
+                  <Link href="/skills/design" className="btn btn-ui">
+                    Explore UI Skills <ArrowRight size={14} />
+                  </Link>
+                </div>
               </div>
-            </div>
 
-            <div className="land-red-card">
-              <div className="land-red-card-content">
-                <h3>Share your edge</h3>
-                <p className="land-agent-headline land-agent-headline--red" style={{ marginBottom: '16px' }}>
-                  Publish the skills that helped you win, and let others build faster.
-                </p>
-                <Link href="/publish" className="btn btn-red">
-                  Publish a skill <ArrowRight size={14} />
-                </Link>
+              <div className="land-red-card">
+                <div className="land-red-card-content">
+                  <h3>Share your edge</h3>
+                  <p>
+                    Publish the skills that helped you win, and let others build faster.
+                  </p>
+                  <Link href="/publish" className="btn btn-red">
+                    Publish a skill <ArrowRight size={14} />
+                  </Link>
+                </div>
               </div>
             </div>
           </section>

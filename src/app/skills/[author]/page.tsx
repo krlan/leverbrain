@@ -51,7 +51,7 @@ const STATIC_PROFILES: Record<string, {
   leverbrain: {
     displayName: 'Leverbrain',
     bio: 'You are here. The Skill Marketplace on Solana.',
-    avatarUrl: '/images/octo.png',
+    avatarUrl: '/images/levie.png',
     github: 'https://github.com/leverbrain',
     website: 'https://leverbrain.com',
     twitter: 'leverbrain',

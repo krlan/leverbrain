@@ -75,7 +75,7 @@ export const leverbrain: SkillListing = {
   createdAt: '2026-05-31',
   creatorWallet: '6i2cZMm9LLZ2Z8n3reK7FV3ePQiQh1KGJvkMg82sJRj8',
   fileUrl: 'https://github.com/leverbrain/leverbrain/tree/main/skills/leverbrain',
-  imageUrl: '/images/octo.png',
+  imageUrl: '/images/levie.png',
   useCases: [
     "Get and install marketplace routines via CLI.",
     "Save and download custom developer configs (labs).",
@@ -85,7 +85,7 @@ export const leverbrain: SkillListing = {
   overviewHtml: \`
     <div class="skill-enrichment">
       <div class="enrich-hero" style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 32px; border: 1px solid var(--color-border);">
-        <img src="/images/octo.png" style="width: 100%; aspect-ratio: 16/7; object-fit: contain; opacity: 0.8; padding: 24px; background: rgba(0,0,0,0.4);" />
+        <img src="/images/levie.png" style="width: 100%; aspect-ratio: 16/7; object-fit: contain; opacity: 0.8; padding: 24px; background: rgba(0,0,0,0.4);" />
         <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, #120e0a 95%);"></div>
         <div style="position: absolute; bottom: 24px; left: 24px;">
           <h2 style="font-family: var(--font-display); color: var(--color-accent); margin: 0; font-size: 32px;">Leverbrain Skill</h2>
@@ -101,7 +101,7 @@ export const leverbrain: SkillListing = {
   previewHtml: \`
     <div style="background: #120e0a; border: 1px solid #ffbc6844; border-radius: 12px; font-family: 'Saira', sans-serif; color: #ffe3be; padding: 24px;">
       <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-        <img src="/images/octo.png" style="width: 32px; height: 32px;" />
+        <img src="/images/levie.png" style="width: 32px; height: 32px;" />
         <div>
           <h4 style="margin: 0; color: var(--color-accent);">LEVERBRAIN CLI ACTIVE</h4>
           <span style="font-size: 10px; color: var(--color-text-tertiary);">CONNECTED TO MAINNET</span>

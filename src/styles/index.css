@@ -10,6 +10,7 @@
 @import './CommandPalette.css';
 @import './Docs.css';
 @import './Config.css';
+@import './Business.css';
 
 
 /* ========================================================================
@@ -858,10 +859,16 @@ img {
 .show-on-mobile {
   display: none !important;
 }
+.show-on-mobile-inline {
+  display: none !important;
+}
 
 @media (max-width: 768px) {
   .show-on-mobile {
     display: flex !important;
+  }
+  .show-on-mobile-inline {
+    display: inline !important;
   }
   .hide-on-mobile {
     display: none !important;

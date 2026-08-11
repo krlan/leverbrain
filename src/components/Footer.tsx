@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="footer-brand">
             <Link href="/" className="footer-logo">
               <Image
-                src="/images/octo.png"
+                src="/images/levie.png"
                 alt="Leverbrain Logo"
                 width={72}
                 height={72}
@@ -50,6 +50,14 @@ export default function Footer() {
                     npm package
                   </a>
                 </li>
+              </ul>
+            </div>
+
+            <div className="footer-nav-group">
+              <h4 className="footer-nav-title">Company</h4>
+              <ul>
+                <li><Link href="/business">Business</Link></li>
+                <li><a href="mailto:hi@leverbrain.com">Contact</a></li>
               </ul>
             </div>
 

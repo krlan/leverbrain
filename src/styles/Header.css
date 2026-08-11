@@ -43,12 +43,18 @@
 }
 
 .logo-mark {
-  width: 84px;
-  height: 84px;
-  display: block;
-  object-fit: contain;
-  margin-right: -10px;
-  transform: translateY(4px);
+  width: 36px;
+  height: 36px;
+  display: inline-block;
+  background-color: var(--color-text-primary);
+  -webkit-mask: url('/vec-colored.svg') no-repeat center / contain;
+  mask: url('/vec-colored.svg') no-repeat center / contain;
+  transition: background-color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.logo:hover .logo-mark {
+  background-color: var(--color-accent-warm-light);
 }
 
 .logo-text {

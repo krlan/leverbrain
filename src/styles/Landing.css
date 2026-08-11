@@ -9,12 +9,69 @@
 }
 .land-hero-split {
   display: grid;
-  grid-template-columns: minmax(0, 12fr) minmax(360px, 8fr);
+  grid-template-columns: minmax(0, 11fr) auto minmax(360px, 8fr);
   align-items: center;
-  gap: var(--space-4xl);
+  gap: var(--space-lg);
 }
 .land-hero-left {
-  max-width: 560px;
+  max-width: 580px;
+}
+.land-hero-mascot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  filter: drop-shadow(0 10px 35px rgba(255, 154, 61, 0.45));
+  transition: transform var(--transition-base), filter var(--transition-base);
+  z-index: 2;
+  cursor: pointer;
+  transform: translateY(18px);
+}
+.land-hero-mascot-tooltip {
+  position: absolute;
+  top: -38px;
+  background: linear-gradient(140deg, rgba(35, 26, 18, 0.96), rgba(20, 15, 10, 0.98));
+  color: var(--color-accent-warm-light);
+  border: 1px solid rgba(255, 196, 129, 0.45);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 154, 61, 0.3);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px) scale(0.92);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+.land-hero-mascot-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: rgba(20, 15, 10, 0.98);
+  border-right: 1px solid rgba(255, 196, 129, 0.45);
+  border-bottom: 1px solid rgba(255, 196, 129, 0.45);
+}
+.land-hero-mascot:hover .land-hero-mascot-tooltip {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.land-hero-mascot:hover {
+  transform: translateY(14px) scale(1.05);
+  filter: drop-shadow(0 16px 48px rgba(255, 154, 61, 0.65));
+}
+.land-hero-mascot-img {
+  width: 170px;
+  height: 170px;
+  object-fit: contain;
+  display: block;
 }
 .land-hero-title {
   font-size: clamp(2.15rem, 5vw, 3.4rem);
@@ -22,6 +79,7 @@
   line-height: 1.08;
   letter-spacing: 0.02em;
   margin-bottom: var(--space-md);
+  white-space: nowrap;
 }
 .land-hero-sub {
   font-size: 0.96rem;
@@ -422,11 +480,14 @@
   border: 1px solid rgba(255, 126, 102, 0.24);
   border-radius: var(--radius-xl);
   padding: var(--space-3xl);
-  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+  transition:
+    box-shadow 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+    background 0.35s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .land-red-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(255, 103, 80, 0.2);
+  box-shadow: 0 16px 48px rgba(255, 103, 80, 0.22);
+  border-color: rgba(255, 140, 118, 0.42);
 }
 .land-red-card-content { max-width: 600px; }
 .land-red-card h3 {
@@ -467,10 +528,19 @@
 }
 @media (max-width: 768px) {
   .land-hero {
-    padding: var(--space-2xl) 0 var(--space-sm);
+    padding: var(--space-md) 0 var(--space-sm);
+  }
+  .land-hero-left {
+    margin-top: 0;
+    padding-top: 0;
   }
   .land-hero-title {
     font-size: clamp(1.85rem, 7vw, 2.5rem);
+    white-space: normal;
+    margin-top: 0;
+  }
+  .land-hero-mascot {
+    display: none !important;
   }
   .land-hero-split {
     grid-template-columns: 1fr;
@@ -498,19 +568,21 @@
   border: 1px solid rgba(99, 102, 241, 0.24);
   border-radius: var(--radius-xl);
   padding: var(--space-3xl);
-  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+  transition:
+    box-shadow 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+    background 0.35s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .land-ui-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(99, 102, 241, 0.25);
-  border-color: rgba(99, 102, 241, 0.48);
+  box-shadow: 0 16px 48px rgba(99, 102, 241, 0.28);
+  border-color: rgba(129, 140, 248, 0.48);
 }
 .land-ui-card h3 {
   font-family: var(--font-display);
   font-size: 1.75rem;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: #fff;
+  color: var(--color-text-primary);
   margin-bottom: var(--space-xs);
 }
 .land-ui-card p {
@@ -521,12 +593,16 @@
 .land-agent-headline--ui {
   color: #818cf8 !important;
 }
+/* Outline style — same light text treatment as btn-red */
 .btn-ui {
-  background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%) !important;
-  color: #fff !important;
-  border: none !important;
+  background: linear-gradient(180deg, rgba(129, 140, 248, 0.18), rgba(99, 102, 241, 0.12)) !important;
+  color: #ffd6cf !important;
+  border: 1px solid rgba(129, 140, 248, 0.48) !important;
+  box-shadow: none !important;
 }
 .btn-ui:hover {
-  background: linear-gradient(90deg, #4338ca 0%, #4f46e5 100%) !important;
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4) !important;
+  background: linear-gradient(180deg, rgba(149, 156, 255, 0.22), rgba(99, 102, 241, 0.16)) !important;
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.22) !important;
+  border-color: rgba(165, 170, 255, 0.58) !important;
+  color: #ffd6cf !important;
 }

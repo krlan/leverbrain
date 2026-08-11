@@ -26,6 +26,7 @@ const QUICK_ACTIONS = [
   { label: 'Browse blueprints', href: '/skills?category=blueprint', shortcut: '' },
   { label: 'Open your lab', href: '/lab', shortcut: '' },
   { label: 'Read the docs', href: '/docs', shortcut: '' },
+  { label: 'Business — custom implementations', href: '/business', shortcut: '' },
 ]
 
 export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {

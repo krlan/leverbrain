@@ -46,13 +46,7 @@ export default function Header({ onOpenPalette }: HeaderProps) {
       <div className="container">
         <nav className="nav">
           <Link href="/" className="logo">
-            <Image
-              src="/images/octo.png"
-              alt="Leverbrain Logo"
-              width={84}
-              height={84}
-              className="logo-mark"
-            />
+            <span className="logo-mark" aria-hidden="true" />
             <span className="logo-text">Leverbrain</span>
           </Link>
 
@@ -69,6 +63,12 @@ export default function Header({ onOpenPalette }: HeaderProps) {
                 className={`nav-link ${currentPath.startsWith('/docs') ? 'active' : ''}`}
               >
                 Docs
+              </Link>
+              <Link
+                href="/business"
+                className={`nav-link ${currentPath.startsWith('/business') ? 'active' : ''}`}
+              >
+                Business
               </Link>
                 <button
                   type="button"

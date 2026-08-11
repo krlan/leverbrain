@@ -64,9 +64,11 @@ export default function Landing() {
               <h1 className="land-hero-title animate-fade-in-up">
                 The expertise stack.
               </h1>
+
               <p className="land-hero-sub animate-fade-in-up animate-delay-1">
                 <span className="land-hero-sub-line">
-                  Trade agent skills, strategies, tutorials and blueprints
+                  <span className="hide-on-mobile">Agent skills, plugins, strategies and blueprints on </span>
+                  <span className="show-on-mobile-inline">Agent skills, plugins and blueprints on </span>
                   <span className="land-hero-solana">
                     <Image
                       src="/images/solana.png"
@@ -116,32 +118,44 @@ export default function Landing() {
               </div>
             </div>
 
-              <div className="land-hero-terminal animate-fade-in-up animate-delay-2">
-                <div className="land-hero-terminal-bar">
-                  <span className="land-hero-terminal-dot" />
-                  <span className="land-hero-terminal-dot" />
-                  <span className="land-hero-terminal-dot" />
-                </div>
-                <div className="land-hero-terminal-body">
-                  <p className="land-hero-terminal-line">
-                    <span className="land-hero-terminal-prompt">$</span>
-                    {' '}<span className="land-hero-terminal-cmd">npx -y leverbrain</span>
-                    <CopyInlineButton value="npx -y leverbrain" />
-                  </p>
-                  <p className="land-hero-terminal-output">
-                    Leverbrain CLI to interact with the marketplace
-                  </p>
-                  <p className="land-hero-terminal-output hide-on-mobile">
-                    →&nbsp;<span className="land-hero-terminal-hl">search&nbsp;&lt;query&gt;</span>&nbsp;searches&nbsp;live&nbsp;listings
-                  </p>
-                  <p className="land-hero-terminal-output hide-on-mobile">
-                    →&nbsp;<span className="land-hero-terminal-hl">get&nbsp;&lt;author/slug&gt;</span>&nbsp;downloads&nbsp;selected&nbsp;skill
-                  </p>
-                  <p className="land-hero-terminal-output hide-on-mobile">
-                    →&nbsp;<span className="land-hero-terminal-hl">cfg&nbsp;&lt;handle/name&gt;</span>&nbsp;downloads&nbsp;<Link href="/lab" style={{ textDecoration: 'underline', color: 'var(--color-accent-warm-light)' }}>lab</Link>&nbsp;configs
-                  </p>
-                </div>
+            <div className="land-hero-mascot hide-on-mobile animate-fade-in-up animate-delay-1">
+              <span className="land-hero-mascot-tooltip">hey i&apos;m levie</span>
+              <Image
+                src="/images/levie.png"
+                alt="Levie Mascot"
+                width={170}
+                height={170}
+                className="land-hero-mascot-img"
+                priority
+              />
+            </div>
+
+            <div className="land-hero-terminal animate-fade-in-up animate-delay-2">
+              <div className="land-hero-terminal-bar">
+                <span className="land-hero-terminal-dot" />
+                <span className="land-hero-terminal-dot" />
+                <span className="land-hero-terminal-dot" />
               </div>
+              <div className="land-hero-terminal-body">
+                <p className="land-hero-terminal-line">
+                  <span className="land-hero-terminal-prompt">$</span>
+                  {' '}<span className="land-hero-terminal-cmd">npx -y leverbrain</span>
+                  <CopyInlineButton value="npx -y leverbrain" />
+                </p>
+                <p className="land-hero-terminal-output">
+                  Leverbrain CLI to interact with the marketplace
+                </p>
+                <p className="land-hero-terminal-output hide-on-mobile">
+                  →&nbsp;<span className="land-hero-terminal-hl">search&nbsp;&lt;query&gt;</span>&nbsp;searches&nbsp;live&nbsp;listings
+                </p>
+                <p className="land-hero-terminal-output hide-on-mobile">
+                  →&nbsp;<span className="land-hero-terminal-hl">get&nbsp;&lt;author/slug&gt;</span>&nbsp;downloads&nbsp;selected&nbsp;skill
+                </p>
+                <p className="land-hero-terminal-output hide-on-mobile">
+                  →&nbsp;<span className="land-hero-terminal-hl">cfg&nbsp;&lt;handle/name&gt;</span>&nbsp;downloads&nbsp;<Link href="/lab" style={{ textDecoration: 'underline', color: 'var(--color-accent-warm-light)' }}>lab</Link>&nbsp;configs
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -217,7 +231,7 @@ export default function Landing() {
       <section className="land-categories">
         <div className="container">
           <h2 className="land-section-title animate-fade-in-up">
-            Things you can trade.
+            Things in store
           </h2>
           <div className="land-cat-grid">
             {categories.map((cat, i) => {
